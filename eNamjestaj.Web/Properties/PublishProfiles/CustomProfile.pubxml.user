@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAljVRon9QI0CZ8a5VoOGPBwAAAAACAAAAAAAQZgAAAAEAACAAAABoxMMsv4buJY57x47oc7PT4YWACK8bUhUqyszie+aWbwAAAAAOgAAAAAIAACAAAABG6179u+Iouh6xje5ySklGlh7QiMCTd/x13iqcNwfZ1SAAAADKlJ3Mnui3hNoSG4j85PQ1ZAJeHCWYOzx5laEk7NgN7kAAAADTn+PI0OK3QTI61YC0Ha+W6n0EMEZjNAXlfLH0Tq+y1nf0TPcSrXFueOwqkmHKQo6IF8TAh/cTxnxDonZJeDna</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="fit-server">
+      <Value>Server=app.fit.ba,1433,Database=p1738_eNamjestaj%3bTrusted_Connection=false%3bMultipleActiveResultSets=true%3bUser ID=p1738%3bPassword=V_93xz8z</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

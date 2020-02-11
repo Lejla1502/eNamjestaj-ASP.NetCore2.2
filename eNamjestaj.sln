@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eNamjestaj.Web", "eNamjestaj.Web\eNamjestaj.Web.csproj", "{1424A58B-5F7C-4611-B9E1-720589A372D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eNamjestaj.Data", "eNamjestaj.Data\eNamjestaj.Data.csproj", "{A3862ACE-06D2-4AD3-90DD-9637B61794A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1424A58B-5F7C-4611-B9E1-720589A372D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1424A58B-5F7C-4611-B9E1-720589A372D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1424A58B-5F7C-4611-B9E1-720589A372D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1424A58B-5F7C-4611-B9E1-720589A372D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3862ACE-06D2-4AD3-90DD-9637B61794A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3862ACE-06D2-4AD3-90DD-9637B61794A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3862ACE-06D2-4AD3-90DD-9637B61794A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3862ACE-06D2-4AD3-90DD-9637B61794A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF7685AF-477F-47BF-8F96-1F5A446CBD42}
+	EndGlobalSection
+EndGlobal
