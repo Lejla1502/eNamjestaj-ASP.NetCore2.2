@@ -54,7 +54,7 @@ steps:
     credentialsOption: 'inputs'
     serverUrl: 'ftp://p1738.app.fit.ba'
     username: 'p1738'
-    password: 'V_93xz8z'
+    password: 'Mostar2017'
     rootDirectory: '$(build.artifactstagingdirectory)/eNamjestaj.Web'
     filePatterns: '**'
     remoteDirectory: '/httpdocs/'
