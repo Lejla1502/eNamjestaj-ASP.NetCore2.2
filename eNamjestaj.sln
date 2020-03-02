@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eNamjestaj.Web", "eNamjestaj.Web\eNamjestaj.Web.csproj", "{1424A58B-5F7C-4611-B9E1-720589A372D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eNamjestaj.Web", "eNamjestaj.Web\eNamjestaj.Web.csproj", "{1424A58B-5F7C-4611-B9E1-720589A372D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eNamjestaj.Data", "eNamjestaj.Data\eNamjestaj.Data.csproj", "{A3862ACE-06D2-4AD3-90DD-9637B61794A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eNamjestaj.Data", "eNamjestaj.Data\eNamjestaj.Data.csproj", "{A3862ACE-06D2-4AD3-90DD-9637B61794A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eNamjestaj.UnitTest", "eNamjestaj.UnitTest\eNamjestaj.UnitTest.csproj", "{C92F81D1-8711-4EC9-9FAD-F1693FA9D37A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A3862ACE-06D2-4AD3-90DD-9637B61794A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3862ACE-06D2-4AD3-90DD-9637B61794A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3862ACE-06D2-4AD3-90DD-9637B61794A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C92F81D1-8711-4EC9-9FAD-F1693FA9D37A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C92F81D1-8711-4EC9-9FAD-F1693FA9D37A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C92F81D1-8711-4EC9-9FAD-F1693FA9D37A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C92F81D1-8711-4EC9-9FAD-F1693FA9D37A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
