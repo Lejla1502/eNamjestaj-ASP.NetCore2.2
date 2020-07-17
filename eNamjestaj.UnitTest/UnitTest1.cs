@@ -1,4 +1,6 @@
 using eNamjestaj.Web.Controllers;
+using eNamjestaj.Web.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eNamjestaj.UnitTest
@@ -19,7 +21,9 @@ namespace eNamjestaj.UnitTest
         [TestMethod]
         public void LoginView_NotNull()
         {
-            Assert.IsNotNull(ac.Login(null));
+            LoginVM obj = new LoginVM();
+           // ViewResult vr = ac.Login(obj) as ViewResult;
+            Assert.IsNotNull(ac.Login(obj));
         }
     }
 

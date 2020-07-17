@@ -24,12 +24,17 @@ namespace eNamjestaj.Web.Controllers
         }
         public IActionResult Login(LoginVM input)
         {
+            if(!ModelState.IsValid)
+            {
+                ViewData["poruka"] = "Niste unijeli ispravne podatke";
+                return View("Index", input);
+            }
             Korisnik korisnik = ctx.Korisnik
                 .SingleOrDefault(x => x.KorisnickoIme == input.username && x.Lozinka == input.password);
 
             if (korisnik == null)
             {
-                ViewData["poruka"] = "pogrešan username ili password";
+                ViewData["poruka"] = "Pogrešan username ili password";
                 return View("Index", input);
             }
 
