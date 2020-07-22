@@ -51,18 +51,9 @@ namespace eNamjestaj.Data
                .WithMany()
                .HasForeignKey(x => x.KorisnikId);
 
-            //modelBuilder.Entity<ProizvodBoja>().HasKey(pb => new { pb.ProizvodId, pb.BojaId });
+            modelBuilder.Entity<ProizvodBoja>().HasKey(pb => new { pb.ProizvodId, pb.BojaId });
 
-        //    modelBuilder.Entity<ProizvodBoja>()
-        //.HasKey(pb => new { pb.ProizvodId, pb.BojaId });
-        //    modelBuilder.Entity<ProizvodBoja>()
-        //        .HasOne(pb => pb.Proizvod)
-        //        .WithMany(p => p.ProizvodBojas)
-        //        .HasForeignKey(pb => pb.ProizvodId);
-        //    modelBuilder.Entity<ProizvodBoja>()
-        //        .HasOne(pb => pb.Boja)
-        //        .WithMany(b => b.ProizvodBojas)
-        //        .HasForeignKey(pb => pb.BojaId);
+       
 
             modelBuilder.Entity<Dostavljac>()
             .HasIndex(b => b.Email).IsUnique();
@@ -122,7 +113,7 @@ namespace eNamjestaj.Data
         public virtual DbSet<Opstina> Opstina { get; set; }
         public virtual DbSet<RadniNalog> RadniNalog { get; set; }
         public virtual DbSet<Log> Log { get; set; }
-        //public virtual DbSet<ProizvodBoja> ProizvodBoja { get; set; }
+        public virtual DbSet<ProizvodBoja> ProizvodBoja { get; set; }
         public virtual DbSet<Komentar> Komentar { get; set; }
         public virtual DbSet<Ocjena> Ocjena { get; set; }
 

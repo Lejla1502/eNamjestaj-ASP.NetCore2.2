@@ -9,6 +9,6 @@ namespace eNamjestaj.Data.Models
     {
         public int Id { get; set; }
         public string Naziv { get; set; }
-        
+        public ICollection<ProizvodBoja> ProizvodBojas { get; set; }
     }
 }

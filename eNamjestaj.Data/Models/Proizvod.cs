@@ -19,8 +19,7 @@ namespace eNamjestaj.Data.Models
         public int VrstaProizvodaId { get; set; }
         public virtual VrstaProizvoda VrstaProizvoda { get; set; }
 
-      //  public ICollection<ProizvodBoja> ProizvodBojas { get; set; }
-        //public int BojaId { get; set; }
-        //public Boja Boja { get; set; }
+        public ICollection<ProizvodBoja> ProizvodBojas { get; set; }
+        
     }
 }
