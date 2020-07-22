@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using eNamjestaj.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web
 {
@@ -27,6 +28,7 @@ namespace eNamjestaj.Web
 
             services.AddDbContext<MojContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("fit-server")));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc(options =>
             {
             }).AddSessionStateTempDataProvider();

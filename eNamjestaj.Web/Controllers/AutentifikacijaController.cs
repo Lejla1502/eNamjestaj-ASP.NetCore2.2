@@ -39,7 +39,7 @@ namespace eNamjestaj.Web.Controllers
             }
 
             HttpContext.SetLogiraniKorisnik(korisnik);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Proizvodi");
         }
 
         public IActionResult Logout()

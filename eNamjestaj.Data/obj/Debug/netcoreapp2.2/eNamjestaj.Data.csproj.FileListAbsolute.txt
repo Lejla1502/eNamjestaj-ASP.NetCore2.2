@@ -1,0 +1,11 @@
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\eNamjestaj.Data.deps.json
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\eNamjestaj.Data.runtimeconfig.json
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\eNamjestaj.Data.runtimeconfig.dev.json
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\eNamjestaj.Data.dll
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\eNamjestaj.Data.pdb
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.csprojAssemblyReference.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.AssemblyInfo.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.dll
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.pdb
