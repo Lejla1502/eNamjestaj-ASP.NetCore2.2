@@ -1,10 +1,3 @@
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.csprojAssemblyReference.cache
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.csproj.CoreCompileInputs.cache
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.AssemblyInfoInputs.cache
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.AssemblyInfo.cs
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Data.dll
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Web.dll
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Data.pdb
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Web.Views.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Web.Views.pdb
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
@@ -15,7 +8,14 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.UnitTest.runtimeconfig.dev.json
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.UnitTest.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.UnitTest.pdb
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Data.dll
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Web.dll
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Data.pdb
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Web.pdb
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.csprojAssemblyReference.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.AssemblyInfo.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.csproj.CopyComplete
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\obj\Debug\netcoreapp2.2\eNamjestaj.UnitTest.pdb

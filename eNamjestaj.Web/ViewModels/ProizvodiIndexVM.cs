@@ -18,6 +18,8 @@ namespace eNamjestaj.Web.ViewModels
             public string Slika { get; set; }
             public int? Popust { get; set; }
             public decimal? KonacnaCijena { get; set; }
+            public string Boja { get; set; }
+            public int BrojacBoja { get; set; }
         }
     }
 }
