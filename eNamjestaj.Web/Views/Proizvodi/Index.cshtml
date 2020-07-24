@@ -9,7 +9,26 @@
         <br /><br />
         <h1 style="margin-left:20px;">Artikli</h1>
 
-       
+        <form action="/ModulKupac/Proizvodi/Index">
+            <select style="margin-left:20px;" name="vrstaID">
+                <option>(Odaberite vrstu namještaja)</option>
+                @foreach (var x in Model.Vrste)
+                {
+                    <option value="@x.Value">@x.Text</option>
+                }
+            </select>
+            <select style="margin-left:20px;" name="bojaID">
+                <option>(Odaberite boju namještaja)</option>
+                @foreach (var x in Model.Boje)
+                {
+                    <option value="@x.Value">@x.Text</option>
+                }
+            </select>
+
+            <input type="submit" value="Pretraga" class="btn btn-primary" />
+        </form>
+        <br />
+
         <br />
         <div class="container">
             <div class="row">
@@ -18,7 +37,7 @@
                 {
                     <div class="col-sm-4 col-sm-4 col-sm-4">
                         <div style="height:450px;" class="thumbnail">
-                            
+
                             <p> <h3>@x.Naziv  </h3> </p>
                             <img src=@x.Slika class="img-thumbnail" style="width:242px;height:200px" />
                             <div class="caption" align="left">
@@ -28,7 +47,7 @@
                             {<p><b>Cijena: </b>@x.Cijena KM </p>}
                                 <p><b>Šifra: </b>@x.Sifra</p>
                                 <p><b>Boja: </b>@x.Boja</p>
-                                
+
 
                             </div>
                         </div>

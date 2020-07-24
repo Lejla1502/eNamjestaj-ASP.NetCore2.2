@@ -93,7 +93,7 @@ namespace eNamjestaj.UnitTest
         {
 
             List<Proizvod> ocekivani = _context.Proizvod.ToList();
-            ViewResult vr = pc.Index() as ViewResult;
+            ViewResult vr = pc.Index(null,null) as ViewResult;
             ProizvodiIndexVM aktuelni = vr.Model as ProizvodiIndexVM;
             
             Assert.AreEqual(ocekivani.Count, aktuelni.Proizvodi.Count);

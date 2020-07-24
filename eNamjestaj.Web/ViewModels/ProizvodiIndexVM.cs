@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,9 @@ namespace eNamjestaj.Web.ViewModels
     public class ProizvodiIndexVM
     {
         public List<ProizvodiInfo> Proizvodi { get; set; }
+
+        public List<SelectListItem> Vrste { get; set; }
+        public List<SelectListItem> Boje { get; set; }
 
         public class ProizvodiInfo
         {
