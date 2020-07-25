@@ -146,6 +146,27 @@ namespace eNamjestaj.UnitTest
                                       prvi.Id==drugi.Id && prvi.Sifra==drugi.Sifra?0:1));
         }
 
+        [TestMethod]
+        public void Test_VracaDetaljeProizvodaNaspramIDargumenta()
+        {
+            List<int> listaIdProizvodaIzBaze = _context.Proizvod.Select(x => x.Id).ToList();
+            var random = new Random();
+
+            int proizvodIdRand = random.Next(listaIdProizvodaIzBaze[0], listaIdProizvodaIzBaze[listaIdProizvodaIzBaze.Count - 1]);
+            int brojacRand = random.Next(0, 3);
+
+            Proizvod ocekivani = _context.Proizvod.Find(proizvodIdRand);
+            
+
+            ViewResult vr = pc.Detalji(proizvodIdRand, brojacRand) as ViewResult;
+            ProizvodiDetaljiVM aktuelniP = vr.Model as ProizvodiDetaljiVM;
+            Proizvod aktuelni = _context.Proizvod.Find(aktuelniP.ProizvodId);
+
+            Assert.AreEqual(ocekivani, aktuelni);
+            
+
+        }
+
 
     }
 
