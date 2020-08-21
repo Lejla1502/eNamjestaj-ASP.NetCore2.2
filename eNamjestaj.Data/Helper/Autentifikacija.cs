@@ -11,7 +11,7 @@ namespace eNamjestaj.Data.Helper
         private const string LogiraniKorisnik = "logirani_korisnik";
 
         
-
+     
 
         public static Korisnik GetLogiraniKorisnik(this HttpContext context)
         {
@@ -23,7 +23,7 @@ namespace eNamjestaj.Data.Helper
 
         public static void SetLogiraniKorisnik(this HttpContext context, Korisnik korisnik)
         {
-
+            
             context.Session.Set(LogiraniKorisnik,korisnik);
         }
 

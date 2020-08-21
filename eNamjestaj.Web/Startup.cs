@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using eNamjestaj.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using eNamjestaj.Data.Helper;
 
 namespace eNamjestaj.Web
 {
@@ -27,13 +29,20 @@ namespace eNamjestaj.Web
         {
 
             services.AddDbContext<MojContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("fit-server")));
+              options.UseSqlServer(Configuration.GetConnectionString("lokalni")));
+            //services.AddDbContext<MojContext>(x => x.UseSqlServer(Configuration.GetConnectionString("lokalni")));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc(options =>
             {
             }).AddSessionStateTempDataProvider();
             services.AddDistributedMemoryCache();
             services.AddSession();
+            //services.AddHttpContextAccessor();
+            services.AddScoped<IUserSession, UserSession>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+           // services.AddScoped<TestManager>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

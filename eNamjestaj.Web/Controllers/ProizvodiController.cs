@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eNamjestaj.Data;
+using eNamjestaj.Data.Helper;
+using eNamjestaj.Data.Models;
 using eNamjestaj.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,17 @@ namespace eNamjestaj.Web.Controllers
     public class ProizvodiController : Controller
     {
         MojContext ctx = new MojContext();
+
+        //private MojContext ctx;
+
+        private readonly IUserSession _userSession;
+
+        public ProizvodiController(IUserSession userSession)
+        {
+            _userSession = userSession;
+        }
+
+        int broj = 1;
 
         public IActionResult Index(int? vrstaID, int? bojaID)
         {
@@ -99,6 +112,126 @@ namespace eNamjestaj.Web.Controllers
             }
             return View(model);
         }
+
+        public IActionResult ProvjeraKolicine(int ProizvodId, int kol, int BojaID, int Brojac, int? Popust)
+        {
+            if (ModelState.IsValid)
+            {
+                Proizvod p = ctx.Proizvod.Find(ProizvodId);
+            ProizvodSkladiste ps = ctx.ProizvodSkladiste.Where(x => x.ProizvodId == p.Id).First();
+
+
+
+                //if (Popust == null)
+                //    Popust = 0;
+
+                //Korisnik k = HttpContext.GetLogiraniKorisnik();
+            User user = _userSession.User;
+                //Kupac kupacLogiran = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
+                Kupac kupacLogiran = ctx.Kupac.Where(x => x.Korisnik.KorisnickoIme == user.Username).FirstOrDefault();
+
+                if (kupacLogiran == null)
+                return RedirectToAction("Index", "Login");
+
+
+
+            Narudzba aktivna = null;// HttpContext.GetAktivnaNarudzba();
+            int aktivnaBr = ctx.Narudzba.Where(x => x.KupacId == kupacLogiran.Id && x.Aktivna == true).Count();
+            if (aktivnaBr > 0)
+                aktivna = ctx.Narudzba.Where(x => x.KupacId == kupacLogiran.Id && x.Aktivna == true).First();
+
+            
+                if (ps.Kolicina >= kol)
+                {
+                    if (aktivna == null)
+                    {
+                        //int brojNarudzbe = 1;
+                        if (ctx.Narudzba.Count() > 0)
+                        {
+                            broj = Convert.ToInt32(ctx.Narudzba.Last().BrojNarudzbe) + 1;
+                        }
+                       
+                        Narudzba n = new Narudzba
+                        {
+                            BrojNarudzbe = broj.ToString(),
+                            Datum = DateTime.Now,
+                            Status = true,
+                            Otkazano = false,
+                            Aktivna = true,
+                            KupacId = kupacLogiran.Id
+                        };
+                        ctx.Narudzba.Add(n);
+                        ctx.SaveChanges();
+
+                       // TempData["error_poruka"] = "Proizvod uspješno dodat!";
+
+                        NarudzbaStavka ns = new NarudzbaStavka
+                        {
+                            Kolicina = kol,
+                            ProizvodId = ProizvodId,
+                            NarudzbaId = n.Id,
+                            BojaId = BojaID,
+                            CijenaProizvoda = p.Cijena,
+                            //PopustNaCijenu = Popust ?? 0,
+                            TotalStavke=p.Cijena*kol
+                            //TotalStavke = (p.Cijena - (p.Cijena * (decimal)Popust / 100)) * kol
+                        };
+                        ctx.NarudzbaStavka.Add(ns);
+                        //broj++;
+                        ps.Kolicina -= kol;
+
+
+                        // HttpContext.SetAKtivnaNarudzba(n);
+                    }
+                    else
+                    {
+                        Narudzba n1 = ctx.Narudzba.Where(n => n.Id == aktivna.Id).First();
+                        bool postoji = false;
+
+                        foreach (var x in ctx.NarudzbaStavka.Where(x => x.NarudzbaId == n1.Id).ToList())
+                        {
+                            if (x.ProizvodId == ProizvodId && x.BojaId == BojaID)
+                            {
+                                NarudzbaStavka nsUpdate = ctx.NarudzbaStavka.Where(y => y.Id == x.Id).First();
+                                nsUpdate.Kolicina += kol;
+                                ctx.SaveChanges();
+                                ps.Kolicina -= kol;
+                                nsUpdate.TotalStavke = p.Cijena * nsUpdate.Kolicina;//(p.Cijena - (p.Cijena * (decimal)Popust / 100)) * nsUpdate.Kolicina;
+                                postoji = true;
+                            }
+                        }
+
+                        if (!postoji)
+                        {
+                            ctx.NarudzbaStavka.Add(new NarudzbaStavka
+                            {
+                                Kolicina = kol,
+                                ProizvodId = ProizvodId,
+                                NarudzbaId = n1.Id,
+                                BojaId = BojaID,
+                                CijenaProizvoda = p.Cijena,
+                                //PopustNaCijenu = Popust ?? 0,
+                                TotalStavke = p.Cijena*kol//(p.Cijena - (p.Cijena * (decimal)Popust / 100)) * kol
+                            });
+                            ps.Kolicina -= kol;
+                        }
+
+                    }
+                    ctx.SaveChanges();
+                    return RedirectToAction("Index", "NarudzbaStavke");
+                }
+                //return RedirectToAction("Index", "NarudzbaStavke");
+                return RedirectToAction("Detalji", new { @proizvodId = ProizvodId, @brojac = Brojac });
+
+            }
+            else
+            {
+                //TempData["error_poruka"] = "Prozvoda nema na stanju u datoj količini!";
+                return RedirectToAction("Detalji", new { @proizvodId = ProizvodId, @brojac = Brojac });
+            }
+        }
+
+
 
 
     }
