@@ -52,6 +52,7 @@ namespace eNamjestaj.Web.Controllers
             return View(model);
         }
 
+        
 
         [HttpPost]
         public IActionResult UploadProduct(ProizvodiDodajVM p)
@@ -138,6 +139,8 @@ namespace eNamjestaj.Web.Controllers
             }
         }
 
+
+
         [AcceptVerbs("Get", "Post")]
         public IActionResult VerifySifra(string Sifra, int ProizvodId)
         {
@@ -154,6 +157,34 @@ namespace eNamjestaj.Web.Controllers
             return Json(true);
 
 
+        }
+
+        public IActionResult Uredi(int id)
+        {
+            Proizvod p = ctx.Proizvod.Find(id);
+
+            ProizvodiUrediVM model = new ProizvodiUrediVM
+            {
+                ProizvodId = id,
+                Naziv = p.Naziv,
+                Sifra = p.Sifra,
+                Cijena = p.Cijena.ToString("0.00").Replace(",", "."),
+                VrstaID = p.VrstaProizvodaId,
+                Vrste = ctx.VrstaProizvoda.ToList(),
+                //Boje = ctx.Boja.Select(b => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {
+                //    Value = b.Id.ToString(), Text = b.Naziv
+                //}).ToList(),
+                BojeID = ctx.ProizvodBoja.Where(pb => pb.ProizvodId == id).Select(x => x.BojaId).ToArray(),
+                //Boje =new SelectList(ctx.Boja.Select(b => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                //{
+                //       Value = b.Id.ToString(), Text = b.Naziv
+                //    }).ToList() ),
+                Boje = new SelectList(ctx.Boja.ToList(), "Id", "Naziv"),
+                Slika = p.Slika
+
+            };
+
+            return View(model);
         }
 
     }

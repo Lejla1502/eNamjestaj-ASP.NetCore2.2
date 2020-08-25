@@ -229,7 +229,7 @@ namespace eNamjestaj.UnitTest
 
         [TestMethod]
         [DataRow(1,1)]
-        public void Test_VracaDetaljeProizvodaNaspramIDargumenta(int id, int brojac)
+        public void Test_Proizvodi_ActionDetalji_VracaDetaljeProizvodaNaspramIDargumenta(int id, int brojac)
         {
 
             //var mockUserSession = new Mock<IUserSession>();
@@ -447,6 +447,21 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual("Index", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
             Assert.AreEqual("Proizvodi", result.ControllerName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
+
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_ProizvodiMenadzer_EditAction_CheckIfItReturnsCorrectView(int id)
+        {
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
+           
+            ViewResult vr = pmc.Uredi(id) as ViewResult;
+
+            ProizvodiUrediVM aktuelniP =vr.Model as ProizvodiUrediVM;
+
+            Assert.AreEqual("NazivPr", aktuelniP.Naziv);
+
 
         }
     }

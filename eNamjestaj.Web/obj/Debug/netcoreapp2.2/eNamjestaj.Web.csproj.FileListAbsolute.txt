@@ -33,3 +33,4 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNa
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.csproj.CopyComplete
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.pdb
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\ProizvodiMenadzer\Uredi.g.cshtml.cs
