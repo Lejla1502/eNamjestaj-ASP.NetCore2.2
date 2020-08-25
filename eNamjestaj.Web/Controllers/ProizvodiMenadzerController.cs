@@ -187,5 +187,77 @@ namespace eNamjestaj.Web.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public IActionResult EditProductSave(ProizvodiUrediVM p)
+        {
+            if (ModelState.IsValid)
+            {
+                Proizvod x = ctx.Proizvod.Find(p.ProizvodId);
+                foreach (ProizvodBoja y in ctx.ProizvodBoja.Where(z => z.ProizvodId == p.ProizvodId).ToList())
+                {
+                    ctx.ProizvodBoja.Remove(y);
+                    ctx.SaveChanges();
+                }
+
+
+                IFormFile uploadedImage = p.UploadPic;
+                if (uploadedImage == null || p.UploadPic.Length == 0)
+                {
+                    x.Slika = p.Slika;
+                }
+
+                else
+                {
+                    MemoryStream ms = new MemoryStream();
+                    uploadedImage.OpenReadStream().CopyTo(ms);
+
+                    //System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+
+                    var webRoot = hostingEnvironment.WebRootPath;
+                    string location = "/images/Namjestaj/";
+
+                    if (!System.IO.Directory.Exists(webRoot + location))
+                    {
+                        System.IO.Directory.CreateDirectory(webRoot + location);
+                    }
+
+                    var path = Path.Combine(
+                              Directory.GetCurrentDirectory(), "wwwroot" + location,
+                              p.UploadPic.FileName);
+                    p.UploadPic.CopyTo(new FileStream(path, FileMode.Create));
+                    x.Slika = location + uploadedImage.FileName;
+                }
+
+                x.Cijena = decimal.Parse(p.Cijena);
+                x.Naziv = p.Naziv;
+                x.Sifra = p.Sifra;
+                //x.KorisnikId = HttpContext.GetLogiraniKorisnik().KupacId;
+                x.VrstaProizvodaId = p.VrstaID;
+
+
+                ctx.SaveChanges();
+
+
+                foreach (int b in p.BojeID)
+                {
+                    ProizvodBoja pb = new ProizvodBoja()
+                    {
+
+                        ProizvodId = x.Id,
+                        BojaId = b
+                    };
+
+                    ctx.ProizvodBoja.Add(pb);
+                }
+
+                ctx.SaveChanges();
+
+
+                return RedirectToAction("Index", "Proizvodi");
+            }
+            else
+                return BadRequest(ModelState);
+        }
+
     }
 }

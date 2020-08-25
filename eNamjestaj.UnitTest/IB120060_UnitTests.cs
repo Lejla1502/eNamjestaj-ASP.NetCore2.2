@@ -19,30 +19,30 @@ using System.Drawing.Imaging;
 
 namespace eNamjestaj.UnitTest
 {
-    
+
     [TestClass]
     public class IB120060_UnitTests
     {
-    //    [TestClass]
-    //    public class AutentifikacijaControllerTest
-    //    {
-    //        AutentifikacijaController ac = new AutentifikacijaController(_context);
+        //    [TestClass]
+        //    public class AutentifikacijaControllerTest
+        //    {
+        //        AutentifikacijaController ac = new AutentifikacijaController(_context);
 
-    //        [TestMethod]
-    //        public void IndexView_NotNull()
-    //        {
-    //            Assert.IsNotNull(ac.Index());
-    //        }
+        //        [TestMethod]
+        //        public void IndexView_NotNull()
+        //        {
+        //            Assert.IsNotNull(ac.Index());
+        //        }
 
 
-    //        [TestMethod]
-    //        public void LoginView_NotNull()
-    //        {
-    //            LoginVM obj = new LoginVM();
-    //            // ViewResult vr = ac.Login(obj) as ViewResult;
-    //            Assert.IsNotNull(ac.Login(obj));
-    //        }
-    //    }
+        //        [TestMethod]
+        //        public void LoginView_NotNull()
+        //        {
+        //            LoginVM obj = new LoginVM();
+        //            // ViewResult vr = ac.Login(obj) as ViewResult;
+        //            Assert.IsNotNull(ac.Login(obj));
+        //        }
+        //    }
 
 
         public MojContext CreateContextForInMemory()
@@ -68,7 +68,7 @@ namespace eNamjestaj.UnitTest
 
         public IB120060_UnitTests()
         {
-             _context = CreateContextForInMemory();
+            _context = CreateContextForInMemory();
 
             var drzava = new Drzava { Naziv = "..." };
             var kanton = new Kanton { Naziv = "...", Drzava = drzava };
@@ -85,12 +85,12 @@ namespace eNamjestaj.UnitTest
 
             var kupac = new Kupac
             {
-                Ime="...",
-                Prezime="...",
-                Email="...",
-                Adresa="...",
-                Spol="..",
-                Korisnik=korisnik
+                Ime = "...",
+                Prezime = "...",
+                Email = "...",
+                Adresa = "...",
+                Spol = "..",
+                Korisnik = korisnik
 
             };
 
@@ -108,32 +108,32 @@ namespace eNamjestaj.UnitTest
 
             var skladiste = new Skladiste
             {
-                Naziv="Skladiste",
-                Opis="Opis",
-                Adresa="Adresa",
-                Korisnik=korisnik
+                Naziv = "Skladiste",
+                Opis = "Opis",
+                Adresa = "Adresa",
+                Korisnik = korisnik
 
             };
 
             var proizvodSkladiste = new ProizvodSkladiste
             {
-                Proizvod=proizvod,
-                Skladiste=skladiste,
-                Kolicina=100
+                Proizvod = proizvod,
+                Skladiste = skladiste,
+                Kolicina = 100
             };
 
             var boja = new Boja
             {
-                Naziv=".."
+                Naziv = ".."
             };
 
             var proizvodBoja = new ProizvodBoja
             {
-                Proizvod=proizvod,
-                Boja=boja
+                Proizvod = proizvod,
+                Boja = boja
             };
 
-            _context.AddRange(drzava, kanton, opstina, uloga, korisnik,kupac, vrstaProizvoda, proizvod, skladiste,
+            _context.AddRange(drzava, kanton, opstina, uloga, korisnik, kupac, vrstaProizvoda, proizvod, skladiste,
                 proizvodSkladiste, boja, proizvodBoja);
             _context.SaveChanges();
         }
@@ -169,7 +169,7 @@ namespace eNamjestaj.UnitTest
         //Na lokalnoj bazi ID-evi se krecu od 17-35
         //a na app.fit.ba od 1 do 16
 
-       
+
 
 
         Random random = new Random();
@@ -186,17 +186,17 @@ namespace eNamjestaj.UnitTest
             byte[] dummy = System.Text.Encoding.UTF8.GetBytes(sessionValue);
             mockSession.Setup(x => x.TryGetValue(It.IsAny<string>(), out dummy)).Returns(true); //the out dummy does the trick
             mockContext.Setup(s => s.Session).Returns(mockSession.Object);
-            
+
             return mockContext.Object;
-            
+
 
         }
 
-       
+
 
         [TestMethod]
-        [DataRow(null,null)]
-        [DataRow(1,1)]
+        [DataRow(null, null)]
+        [DataRow(1, 1)]
         public void Test_ListaProizvoda(int? vrstaID, int? bojaID)
         {
             List<Proizvod> ocekivani = new List<Proizvod>();
@@ -222,13 +222,13 @@ namespace eNamjestaj.UnitTest
             ViewResult vr = pc.Index(vrstaID, bojaID) as ViewResult;
             ProizvodiIndexVM aktuelni = vr.Model as ProizvodiIndexVM;
             //List<Proizvod> aProizvodi = new List<Proizvod>();
-            
-            
+
+
             Assert.AreEqual(ocekivani.Count, aktuelni.Proizvodi.Count);
-          }
+        }
 
         [TestMethod]
-        [DataRow(1,1)]
+        [DataRow(1, 1)]
         public void Test_Proizvodi_ActionDetalji_VracaDetaljeProizvodaNaspramIDargumenta(int id, int brojac)
         {
 
@@ -242,13 +242,13 @@ namespace eNamjestaj.UnitTest
                 HttpContext = GetMockedHttpContext()
             };
             ViewResult vr = pc.Detalji(id, brojac) as ViewResult;
-            
+
             ProizvodiDetaljiVM aktuelniP = vr.Model as ProizvodiDetaljiVM;
 
             Assert.AreEqual("NazivPr", aktuelniP.Naziv);
 
 
-            }
+        }
 
         [TestMethod]
         public void Test_ProizvodiController_ProvjeraKolicine_ModelStateNotValid_CheckIfItRedirectsToActionDetalji()
@@ -256,7 +256,7 @@ namespace eNamjestaj.UnitTest
             int proizvodId = _context.Proizvod.Select(p => p.Id).First(); //listaProizvodIDs[random.Next(listaProizvodIDs.Count-1)];
             int brojac = _context.ProizvodBoja.Where(p => p.ProizvodId == proizvodId).Count();
             int bojaID = _context.Boja.Select(b => b.Id).First();
-            
+
             GetMockedHttpContext();
             ProizvodiController pc = new ProizvodiController(_context);
             pc.ControllerContext = new ControllerContext()
@@ -264,14 +264,14 @@ namespace eNamjestaj.UnitTest
 
                 HttpContext = GetMockedHttpContext()
             };
-            pc.ModelState.AddModelError("kol","Required");
-            
+            pc.ModelState.AddModelError("kol", "Required");
+
             var result = (RedirectToActionResult)pc.ProvjeraKolicine(proizvodId, 110, bojaID, brojac, null);
-            
+
             Assert.AreEqual("Detalji", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
         }
 
-       
+
 
         //private const string LogiraniKorisnik = "logirani_korisnik";
 
@@ -279,7 +279,7 @@ namespace eNamjestaj.UnitTest
         [TestMethod]
         public void Test_ProizvodiController_ProvjeraKolicine_ModelStateValid_CheckIfItRedirectsToActionDetalji()
         {
-             int proizvodId = _context.Proizvod.Select(p => p.Id).First(); //listaProizvodIDs[random.Next(listaProizvodIDs.Count-1)];
+            int proizvodId = _context.Proizvod.Select(p => p.Id).First(); //listaProizvodIDs[random.Next(listaProizvodIDs.Count-1)];
             int brojac = _context.ProizvodBoja.Where(p => p.ProizvodId == proizvodId).Count();
             int bojaID = _context.Boja.Select(b => b.Id).First();
 
@@ -290,7 +290,7 @@ namespace eNamjestaj.UnitTest
 
                 HttpContext = GetMockedHttpContext()
             };
-            var result = (RedirectToActionResult)pc.ProvjeraKolicine(proizvodId, 110,bojaID ,brojac, null);
+            var result = (RedirectToActionResult)pc.ProvjeraKolicine(proizvodId, 110, bojaID, brojac, null);
             Assert.AreEqual("Detalji", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
 
         }
@@ -309,7 +309,7 @@ namespace eNamjestaj.UnitTest
 
                 HttpContext = GetMockedHttpContext()
             };
-            
+
             var result = (RedirectToActionResult)pc.ProvjeraKolicine(proizvodId, 2, bojaID, brojac, null);
 
 
@@ -318,13 +318,13 @@ namespace eNamjestaj.UnitTest
 
         }
 
-       
+
 
         [TestMethod]
         public void Test_ProizvodiMenadzer_AkicjaDodaj_ViewNotNull_VracaIspravanModel()
         {
             GetMockedHttpContext();
-             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment,_context );
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
             pmc.ControllerContext = new ControllerContext()
             {
 
@@ -356,7 +356,7 @@ namespace eNamjestaj.UnitTest
             pmc.ModelState.AddModelError("VrstaID", "Required");
             pmc.ModelState.AddModelError("BojaID", "Required");
             pmc.ModelState.AddModelError("UploadPic", "Required");
-            
+
 
             var result = pmc.UploadProduct(new ProizvodiDodajVM());
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
@@ -370,7 +370,7 @@ namespace eNamjestaj.UnitTest
             mockEnvironment
                 .Setup(m => m.EnvironmentName)
                 .Returns("Hosting:UnitTestEnvironment");
-            
+
             GetMockedHttpContext();
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(mockEnvironment.Object, _context);
             pmc.ControllerContext = new ControllerContext()
@@ -379,17 +379,18 @@ namespace eNamjestaj.UnitTest
                 HttpContext = GetMockedHttpContext()
             };
 
-            ProizvodiDodajVM newPr = new ProizvodiDodajVM {
-                Naziv="...",
-                Sifra="...",
-                Cijena="...",
-                VrstaID=1,
+            ProizvodiDodajVM newPr = new ProizvodiDodajVM
+            {
+                Naziv = "...",
+                Sifra = "...",
+                Cijena = "...",
+                VrstaID = 1,
                 BojeID = { },
-                Slika="",
-                UploadPic=null
+                Slika = "",
+                UploadPic = null
             };
 
-            var result=(RedirectToActionResult) pmc.UploadProduct(newPr);
+            var result = (RedirectToActionResult)pmc.UploadProduct(newPr);
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("Dodaj", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
 
@@ -403,9 +404,7 @@ namespace eNamjestaj.UnitTest
             mockEnvironment
                 .Setup(m => m.EnvironmentName)
                 .Returns("Hosting:UnitTestEnvironment");
-           // mockEnvironment.Setup(m => m.WebRootPath).Returns("@C:\\Users\\User\\source\\repos\\eNamjestaj.UnitTest");
 
-            GetMockedHttpContext();
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(mockEnvironment.Object, _context);
             pmc.ControllerContext = new ControllerContext()
             {
@@ -413,7 +412,7 @@ namespace eNamjestaj.UnitTest
                 HttpContext = GetMockedHttpContext()
             };
 
-            
+
             var fileMock = new Mock<IFormFile>();
             //Setup mock file using a memory stream
             var physicalFile = new FileInfo(@"C:\Users\User\Desktop\Namjestaj\garderoba-ph120-313799.jpg");
@@ -423,15 +422,15 @@ namespace eNamjestaj.UnitTest
             writer.Write(physicalFile.OpenRead());
             writer.Flush();
             ms.Position = 0;
-           fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
             fileMock.Setup(_ => _.FileName).Returns(fileName);
             fileMock.Setup(_ => _.Length).Returns(ms.Length);
-           
+
             fileMock.Verify();
-           
+
             var file = fileMock.Object;
 
-            int[] temp = { 1,2};
+            int[] temp = { 1, 2 };
             ProizvodiDodajVM newPr = new ProizvodiDodajVM
             {
                 Naziv = "Proizvod123",
@@ -455,16 +454,93 @@ namespace eNamjestaj.UnitTest
         public void Test_ProizvodiMenadzer_EditAction_CheckIfItReturnsCorrectView(int id)
         {
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
-           
+
             ViewResult vr = pmc.Uredi(id) as ViewResult;
 
-            ProizvodiUrediVM aktuelniP =vr.Model as ProizvodiUrediVM;
+            ProizvodiUrediVM aktuelniP = vr.Model as ProizvodiUrediVM;
 
             Assert.AreEqual("NazivPr", aktuelniP.Naziv);
 
 
         }
+
+        [TestMethod]
+        public void Test_ProizvodiMenadzer_EditProductSave_ModelStateValid_RedirectsToActionIdex_ControllerProizvodi()
+        {
+            var mockEnvironment = new Mock<IHostingEnvironment>();
+            //...Setup the mock as needed
+            mockEnvironment
+                .Setup(m => m.EnvironmentName)
+                .Returns("Hosting:UnitTestEnvironment");
+            // mockEnvironment.Setup(m => m.WebRootPath).Returns("@C:\\Users\\User\\source\\repos\\eNamjestaj.UnitTest");
+
+            GetMockedHttpContext();
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(mockEnvironment.Object, _context);
+            pmc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+
+
+            var fileMock = new Mock<IFormFile>();
+            //Setup mock file using a memory stream
+            var physicalFile = new FileInfo(@"C:\Users\User\Desktop\Namjestaj\garderoba-ph120-313799.jpg");
+            var fileName = physicalFile.Name;
+            var ms = new MemoryStream();
+            var writer = new StreamWriter(ms);
+            writer.Write(physicalFile.OpenRead());
+            writer.Flush();
+            ms.Position = 0;
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            fileMock.Setup(_ => _.FileName).Returns(fileName);
+            fileMock.Setup(_ => _.Length).Returns(ms.Length);
+
+            fileMock.Verify();
+
+            var file = fileMock.Object;
+
+            int[] temp = { 1, 2 };
+            ProizvodiUrediVM newPr = new ProizvodiUrediVM
+            {
+                ProizvodId=1,
+                Naziv = "Proizvod123",
+                Sifra = "11111",
+                Cijena = "111.11",
+                VrstaID = 1,
+                BojeID = temp,
+                Slika = "defaultString",
+                UploadPic = file
+            };
+
+            var result = (RedirectToActionResult)pmc.EditProductSave(newPr);
+
+            Assert.AreEqual("Index", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
+            Assert.AreEqual("Proizvodi", result.ControllerName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
+
+        }
+
+        [TestMethod]
+        public void Test_ProizvodiMenadzer_EditProductSave_ModelStateNotValid_ReturnsBadRequest()
+        {
+            GetMockedHttpContext();
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
+            pmc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            pmc.ModelState.AddModelError("Naziv", "Required");
+            pmc.ModelState.AddModelError("Sifra", "Required");
+            pmc.ModelState.AddModelError("Cijena", "Required");
+            pmc.ModelState.AddModelError("VrstaID", "Required");
+            pmc.ModelState.AddModelError("BojaID", "Required");
+           
+
+            var result = pmc.EditProductSave(new ProizvodiUrediVM());
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+
+        }
+
     }
-
-
 }
