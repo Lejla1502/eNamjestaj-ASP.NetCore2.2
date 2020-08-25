@@ -11,6 +11,7 @@ namespace eNamjestaj.Web.Controllers
 {
     public class HomeController : Controller
     {
+
         public IActionResult Index()
         {
             if (HttpContext.GetLogiraniKorisnik() == null)

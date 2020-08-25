@@ -12,8 +12,14 @@ namespace eNamjestaj.Web.Controllers
 {
     public class AutentifikacijaController : Controller
     {
-        MojContext ctx = new MojContext();
+        //MojContext ctx = new MojContext();
 
+        private MojContext ctx;
+
+        public AutentifikacijaController(MojContext context)
+        {
+            ctx = context;
+        }
 
         public IActionResult Index()
         {

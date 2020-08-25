@@ -1,0 +1,160 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using eNamjestaj.Data;
+using eNamjestaj.Data.Helper;
+using eNamjestaj.Data.Models;
+using eNamjestaj.Web.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace eNamjestaj.Web.Controllers
+{
+    public class ProizvodiMenadzerController : Controller
+    {
+       private  MojContext ctx ;
+
+        private readonly IHostingEnvironment hostingEnvironment;
+        public ProizvodiMenadzerController(IHostingEnvironment environment, MojContext context)
+        {
+            hostingEnvironment = environment;
+            ctx = context;
+        }
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Dodaj()
+        {
+            Korisnik korisnik = HttpContext.GetLogiraniKorisnik();
+
+            if (korisnik == null)
+            {
+                //TempData["error_poruka"] = "Nemate pravo pristupa";
+                return RedirectToAction("Index", "Autentifikacija");
+            }
+            ProizvodiDodajVM model = new ProizvodiDodajVM
+            {
+                Vrste = ctx.VrstaProizvoda.ToList(),
+                //Boje = ctx.Boja.Select(x => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                //{
+                //    Value = x.Id.ToString(),
+                //    Text = x.Naziv
+                //}).ToList(),
+                Boje = new SelectList(ctx.Boja.ToList(), "Id", "Naziv")
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public IActionResult UploadProduct(ProizvodiDodajVM p)
+        {
+            if (ModelState.IsValid)
+            {
+                Proizvod x = new Proizvod();
+
+
+                //FileUpload fu = new FileUpload();
+                //fu = p.FileUpl;
+                IFormFile uploadedImage = p.UploadPic;
+                if (uploadedImage == null || p.UploadPic.Length == 0)
+                    return RedirectToAction("Dodaj");
+
+
+                MemoryStream ms = new MemoryStream();
+                uploadedImage.OpenReadStream().CopyTo(ms);
+
+               // System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+
+                //string pathDir = "C:/Users/Lejla/Desktop/Slike namjestaj/";
+
+                //var uploads = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                //var fullPath = Path.Combine(uploads, p.UploadPic.FileName);
+
+                var webRoot = hostingEnvironment.WebRootPath;
+                string location = "/images/Namjestaj/";
+
+                if (!System.IO.Directory.Exists(webRoot + location))
+                {
+                    System.IO.Directory.CreateDirectory(webRoot + location);
+                }
+
+                var path = Path.Combine(
+                          Directory.GetCurrentDirectory(), "wwwroot" + location,
+                          p.UploadPic.FileName);
+                p.UploadPic.CopyTo(new FileStream(path, FileMode.Create));
+
+                //x.Cijena = decimal.Parse(p.Cijena.Replace('.', ','));
+                x.Cijena = decimal.Parse(p.Cijena);
+                x.Naziv = p.Naziv;
+                x.Sifra = p.Sifra;
+
+                Korisnik k = HttpContext.GetLogiraniKorisnik();
+                x.KorisnikId = HttpContext.GetLogiraniKorisnik().Id;
+                x.VrstaProizvodaId = p.VrstaID;
+                x.Slika = location + uploadedImage.FileName;
+
+                ctx.Proizvod.Add(x);
+
+                ctx.SaveChanges();
+
+
+
+
+                foreach (int b in p.BojeID)
+                {
+                    ProizvodBoja pb = new ProizvodBoja()
+                    {
+                        ProizvodId = x.Id,
+                        BojaId = b
+                    };
+
+                    ctx.ProizvodBoja.Add(pb);
+                }
+
+                //ProizvodBoja pb = new ProizvodBoja()
+                //{
+                //    ProizvodId = np.Id,
+                //    BojaId = p.BojaID
+                //};
+
+                //ctx.ProizvodBoja.Add(pb);
+                ctx.SaveChanges();
+
+
+                return RedirectToAction("Index", "Proizvodi");
+            }
+            else
+            {
+
+                return BadRequest(ModelState);
+            }
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult VerifySifra(string Sifra, int ProizvodId)
+        {
+            if (ProizvodId == 0)
+            {
+                List<Proizvod> proizvodi = ctx.Proizvod.ToList();
+                foreach (Proizvod p in proizvodi)
+                {
+                    if (p.Sifra.Equals(Sifra))
+                        return Json($"Sifra {Sifra} vec postoji.");
+                }
+
+            }
+            return Json(true);
+
+
+        }
+
+    }
+}

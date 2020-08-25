@@ -13,23 +13,23 @@ namespace eNamjestaj.Web.Controllers
 {
     public class NarudzbaStavkeController : Controller
     {
-        MojContext ctx = new MojContext();
+        private MojContext ctx ;
 
-        private readonly IUserSession _userSession;
+        
 
-        public NarudzbaStavkeController(IUserSession userSession)
+        public NarudzbaStavkeController(MojContext  context)
         {
-            _userSession = userSession;
+            ctx=context;
         }
         public IActionResult Index()
         {
         //KupacLoginVM k = null; //HttpContext.GetLogiraniKorisnik();
                 //AktivnaNarudzba n = HttpContext.GetAktivnaNarudzba();
                 
-            //Korisnik k = HttpContext.GetLogiraniKorisnik();
-            User user = _userSession.User;
-            //Kupac kupac = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
-            Kupac kupac = ctx.Kupac.Where(x => x.Korisnik.KorisnickoIme == user.Username).FirstOrDefault();
+            Korisnik k = HttpContext.GetLogiraniKorisnik();
+            //User user = _userSession.User;
+            Kupac kupac = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
+            //Kupac kupac = ctx.Kupac.Where(x => x.Korisnik.KorisnickoIme == user.Username).FirstOrDefault();
 
             int brojAktivnihNarudzbi = ctx.Narudzba.Where(x => x.KupacId == kupac.Id && x.Aktivna == true).Count();
 

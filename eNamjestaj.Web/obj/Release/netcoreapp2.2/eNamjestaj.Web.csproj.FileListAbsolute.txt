@@ -32,3 +32,4 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\e
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\eNamjestaj.Web.pdb
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Views\Proizvodi\Detalji.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Views\NarudzbaStavke\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Views\ProizvodiMenadzer\Dodaj.g.cshtml.cs

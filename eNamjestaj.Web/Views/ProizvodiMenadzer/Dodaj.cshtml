@@ -1,0 +1,83 @@
+﻿@model eNamjestaj.Web.ViewModels.ProizvodiDodajVM
+@{
+    ViewData["Title"] = "Dodaj";
+}
+
+<h2>Dodaj proizvod</h2>
+<form id="dodajNoviProizvod" asp-action="UploadProduct" asp-controller="ProizvodiMenadzer"  method="post" enctype="multipart/form-data">
+    <input type="hidden" value="@Model.ProizvodId" name="ProizvodId" id="prID" />
+    <input type="hidden" value="@Model.Slika" name="Slika" id="mdlSlika1" />
+    <div class="form-group">
+        <label>Naziv: </label>
+        <div>
+            <input asp-for="Naziv" class="form-control" />
+            <span asp-validation-for="Naziv" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Sifra: </label>
+        <div>
+            @if (Model.ProizvodId == 0)
+            {<input asp-for="Sifra" class="form-control" />
+                <span asp-validation-for="Sifra" class="text-danger"></span>}
+            else
+            {
+                <input asp-for="Sifra" class="form-control" readonly />
+
+
+            }
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Cijena: </label>
+        <div>
+            <input asp-for="Cijena" class="form-control" />
+            <span asp-validation-for="Cijena" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Vrsta: </label>
+
+        <div>
+            <select asp-for="VrstaID" asp-items="@{new SelectList(Model.Vrste,"Id","Naziv")}">
+                <option value=""></option>
+            </select>
+
+            <span asp-validation-for="VrstaID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Boja: </label>
+
+        <div>
+
+            @Html.ListBoxFor(m => m.BojeID, Model.Boje, new { @class = "form-control e1", @multiple = "multiple" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.BojeID)</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UploadPic"></label>
+
+        <input type=file asp-for="UploadPic" class="form-control " />
+        <span asp-validation-for="UploadPic" class="text-danger"></span>
+    </div>
+
+    <br />
+
+    @if (Model.ProizvodId != 0)
+    {
+        <div class="form-group">
+            <img src="@Model.Slika" class="img-thumbnail" asp-append-version="true" style="width:250px;height:250px;margin-right:auto;display:block;" />
+        </div>}
+
+    <br />
+    <br />
+    <input id="submitButton" type="submit" value="Snimi" class="btn btn-primary" />
+
+</form>

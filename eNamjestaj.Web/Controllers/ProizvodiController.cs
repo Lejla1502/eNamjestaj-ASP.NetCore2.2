@@ -13,15 +13,15 @@ namespace eNamjestaj.Web.Controllers
 {
     public class ProizvodiController : Controller
     {
-        MojContext ctx = new MojContext();
+        //MojContext ctx = new MojContext();
 
-        //private MojContext ctx;
+        private MojContext ctx;
 
-        private readonly IUserSession _userSession;
+        //private readonly IUserSession _userSession;
 
-        public ProizvodiController(IUserSession userSession)
+        public ProizvodiController(MojContext context)
         {
-            _userSession = userSession;
+            ctx=context;
         }
 
         int broj = 1;
@@ -125,10 +125,10 @@ namespace eNamjestaj.Web.Controllers
                 //if (Popust == null)
                 //    Popust = 0;
 
-                //Korisnik k = HttpContext.GetLogiraniKorisnik();
-            User user = _userSession.User;
-                //Kupac kupacLogiran = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
-                Kupac kupacLogiran = ctx.Kupac.Where(x => x.Korisnik.KorisnickoIme == user.Username).FirstOrDefault();
+                Korisnik k = HttpContext.GetLogiraniKorisnik();
+            //User user = _userSession.User;
+                Kupac kupacLogiran = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
+                //Kupac kupacLogiran = ctx.Kupac.Where(x => x.Korisnik.KorisnickoIme == user.Username).FirstOrDefault();
 
                 if (kupacLogiran == null)
                 return RedirectToAction("Index", "Login");

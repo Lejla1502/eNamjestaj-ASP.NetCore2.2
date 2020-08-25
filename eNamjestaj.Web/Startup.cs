@@ -39,8 +39,8 @@ namespace eNamjestaj.Web
             services.AddDistributedMemoryCache();
             services.AddSession();
             //services.AddHttpContextAccessor();
-            services.AddScoped<IUserSession, UserSession>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddScoped<IUserSession, UserSession>();
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
            // services.AddScoped<TestManager>();
 
         }
