@@ -1,0 +1,101 @@
+﻿@model eNamjestaj.Web.ViewModels.DostavaIndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form ajax-poziv="da" ajax-url="/Narudzbe/Zakljuci/" ajax-area="">
+
+    <br />
+    <br />
+    <h1>Opcije dostave</h1>
+    <br />
+    <input id="narudzbaID" type="hidden" name="NarudzbaID" value="@Model.NarudzbaID" />@*<input type="hidden" name="Total" value="@Model.Total" />*@
+
+    @foreach (var x in Model.Dostave)
+    {
+
+        <div>
+            <input id="idRadio" type="hidden" value="@x.Id" />
+            <input id="radioId" type="radio" name="dostava" value="@x.Id" cijena="@x.Cijena" /> @x.Tip
+            <span asp-validation-for="@x.Id"></span><br />
+            <p id="price" value="@x.Cijena">@x.Cijena</p>
+            <p>@x.Opis </p>
+        </div>
+
+    }
+
+    <br />
+    <br />
+    @*<a href="/Narudzbe/Zakljuci?narudzbaId=@Model.NarudzbaID&total= @Model.Total&dostava=" type="submit"  class="btn btn-primary" style="float:right">Zakljuci narudzbu</a>*@
+    UKUPNO:
+    <div id="totalDiv" value="@Model.Total"> @Model.Total KM</div>
+    <br />
+    <input type="submit" class="btn btn-primary" value="Zaključi narudžbu" />
+    <br />
+
+</form>
+
+<script>
+    $("input:radio[name=dostava]").on('change', function () {
+        var valtotal = $("#totalDiv").attr('value');
+        var totalString = valtotal.toString();
+
+        var valDostava = $('input[name=dostava]:checked').attr('cijena'); //$("#radioId").attr('cijena');
+        var cijenaDouble = parseFloat(valDostava);
+
+        var a = parseFloat($('#totalDiv').attr('value').toString());
+        var b = parseFloat($('input[name=dostava]:checked').attr('cijena')).toFixed(2);
+
+        var iNum = parseFloat(a) + parseFloat(b);
+        var numFloat = parseFloat(iNum).toFixed(2);
+        var stringNew = numFloat.toString();
+
+
+
+        if ($('input[name=dostava]:checked').val() > 0) {
+
+            {
+                $("#totalDiv").text(stringNew + " KM");
+            }
+
+        }
+    });
+    $(document).ready(function () {
+        $("form[ajax-poziv='da']").submit(function (event) {
+            $(this).attr("ajax-poziv", "dodan");
+            event.preventDefault();
+            var urlZaPoziv1 = $(this).attr("ajax-url");
+
+            var form = $(this);
+            var val = $('input[name=dostava]:checked').val();
+
+            var narudzbaID = $("#narudzbaID").attr('value');
+
+            var total = $("#totalDiv").attr('value');
+
+            var formData = form.serialize();
+
+            if (val > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: urlZaPoziv1 + "?narudzbaID=" + narudzbaID + "&dostava=" + val + "&total=" + total,
+                    data: form.serialize(),
+                    success: function (result) {
+                        $('form').html(result);
+                    }
+                });
+            }
+            else {
+                alert("Morate odabrati način dostave");
+            }
+
+        });
+    });
+
+
+
+</script>
+
+
+
+

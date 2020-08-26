@@ -133,8 +133,37 @@ namespace eNamjestaj.UnitTest
                 Boja = boja
             };
 
+            var dostava = new Dostava
+            {
+                Tip="...",
+                Cijena=10,
+                Opis="..."
+            };
+
+            var narudzba = new Narudzba
+            {
+                BrojNarudzbe = "....",
+                Datum = DateTime.Now,
+                Status = false,
+                Aktivna = false,
+                Otkazano = false,
+                NaCekanju = false,
+                Kupac=kupac
+            };
+
+            var narudzbaStavka = new NarudzbaStavka
+            {
+                Kolicina = 3,
+                ProizvodId = 1,
+                Narudzba = narudzba,
+                BojaId = 1,
+                CijenaProizvoda = 1230,
+                PopustNaCijenu = 10,
+                TotalStavke = 1000
+            };
+
             _context.AddRange(drzava, kanton, opstina, uloga, korisnik, kupac, vrstaProizvoda, proizvod, skladiste,
-                proizvodSkladiste, boja, proizvodBoja);
+                proizvodSkladiste, boja, proizvodBoja, dostava, narudzba, narudzbaStavka);
             _context.SaveChanges();
         }
 
@@ -554,20 +583,11 @@ namespace eNamjestaj.UnitTest
                 HttpContext = GetMockedHttpContext()
             };
 
-            var narudzba = new Narudzba
-            {
-                BrojNarudzbe="....",
-                Datum=DateTime.Now,
-                Status=false,
-                Aktivna=true,
-                Otkazano=false,
-                NaCekanju=false,
-                KupacId=1
-            };
 
-            _context.Add(narudzba);
-            _context.SaveChanges();
-
+            _context.Narudzba.First().Aktivna = true;
+            _context.SaveChanges(); 
+        
+            
             ViewResult result = ns.Index() as ViewResult;
             NarudzbaStavkeIndexVM model = result.Model as NarudzbaStavkeIndexVM;
             Assert.AreEqual(1,model.proizvodiNarudzbe.Count);
@@ -584,20 +604,7 @@ namespace eNamjestaj.UnitTest
 
                 HttpContext = GetMockedHttpContext()
             };
-
-            var narudzba = new Narudzba
-            {
-                BrojNarudzbe = "....",
-                Datum = DateTime.Now,
-                Status = false,
-                Aktivna = false,
-                Otkazano = false,
-                NaCekanju = false,
-                KupacId = 1
-            };
-
-            _context.Add(narudzba);
-            _context.SaveChanges();
+            
 
             ViewResult result = ns.Index() as ViewResult;
             Assert.IsNull(result.Model);
@@ -611,39 +618,26 @@ namespace eNamjestaj.UnitTest
             GetMockedHttpContext();
             NarudzbaStavkeController ns = new NarudzbaStavkeController(_context);
 
-            var narudzba = new Narudzba
-            {
-                BrojNarudzbe = "....",
-                Datum = DateTime.Now,
-                Status = false,
-                Aktivna = true,
-                Otkazano = false,
-                NaCekanju = false,
-                KupacId = 1
-            };
-
-            _context.Add(narudzba);
-            _context.SaveChanges();
-
-            var narudzbaStavka = new NarudzbaStavka
-            {
-                Kolicina=3,
-                ProizvodId=1,
-                Narudzba=narudzba,
-                BojaId=1,
-                CijenaProizvoda=1230,
-                PopustNaCijenu=10,
-                TotalStavke=1000
-            };
-
-            _context.Add(narudzbaStavka);
-            _context.SaveChanges();
-
-            var result = (RedirectToActionResult)ns.Obrisi(id, narudzbaId);
+           var result = (RedirectToActionResult)ns.Obrisi(id, narudzbaId);
 
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("NarudzbaStavke", result.ControllerName);
             Assert.AreEqual(0, _context.Narudzba.ToList().Count);
         }
+
+
+
+        [TestMethod]
+        [DataRow(1,"100")]
+        public void Test_Dostava_IndexAkcija_ProvjeraDaLiProsljedjujeIspravanModelNaView(int narudzbaId, string total)
+        {
+            DostavaController dc = new DostavaController(_context);
+            ViewResult result = dc.Index(narudzbaId, total) as ViewResult;
+            DostavaIndexVM model = result.Model as DostavaIndexVM;
+
+            Assert.AreEqual(1,model.Dostave.Count);
+        }
     }
+
+
 }

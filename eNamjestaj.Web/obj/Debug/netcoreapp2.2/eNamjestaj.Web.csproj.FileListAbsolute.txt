@@ -17,6 +17,7 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNa
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.TagHelpers.output.cache
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.RazorCoreGenerate.cache
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Autentifikacija\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Dostava\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\NarudzbaStavke\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\ProizvodiMenadzer\Dodaj.g.cshtml.cs
