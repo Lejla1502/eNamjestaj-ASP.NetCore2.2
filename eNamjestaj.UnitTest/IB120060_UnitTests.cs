@@ -541,6 +541,109 @@ namespace eNamjestaj.UnitTest
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
 
         }
+        
 
+        [TestMethod]
+        public void Test_NarudzbaStavke_IndexAkcijaNotNull_CheckIfITreturnsCorrectModel()
+        {
+            GetMockedHttpContext();
+            NarudzbaStavkeController ns = new NarudzbaStavkeController( _context);
+            ns.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+
+            var narudzba = new Narudzba
+            {
+                BrojNarudzbe="....",
+                Datum=DateTime.Now,
+                Status=false,
+                Aktivna=true,
+                Otkazano=false,
+                NaCekanju=false,
+                KupacId=1
+            };
+
+            _context.Add(narudzba);
+            _context.SaveChanges();
+
+            ViewResult result = ns.Index() as ViewResult;
+            NarudzbaStavkeIndexVM model = result.Model as NarudzbaStavkeIndexVM;
+            Assert.AreEqual(1,model.proizvodiNarudzbe.Count);
+
+        }
+
+        [TestMethod]
+        public void Test_NarudzbaStavke_IndexAkcija_ReturnsNullInView()
+        {
+            GetMockedHttpContext();
+            NarudzbaStavkeController ns = new NarudzbaStavkeController(_context);
+            ns.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+
+            var narudzba = new Narudzba
+            {
+                BrojNarudzbe = "....",
+                Datum = DateTime.Now,
+                Status = false,
+                Aktivna = false,
+                Otkazano = false,
+                NaCekanju = false,
+                KupacId = 1
+            };
+
+            _context.Add(narudzba);
+            _context.SaveChanges();
+
+            ViewResult result = ns.Index() as ViewResult;
+            Assert.IsNull(result.Model);
+
+        }
+
+        [TestMethod]
+        [DataRow(1,1)]
+        public void Test_NarudzbaStavke_ObrisiAkcija_RedirectsToIndex(int id, int narudzbaId)
+        {
+            GetMockedHttpContext();
+            NarudzbaStavkeController ns = new NarudzbaStavkeController(_context);
+
+            var narudzba = new Narudzba
+            {
+                BrojNarudzbe = "....",
+                Datum = DateTime.Now,
+                Status = false,
+                Aktivna = true,
+                Otkazano = false,
+                NaCekanju = false,
+                KupacId = 1
+            };
+
+            _context.Add(narudzba);
+            _context.SaveChanges();
+
+            var narudzbaStavka = new NarudzbaStavka
+            {
+                Kolicina=3,
+                ProizvodId=1,
+                Narudzba=narudzba,
+                BojaId=1,
+                CijenaProizvoda=1230,
+                PopustNaCijenu=10,
+                TotalStavke=1000
+            };
+
+            _context.Add(narudzbaStavka);
+            _context.SaveChanges();
+
+            var result = (RedirectToActionResult)ns.Obrisi(id, narudzbaId);
+
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("NarudzbaStavke", result.ControllerName);
+            Assert.AreEqual(0, _context.Narudzba.ToList().Count);
+        }
     }
 }

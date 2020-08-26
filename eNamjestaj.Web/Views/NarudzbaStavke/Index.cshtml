@@ -38,7 +38,7 @@
                     <td>@x.KonacnaCijena</td>
                     <td>@x.Kolicina</td>
                     <td>@x.Total</td>
-                    <td><a href="/ModulKupac/NarudzbaStavke/Obrisi?id=@x.NarudzbastavkaID&&narudzbaID=@Model.NarudzbaID" class="btn btn-danger">Obriši</a></td>
+                    <td><a href="/NarudzbaStavke/Obrisi?id=@x.NarudzbastavkaID&&narudzbaID=@Model.NarudzbaID" class="btn btn-danger">Obriši</a></td>
                 </tr>
             }
         </tbody>
@@ -48,14 +48,40 @@
     <div>TOTAL: </div>
     <div>@Model.SumTotal KM</div>
     <br />
-    <a href="/ModulKupac/Proizvodi/Index" style="text-align:left">Back to shopping</a>
+    <a href="/Proizvodi/Index" style="text-align:left">Back to shopping</a>
     @*<button id="submitBtn" ajax-poziv="da" ajax-rezultat="ajaxDiv" ajax-url="/Dostava/Index?narudzbaId=@Model.NarudzbaID&total=@Model.SumTotal" class="btn btn-primary" style="float:right">Način dostave</button>*@
 
-    <a href="/ModulKupac/Dostava/Index?narudzbaId=@Model.NarudzbaID&total=@Model.SumTotal" class="btn btn-primary" style="float:right">
-  Način dostave
+    <a href="/Dostava/Index?narudzbaId=@Model.NarudzbaID&total=@Model.SumTotal" class="btn btn-primary" style="float:right">
+        Način dostave
     </a>
-    
- 
+
+
+    <br />
+    <br />
+    <div id="ajaxDiv"></div>
+
+    <script>
+
+            $("button[ajax-poziv='da']").click(function (event) {
+
+                var btn = $(this);
+
+                var url = btn.attr("ajax-url");
+                var r = btn.attr("ajax-rezultat");
+
+                $.get(url,
+                    function (rezultat, status) {
+                        $("#" + r).html(rezultat);
+
+                    });
+            });
+
+
+
+    </script>
+
+
+
 }
 else
 {

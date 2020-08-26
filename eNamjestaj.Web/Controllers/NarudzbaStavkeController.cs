@@ -59,6 +59,26 @@ namespace eNamjestaj.Web.Controllers
                     return View(null);
             }
 
-        
+        public IActionResult Obrisi(int id, int narudzbaID)
+        {
+            NarudzbaStavka ns = ctx.NarudzbaStavka.Find(id);
+            ctx.NarudzbaStavka.Remove(ns);
+            ctx.SaveChanges();
+
+            Narudzba a = ctx.Narudzba.Find(narudzbaID);
+            int brojStavki = ctx.NarudzbaStavka.Where(x => x.NarudzbaId == a.Id).Count();
+            if (brojStavki < 1)
+            {
+                Narudzba narudzbaZaBrisanje = ctx.Narudzba.Find(a.Id);
+                ctx.Narudzba.Remove(narudzbaZaBrisanje);
+                ctx.SaveChanges();
+
+                //HttpContext.SetAKtivnaNarudzba(null);
+            }
+
+
+            return RedirectToAction("Index", "NarudzbaStavke");
+        }
+
     }
 }
