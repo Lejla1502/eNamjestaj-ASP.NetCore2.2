@@ -637,6 +637,31 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual(1,model.Dostave.Count);
         }
+
+
+
+        [TestMethod]
+        [DataRow(1,0,"100")]
+        public void Test_Narudzbe_ZakljuciAkcija_ModelStateNotValid(int narudzbaId, int dostava, string total)
+        {
+            NarudzbeController nc = new NarudzbeController(_context);
+            nc.ModelState.AddModelError("dostava", "Required");
+
+
+            var result = (RedirectToActionResult)nc.Zakljuci(narudzbaId,dostava,total);
+            Assert.AreEqual("Index",result.ActionName);
+            Assert.AreEqual("NarudzbaStavke", result.ControllerName);
+        }
+
+        [TestMethod]
+        [DataRow(1, 0, "100")]
+        public void Test_Narudzbe_ZakljuciAkcija_ModelStateValid_ReturnsPartialView(int narudzbaId, int dostava, string total)
+        {
+            NarudzbeController nc = new NarudzbeController(_context);
+            
+            PartialViewResult result = nc.Zakljuci(narudzbaId, dostava, total) as PartialViewResult;
+            Assert.AreEqual("Zakljuci", result.ViewName);
+        }
     }
 
 
