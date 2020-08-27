@@ -158,6 +158,7 @@ namespace eNamjestaj.Web.Controllers
                             Status = true,
                             Otkazano = false,
                             Aktivna = true,
+                            NaCekanju=false,
                             KupacId = kupacLogiran.Id
                         };
                         ctx.Narudzba.Add(n);
@@ -185,7 +186,7 @@ namespace eNamjestaj.Web.Controllers
                     }
                     else
                     {
-                        Narudzba n1 = ctx.Narudzba.Where(n => n.Id == aktivna.Id).First();
+                        Narudzba n1 = ctx.Narudzba.Where(n => n.KupacId == kupacLogiran.Id && n.Id == aktivna.Id).First();
                         bool postoji = false;
 
                         foreach (var x in ctx.NarudzbaStavka.Where(x => x.NarudzbaId == n1.Id).ToList())

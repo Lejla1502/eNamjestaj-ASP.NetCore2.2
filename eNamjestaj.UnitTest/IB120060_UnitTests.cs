@@ -162,8 +162,35 @@ namespace eNamjestaj.UnitTest
                 TotalStavke = 1000
             };
 
+            var izlaz = new Izlaz
+            {
+                BrojNarudzbe="212121",
+                Datum=DateTime.Now,
+                Zakljucena=false,
+                IznosBezPDV=1000,
+                IznosSaPDV=1170,
+                PovratNovca=false,
+                Skladiste=skladiste,
+                Korisnik=korisnik,
+                Narudzba=narudzba,
+                Dostava=dostava
+            };
+
+            var izlazStavka = new IzlazStavka
+            {
+                Cijena=1230,
+                Popust=10,
+                Kolicina=3,
+                Konacnacijena=1000,
+                Proizvod=proizvod,
+                Izlaz=izlaz
+
+            };
+
+
             _context.AddRange(drzava, kanton, opstina, uloga, korisnik, kupac, vrstaProizvoda, proizvod, skladiste,
-                proizvodSkladiste, boja, proizvodBoja, dostava, narudzba, narudzbaStavka);
+                proizvodSkladiste, boja, proizvodBoja, dostava, narudzba,
+                narudzbaStavka, izlaz, izlazStavka);
             _context.SaveChanges();
         }
 
@@ -661,6 +688,44 @@ namespace eNamjestaj.UnitTest
             
             PartialViewResult result = nc.Zakljuci(narudzbaId, dostava, total) as PartialViewResult;
             Assert.AreEqual("Zakljuci", result.ViewName);
+        }
+
+        [TestMethod]
+        public void Test_Narudzbe_IndexAkcija_CheckIfItReturnsValidModel()
+        {
+            //GetMockedHttpContext();
+            NarudzbeController nc = new NarudzbeController(_context);
+            nc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+
+            ViewResult result = nc.Index() as ViewResult;
+            NarudzbeIndexVM model = result.Model as NarudzbeIndexVM;
+
+            Assert.AreEqual(1, model.Narudzbe.Count);
+
+        }
+
+        [TestMethod]
+        public void Test_Narudzbe_IndexAkcija_CheckIfItReturnsNull()
+        {
+            //GetMockedHttpContext();
+            NarudzbeController nc = new NarudzbeController(_context);
+            nc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+
+            _context.Narudzba.First().Aktivna = true;
+            _context.SaveChanges();
+
+            ViewResult result = nc.Index() as ViewResult;
+
+            Assert.IsNull(result.Model);
+
         }
     }
 

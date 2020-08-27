@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eNamjestaj.Data;
+using eNamjestaj.Data.Helper;
 using eNamjestaj.Data.Models;
+using eNamjestaj.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +20,34 @@ namespace eNamjestaj.Web.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            List<Narudzba> n = new List<Narudzba>();
+            Korisnik ko = HttpContext.GetLogiraniKorisnik();
+            Kupac k = ctx.Kupac.Where(x => x.KorisnikId == ko.Id).FirstOrDefault();
+
+            int brNarudzbi = ctx.Narudzba.Where(x => x.KupacId == k.Id && x.NaCekanju == false && x.Aktivna==false).Count();
+            // n=  ctx.Narudzba.Where(y => y.KupacId == HttpContext.GetLogiraniKorisnik().KupacId && y.Status == false).ToList();
+            if (brNarudzbi > 0)
+            {
+                NarudzbeIndexVM model = new NarudzbeIndexVM
+                {
+                    Narudzbe = ctx.Narudzba.Where(y => y.KupacId == k.Id && y.NaCekanju == false && y.Aktivna==false).Select(x => new NarudzbeIndexVM.NarudzbeInfo
+                    {
+                        NarudzbaId = x.Id,
+                        Datum = x.Datum,
+                        UkupanIznos = ctx.Izlaz.Where(i => i.NarudzbaId == x.Id).FirstOrDefault().IznosSaPDV.ToString(),
+                        Status = x.Status,
+                        Otkazana = x.Otkazano,
+                        Kompletirana = ctx.Izlaz.Where(i => i.NarudzbaId == x.Id).FirstOrDefault().Zakljucena
+                    }).ToList()
+                };
+
+                return View(model);
+            }
+
+            else
+                return View(null);
         }
+    
 
         public IActionResult Zakljuci(int narudzbaID, int dostava, string total)
         {

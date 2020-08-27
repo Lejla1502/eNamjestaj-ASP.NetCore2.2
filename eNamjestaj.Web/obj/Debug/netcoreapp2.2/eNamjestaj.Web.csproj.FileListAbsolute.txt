@@ -1,3 +1,9 @@
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.csprojAssemblyReference.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.RazorAssemblyInfo.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.RazorAssemblyInfo.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.AssemblyInfo.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\bin\Debug\netcoreapp2.2\eNamjestaj.Web.deps.json
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\bin\Debug\netcoreapp2.2\eNamjestaj.Web.runtimeconfig.json
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\bin\Debug\netcoreapp2.2\eNamjestaj.Web.runtimeconfig.dev.json
@@ -7,12 +13,6 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\bin\Debug\netcoreapp2.2\eNa
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\bin\Debug\netcoreapp2.2\eNamjestaj.Web.Views.pdb
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\bin\Debug\netcoreapp2.2\eNamjestaj.Data.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\bin\Debug\netcoreapp2.2\eNamjestaj.Data.pdb
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.csprojAssemblyReference.cache
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.csproj.CoreCompileInputs.cache
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.RazorAssemblyInfo.cache
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.RazorAssemblyInfo.cs
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.AssemblyInfoInputs.cache
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.AssemblyInfo.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.TagHelpers.input.cache
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.TagHelpers.output.cache
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.RazorCoreGenerate.cache
@@ -36,3 +36,4 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNa
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.csproj.CopyComplete
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.pdb
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Narudzbe\Index.g.cshtml.cs
