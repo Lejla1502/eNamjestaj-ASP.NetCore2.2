@@ -14,13 +14,13 @@ namespace eNamjestaj.Data
         //    optionsBuilder.UseSqlServer("Server=app.fit.ba,1433;Database=p1738_eNamjestaj;Trusted_Connection=false;MultipleActiveResultSets=true;User ID=p1738;Password=V_93xz8z");
         //}
 
-        ////protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        ////{
-        ////    base.OnConfiguring(optionsBuilder);
-        ////    optionsBuilder.UseSqlServer("Server=localhost;Database=p1738_eNamjestaj;Trusted_Connection=true;MultipleActiveResultSets=true;User ID=Aa;Password=Aa");
-        ////}
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseSqlServer("Server=localhost;Database=p1738_eNamjestaj;Trusted_Connection=true;MultipleActiveResultSets=true;User ID=Aa;Password=Aa");
+        //}
 
-        
+
 
         public MojContext()
         {
@@ -36,11 +36,11 @@ namespace eNamjestaj.Data
                .WithMany()
                .HasForeignKey(x => x.KorisnikId);
 
-            //modelBuilder
-            //  .Entity<Zaposlenik>()
-            //  .HasOne(x => x.Korisnik)
-            //  .WithMany()
-            //  .HasForeignKey(x => x.KorisnikId);
+            modelBuilder
+              .Entity<Zaposlenik>()
+              .HasOne(x => x.Korisnik)
+              .WithMany()
+              .HasForeignKey(x => x.KorisnikId);
 
             modelBuilder
                .Entity<Kupac>()
@@ -62,6 +62,11 @@ namespace eNamjestaj.Data
 
             modelBuilder.Entity<Kupac>()
             .HasIndex(b => b.Email).IsUnique();
+
+
+            modelBuilder.Entity<Zaposlenik>()
+            .HasIndex(b => b.Email).IsUnique();
+
 
             modelBuilder.Entity<Proizvod>()
                 .HasIndex(b => b.Sifra).IsUnique();
@@ -119,6 +124,8 @@ namespace eNamjestaj.Data
         public virtual DbSet<ProizvodBoja> ProizvodBoja { get; set; }
         public virtual DbSet<Komentar> Komentar { get; set; }
         public virtual DbSet<Ocjena> Ocjena { get; set; }
+        public virtual DbSet<Zaposlenik> Zaposlenik { get; set; }
+
 
         //public DbSet<AutorizacijskiToken> AutorizacijskiToken { get; set; }
 

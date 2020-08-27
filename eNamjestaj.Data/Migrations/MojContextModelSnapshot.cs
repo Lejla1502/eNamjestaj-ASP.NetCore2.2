@@ -588,6 +588,35 @@ namespace eNamjestaj.Data.Migrations
                     b.ToTable("VrstaProizvoda");
                 });
 
+            modelBuilder.Entity("eNamjestaj.Data.Models.Zaposlenik", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adresa");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Ime");
+
+                    b.Property<int>("KorisnikId");
+
+                    b.Property<string>("Prezime");
+
+                    b.Property<string>("Telefon");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("KorisnikId");
+
+                    b.ToTable("Zaposlenik");
+                });
+
             modelBuilder.Entity("eNamjestaj.Data.Models.Dostavljac", b =>
                 {
                     b.HasOne("eNamjestaj.Data.Models.Korisnik", "Korisnik")
@@ -704,7 +733,7 @@ namespace eNamjestaj.Data.Migrations
                     b.HasOne("eNamjestaj.Data.Models.Proizvod", "Proizvod")
                         .WithMany()
                         .HasForeignKey("ProizvodId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("eNamjestaj.Data.Models.Ocjena", b =>
@@ -805,6 +834,14 @@ namespace eNamjestaj.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UlazId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("eNamjestaj.Data.Models.Zaposlenik", b =>
+                {
+                    b.HasOne("eNamjestaj.Data.Models.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
