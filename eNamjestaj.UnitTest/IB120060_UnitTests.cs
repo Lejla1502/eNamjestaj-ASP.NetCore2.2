@@ -727,6 +727,28 @@ namespace eNamjestaj.UnitTest
             Assert.IsNull(result.Model);
 
         }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_DetaljiAkcija_CheckIfItReturnsPartialView(int id)
+        {
+            NarudzbeController nc = new NarudzbeController(_context);
+            var result = nc.Detalji(id);
+            
+
+            Assert.IsInstanceOfType(result,typeof( PartialViewResult));
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_DetaljiAkcija_CheckIfItReturnsCorrectModel(int id)
+        {
+            NarudzbeController nc = new NarudzbeController(_context);
+            PartialViewResult result = nc.Detalji(id) as PartialViewResult;
+            NarudzbeDetaljiVM model = result.Model as NarudzbeDetaljiVM;
+
+            Assert.AreEqual(1, model.DetaljiNarudzbe.Count); ;
+        }
     }
 
 

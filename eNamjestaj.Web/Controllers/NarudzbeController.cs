@@ -97,5 +97,29 @@ namespace eNamjestaj.Web.Controllers
             else
                 return RedirectToAction("Index", "NarudzbaStavke");
         }
+
+        public IActionResult Detalji(int narudzbaId)
+        {
+            List<NarudzbaStavka> ns = new List<NarudzbaStavka>();
+            ns = ctx.NarudzbaStavka.Where(y => y.NarudzbaId == narudzbaId).ToList();
+
+            NarudzbeDetaljiVM model = new NarudzbeDetaljiVM
+            {
+                DetaljiNarudzbe = ctx.NarudzbaStavka.Where(y => y.NarudzbaId == narudzbaId).Select(x => new NarudzbeDetaljiVM.NarudzbeStavkeInfo
+                {
+                    Proizvod = x.Proizvod.Naziv,
+                    Cijena = x.Proizvod.Cijena.ToString("0.00"),
+                    Kolicina = x.Kolicina,
+                    Boja = x.Boja.Naziv,
+                    Dostava = ctx.Izlaz.Where(i => i.NarudzbaId == narudzbaId).FirstOrDefault().Dostava.Cijena.ToString("0.00"),
+                    Total = x.TotalStavke.ToString("0.00")
+                }).ToList(),
+                SumTotal = ctx.Izlaz.Where(i => i.NarudzbaId == narudzbaId).FirstOrDefault().IznosSaPDV.ToString("0.00"),
+                NarudzbaID = narudzbaId
+            };
+
+            return PartialView(model);
+        }
+
     }
 }
