@@ -219,12 +219,6 @@ namespace eNamjestaj.UnitTest
         //[DataRow(5,null)]
         //[DataRow(null,2)]
 
-        //Testni podaci su samo za bazu na serveru
-        //jer se ID-evi za proizvode ne poklapaju sa onima u lokalnoj
-        //bazi
-        //Na lokalnoj bazi ID-evi se krecu od 17-35
-        //a na app.fit.ba od 1 do 16
-
 
 
 
@@ -248,12 +242,120 @@ namespace eNamjestaj.UnitTest
 
         }
 
+        [TestMethod]
+        public void Test_Home_IndexAction_LoggedUserNull_RedirectsToAutentifikacija()
+        {
+            HomeController hc = new HomeController(_context);
+            var mockContext = new Mock<HttpContext>();
+            var mockSession = new Mock<ISession>();
+            var mockUserSession = new Mock<IUserSession>();
+            Korisnik sessionUser = null;// new Korisnik() { KorisnickoIme = "MyValue" };
+            var sessionValue = JsonConvert.SerializeObject(sessionUser);
+            byte[] dummy = System.Text.Encoding.UTF8.GetBytes(sessionValue);
+            mockSession.Setup(x => x.TryGetValue(It.IsAny<string>(), out dummy)).Returns(true); //the out dummy does the trick
+            mockContext.Setup(s => s.Session).Returns(mockSession.Object);
 
+            hc.ControllerContext = new ControllerContext
+            { HttpContext = mockContext.Object };
+
+            var result = (RedirectToActionResult)hc.Index();
+
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("Autentifikacija", result.ControllerName);
+        }
+
+        [TestMethod]
+        public void Test_Home_IndexAction_ReturnsView()
+        {
+            HomeController hc = new HomeController(_context);
+            hc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext()
+            };
+
+            ViewResult result = hc.Index() as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_Index_REturnsView()
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+            ViewResult result = ac.Index() as ViewResult;
+            LoginVM model = result.Model as LoginVM;
+
+            Assert.AreEqual(true, model.ZapamtiPassword);
+
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_Login_ModelStateNotValid_returnsViewDataMessage()
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+
+            ac.ModelState.AddModelError("username", "Required");
+            ac.ModelState.AddModelError("password", "Required");
+            var result = ac.Login(new LoginVM()) as ViewResult;
+            LoginVM model = result.Model as LoginVM;
+
+            Assert.AreEqual("Niste unijeli ispravne podatke", result.ViewData["poruka"]);
+            Assert.AreEqual("Index",result.ViewName);
+            Assert.IsNull(model.username);
+            Assert.IsNull(model.password);
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_Login_ModelStateValid_UserNull_returnsViewDataMessage()
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+            LoginVM novi = new LoginVM
+            {
+                username="mmm",
+                password="mmm"
+            };
+            var result = ac.Login(novi) as ViewResult;
+            LoginVM model = result.Model as LoginVM;
+
+            Assert.AreEqual("Pogrešan username ili password", result.ViewData["poruka"]);
+            Assert.AreEqual("Index", result.ViewName);
+            Assert.AreEqual(novi,model);
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_Login_ModelStateValid_UserIspravan_redirectsToIndexProizvodi()
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+
+            var mockContext = new Mock<HttpContext>();
+            var mockSession = new Mock<ISession>();
+            Korisnik sessionUser = null;
+            var sessionValue = JsonConvert.SerializeObject(sessionUser);
+            byte[] dummy = System.Text.Encoding.UTF8.GetBytes(sessionValue);
+            mockSession.Setup(x => x.TryGetValue(It.IsAny<string>(), out dummy)).Returns(true); //the out dummy does the trick
+            mockContext.Setup(s => s.Session).Returns(mockSession.Object);
+
+            ac.ControllerContext = new ControllerContext
+            { HttpContext = mockContext.Object };
+
+            
+
+            LoginVM novi = new LoginVM
+            {
+                username = "johndoe",
+                password = "..."
+            };
+            var result =(RedirectToActionResult) ac.Login(novi);
+            
+            
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("Proizvodi", result.ControllerName);
+        }
 
         [TestMethod]
         [DataRow(null, null)]
         [DataRow(1, 1)]
-        public void Test_ListaProizvoda(int? vrstaID, int? bojaID)
+        public void Test_Proizvod_Index_ListaProizvoda(int? vrstaID, int? bojaID)
         {
             List<Proizvod> ocekivani = new List<Proizvod>();
 
