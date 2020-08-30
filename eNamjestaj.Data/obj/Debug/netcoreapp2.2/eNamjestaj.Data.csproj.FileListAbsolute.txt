@@ -9,10 +9,3 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eN
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.AssemblyInfo.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.pdb
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\Microsoft.AspNetCore.Mvc.Abstractions.dll
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\Microsoft.AspNetCore.Mvc.Core.dll
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\Microsoft.AspNetCore.Mvc.ViewFeatures.dll
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\Microsoft.AspNetCore.Mvc.Abstractions.xml
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\Microsoft.AspNetCore.Mvc.Core.xml
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\bin\Debug\netcoreapp2.2\Microsoft.AspNetCore.Mvc.ViewFeatures.xml
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Data\obj\Debug\netcoreapp2.2\eNamjestaj.Data.csproj.CopyComplete
