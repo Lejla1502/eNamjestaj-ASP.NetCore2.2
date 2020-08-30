@@ -52,7 +52,7 @@ namespace eNamjestaj.Web.Controllers
         {
             HttpContext.SetLogiraniKorisnik(null);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Proizvodi");
         }
     }
 }
