@@ -12,6 +12,8 @@ using eNamjestaj.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using eNamjestaj.Data.Helper;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace eNamjestaj.Web
 {
@@ -31,6 +33,11 @@ namespace eNamjestaj.Web
             services.AddDbContext<MojContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("lokalni")));
             //services.AddDbContext<MojContext>(x => x.UseSqlServer(Configuration.GetConnectionString("lokalni")));
+
+            services.AddSingleton<IFileProvider>(
+                new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc(options =>
