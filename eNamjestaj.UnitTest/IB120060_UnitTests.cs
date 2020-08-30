@@ -224,25 +224,20 @@ namespace eNamjestaj.UnitTest
 
         Random random = new Random();
         private IHostingEnvironment hostingEnvironment;
-        
 
         // ProizvodiController pc = new ProizvodiController(_context);
         private HttpContext GetMockedHttpContext()
         {
-
             var mockContext = new Mock<HttpContext>();
             var mockSession = new Mock<ISession>();
+            var mockUserSession = new Mock<IUserSession>();
             Korisnik sessionUser = _context.Korisnik.First();// new Korisnik() { KorisnickoIme = "MyValue" };
             var sessionValue = JsonConvert.SerializeObject(sessionUser);
             byte[] dummy = System.Text.Encoding.UTF8.GetBytes(sessionValue);
-
-           mockSession.Setup(x => x.TryGetValue(It.IsAny<string>(), out dummy)).Returns(true); //the out dummy does the trick
-
-
+            mockSession.Setup(x => x.TryGetValue(It.IsAny<string>(), out dummy)).Returns(true); //the out dummy does the trick
             mockContext.Setup(s => s.Session).Returns(mockSession.Object);
 
             return mockContext.Object;
-
 
 
         }
@@ -253,6 +248,7 @@ namespace eNamjestaj.UnitTest
             HomeController hc = new HomeController(_context);
             var mockContext = new Mock<HttpContext>();
             var mockSession = new Mock<ISession>();
+            var mockUserSession = new Mock<IUserSession>();
             Korisnik sessionUser = null;// new Korisnik() { KorisnickoIme = "MyValue" };
             var sessionValue = JsonConvert.SerializeObject(sessionUser);
             byte[] dummy = System.Text.Encoding.UTF8.GetBytes(sessionValue);
@@ -350,27 +346,10 @@ namespace eNamjestaj.UnitTest
                 password = "..."
             };
             var result =(RedirectToActionResult) ac.Login(novi);
-
-            //Assert.AreEqual("johndoe", ac.ControllerContext.HttpContext.GetLogiraniKorisnik().KorisnickoIme);
+            
+            
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("Proizvodi", result.ControllerName);
-         }
-
-        [TestMethod]
-        public void Test_Autentifikacija_Logout__redirectsToIndex()
-        {
-            AutentifikacijaController ac = new AutentifikacijaController(_context);
-            
-
-            ac.ControllerContext = new ControllerContext
-            { HttpContext = GetMockedHttpContext() };
-            
-
-            var result = (RedirectToActionResult)ac.Logout();
-            
-           // var kor = ac.ControllerContext.HttpContext.GetLogiraniKorisnik();
-           // Assert.IsNull(ac.ControllerContext.HttpContext.GetLogiraniKorisnik());
-            Assert.AreEqual("Index", result.ActionName);
         }
 
         [TestMethod]
