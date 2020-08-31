@@ -44,7 +44,7 @@ namespace eNamjestaj.Web.Controllers
                 return View("Index", input);
             }
 
-            HttpContext.SetLogiraniKorisnik(korisnik);
+            HttpContext.SetLogiraniKorisnik(korisnik, snimiUCookie: input.ZapamtiPassword);
             return RedirectToAction("Index", "Proizvodi");
         }
 
