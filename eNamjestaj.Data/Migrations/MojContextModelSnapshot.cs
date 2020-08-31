@@ -38,6 +38,27 @@ namespace eNamjestaj.Data.Migrations
                     b.ToTable("AkcijskiKatalog");
                 });
 
+            modelBuilder.Entity("eNamjestaj.Data.Models.AutorizacijskiToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("IpAdresa");
+
+                    b.Property<int>("KorisnikId");
+
+                    b.Property<string>("Vrijednost");
+
+                    b.Property<DateTime>("VrijemeEvidentiranja");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KorisnikId");
+
+                    b.ToTable("AutorizacijskiToken");
+                });
+
             modelBuilder.Entity("eNamjestaj.Data.Models.Boja", b =>
                 {
                     b.Property<int>("Id")
@@ -615,6 +636,14 @@ namespace eNamjestaj.Data.Migrations
                     b.HasIndex("KorisnikId");
 
                     b.ToTable("Zaposlenik");
+                });
+
+            modelBuilder.Entity("eNamjestaj.Data.Models.AutorizacijskiToken", b =>
+                {
+                    b.HasOne("eNamjestaj.Data.Models.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("eNamjestaj.Data.Models.Dostavljac", b =>

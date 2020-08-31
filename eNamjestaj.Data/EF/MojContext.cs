@@ -127,7 +127,7 @@ namespace eNamjestaj.Data
         public virtual DbSet<Zaposlenik> Zaposlenik { get; set; }
 
 
-        //public DbSet<AutorizacijskiToken> AutorizacijskiToken { get; set; }
+        public DbSet<AutorizacijskiToken> AutorizacijskiToken { get; set; }
 
         public MojContext(DbContextOptions<MojContext> options): base(options)
         {
