@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eNamjestaj.Data;
+using eNamjestaj.Data.Helper;
 using eNamjestaj.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web.Controllers
 {
+    [Autorizacija(false, true, false, false)]
     public class DostavaController : Controller
     {
         private MojContext ctx;

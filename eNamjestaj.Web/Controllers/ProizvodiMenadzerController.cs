@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eNamjestaj.Web.Controllers
 {
+    [Autorizacija(false, false, true, false)]
     public class ProizvodiMenadzerController : Controller
     {
        private  MojContext ctx ;

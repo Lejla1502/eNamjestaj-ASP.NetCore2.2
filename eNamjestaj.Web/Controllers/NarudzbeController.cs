@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eNamjestaj.Web.Controllers
 {
+    [Autorizacija(false, true, false, false)]
     public class NarudzbeController : Controller
     {
         private MojContext ctx;

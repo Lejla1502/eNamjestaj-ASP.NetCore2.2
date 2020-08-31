@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web.Controllers
 {
+    [Autorizacija(false, true, false, false)]
     public class NarudzbaStavkeController : Controller
     {
         private MojContext ctx ;

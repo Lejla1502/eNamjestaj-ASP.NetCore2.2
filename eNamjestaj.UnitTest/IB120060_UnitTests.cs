@@ -73,7 +73,10 @@ namespace eNamjestaj.UnitTest
             var drzava = new Drzava { Naziv = "..." };
             var kanton = new Kanton { Naziv = "...", Drzava = drzava };
             var opstina = new Opstina { Naziv = "...", Kanton = kanton, PostanskiBroj = "..." };
-            var uloga = new Uloga { TipUloge = "..." };
+            var uloga = new Uloga { TipUloge = "kupac" };
+            
+            
+
 
             var korisnik = new Korisnik
             {
@@ -92,6 +95,30 @@ namespace eNamjestaj.UnitTest
                 Spol = "..",
                 Korisnik = korisnik
 
+            };
+            _context.AddRange(drzava, kanton, opstina, uloga, korisnik,
+                kupac
+              );
+
+            _context.SaveChanges();
+            _context.Uloga.Add(new Uloga {TipUloge="menadzer" });
+            _context.Uloga.Add(new Uloga { TipUloge="admin"});
+            _context.SaveChanges();
+            _context.Korisnik.Add(new Korisnik
+            {
+                KorisnickoIme = "zaposlenik",
+                Lozinka = "zaposlenik",
+                Opstina = opstina,
+                UlogaId = 2
+            });
+
+            var zaposlenik = new Zaposlenik {
+                Ime = "menadzer",
+                Prezime="menadzer",
+                Email = "...",
+                Adresa = "...",
+                Telefon = "-...",
+                KorisnikId = 2
             };
 
             var vrstaProizvoda = new VrstaProizvoda { Naziv = "..." };
@@ -135,9 +162,9 @@ namespace eNamjestaj.UnitTest
 
             var dostava = new Dostava
             {
-                Tip="...",
-                Cijena=10,
-                Opis="..."
+                Tip = "...",
+                Cijena = 10,
+                Opis = "..."
             };
 
             var narudzba = new Narudzba
@@ -148,7 +175,7 @@ namespace eNamjestaj.UnitTest
                 Aktivna = false,
                 Otkazano = false,
                 NaCekanju = false,
-                Kupac=kupac
+                Kupac = kupac
             };
 
             var narudzbaStavka = new NarudzbaStavka
@@ -164,34 +191,71 @@ namespace eNamjestaj.UnitTest
 
             var izlaz = new Izlaz
             {
-                BrojNarudzbe="212121",
-                Datum=DateTime.Now,
-                Zakljucena=false,
-                IznosBezPDV=1000,
-                IznosSaPDV=1170,
-                PovratNovca=false,
-                Skladiste=skladiste,
-                Korisnik=korisnik,
-                Narudzba=narudzba,
-                Dostava=dostava
+                BrojNarudzbe = "212121",
+                Datum = DateTime.Now,
+                Zakljucena = false,
+                IznosBezPDV = 1000,
+                IznosSaPDV = 1170,
+                PovratNovca = false,
+                Skladiste = skladiste,
+                Korisnik = korisnik,
+                Narudzba = narudzba,
+                Dostava = dostava
             };
 
             var izlazStavka = new IzlazStavka
             {
-                Cijena=1230,
-                Popust=10,
-                Kolicina=3,
-                Konacnacijena=1000,
-                Proizvod=proizvod,
-                Izlaz=izlaz
+                Cijena = 1230,
+                Popust = 10,
+                Kolicina = 3,
+                Konacnacijena = 1000,
+                Proizvod = proizvod,
+                Izlaz = izlaz
 
             };
 
 
-            _context.AddRange(drzava, kanton, opstina, uloga, korisnik, kupac, vrstaProizvoda, proizvod, skladiste,
+
+
+            _context.AddRange( vrstaProizvoda, proizvod, skladiste,
                 proizvodSkladiste, boja, proizvodBoja, dostava, narudzba,
-                narudzbaStavka, izlaz, izlazStavka);
+                narudzbaStavka, izlaz, izlazStavka, zaposlenik);
             _context.SaveChanges();
+
+            //_context.Uloga.Add(new Uloga { TipUloge="admin" });
+            //_context.Uloga.Add(new Uloga { TipUloge="menadzer"});
+            //_context.SaveChanges();
+            //_context.Korisnik.Add(new Korisnik {
+            //    KorisnickoIme="zaposlenik",
+            //    Lozinka="zaposlenik",
+            //    Opstina=opstina,
+            //    UlogaId=3
+            //});
+
+            //_context.SaveChanges();
+
+            //var zaposlenik = new Zaposlenik
+            //{
+            //  Ime="zaposlenik",
+            //  Prezime="zaposlenik",
+            //  Email="...",
+            //  Adresa="...",
+            //  Telefon="-...",
+            //  KorisnikId=2
+            //};
+        }
+
+        [TestMethod]
+        public void TestiranjeDbContexta_ProvjeraBrojauloga()
+        {
+            List<Uloga> ocekivana = _context.Uloga.ToList();
+            List<Korisnik> ocekivaniK = _context.Korisnik.ToList();
+            // Assert.AreEqual("kupac", ocekivana[0].TipUloge);
+            //Assert.AreEqual("menadzer", ocekivana[1].TipUloge);
+            //Assert.AreEqual("admin", ocekivana[2].TipUloge);
+            Assert.AreEqual("johndoe",ocekivaniK[0].KorisnickoIme);
+            Assert.AreEqual(1,_context.Zaposlenik.ToList().Count);
+            Assert.AreEqual("menadzer", _context.Zaposlenik.First().Ime);
         }
 
         //        ProizvodiController pc = new ProizvodiController();
@@ -522,7 +586,7 @@ namespace eNamjestaj.UnitTest
         [TestMethod]
         public void Test_ProizvodiMenadzer_AkcijaUploadProduct_ModelStateNotValid()
         {
-            GetMockedHttpContext();
+           // GetMockedHttpContext();
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
             pmc.ControllerContext = new ControllerContext()
             {
@@ -571,7 +635,7 @@ namespace eNamjestaj.UnitTest
 
             var result = (RedirectToActionResult)pmc.UploadProduct(newPr);
 
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual("Dodaj", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
+            Assert.AreEqual("Dodaj", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
 
         }
 
@@ -869,6 +933,8 @@ namespace eNamjestaj.UnitTest
             NarudzbeController nc = new NarudzbeController(_context);
             PartialViewResult result = nc.Detalji(id) as PartialViewResult;
             NarudzbeDetaljiVM model = result.Model as NarudzbeDetaljiVM;
+
+            
 
             Assert.AreEqual(1, model.DetaljiNarudzbe.Count); ;
         }

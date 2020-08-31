@@ -23,7 +23,7 @@ namespace eNamjestaj.Data.Helper
 
     public class MyAuthorizeImpl : IAsyncActionFilter
     {
-        private IEnumerable<Uloga> _uloga;
+        //private IEnumerable<Uloga> _uloga;
 
         public MyAuthorizeImpl(bool admin, bool kupci, bool menadzeri, bool anonim)
         {

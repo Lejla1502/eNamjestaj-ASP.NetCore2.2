@@ -26,6 +26,7 @@ namespace eNamjestaj.Web.Controllers
 
         int broj = 1;
 
+        [Autorizacija(false, true, false, true)]
         public IActionResult Index(int? vrstaID, int? bojaID)
         {
             ProizvodiIndexVM model = new ProizvodiIndexVM();
@@ -82,6 +83,7 @@ namespace eNamjestaj.Web.Controllers
             return View(model);
         }
 
+        [Autorizacija(false, true, false, true)]
         public IActionResult Detalji(int proizvodId, int brojac)
         {
             ProizvodiDetaljiVM model = ctx.Proizvod.Where(x => x.Id == proizvodId).Select(y => new ProizvodiDetaljiVM
@@ -113,6 +115,7 @@ namespace eNamjestaj.Web.Controllers
             return View(model);
         }
 
+        [Autorizacija(false, true, false, false)]
         public IActionResult ProvjeraKolicine(int ProizvodId, int kol, int BojaID, int Brojac, int? Popust)
         {
             if (ModelState.IsValid)
