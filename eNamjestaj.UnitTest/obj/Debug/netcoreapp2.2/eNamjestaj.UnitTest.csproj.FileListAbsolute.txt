@@ -1,5 +1,9 @@
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Web.Views.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\eNamjestaj.Web.Views.pdb
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\NUnit3.TestAdapter.dll
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\NUnit3.TestAdapter.pdb
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\nunit.engine.netstandard.dll
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\Mono.Cecil.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.UnitTest\bin\Debug\netcoreapp2.2\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll

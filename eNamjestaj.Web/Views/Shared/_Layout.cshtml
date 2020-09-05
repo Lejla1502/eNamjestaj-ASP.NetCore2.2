@@ -48,7 +48,7 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li>
-                        <a asp-area="" asp-controller="Autentifikacija" asp-action="Logout">
+                        <a asp-area="" asp-controller="Autentifikacija" asp-action="Logout">  </a>
 
                             @if (username != null)
                             {
@@ -58,15 +58,16 @@
                                 </label>
 
                             }
-                        </a>
-                            else
-                            {
-                                <label>
-                                    Login
-                                </label>
-                            }
-                        
+                      else
+                        {
+                        <label>
+                            Login
+                        </label>
+                        }
+
                     </li>
+                    <li><a asp-area="" asp-controller="Sesija" asp-action="Index">Aktivne sesije</a></li>
+
                 </ul>
             </div>
         </div>

@@ -1,0 +1,49 @@
+﻿@using eNamjestaj.Data.Helper
+@using Microsoft.AspNetCore.Http
+@using eNamjestaj.Data.Models
+
+@model eNamjestaj.Web.ViewModels.SesijaIndexVM
+@{
+    ViewData["Title"] = "Index";
+    if (Context.GetLogiraniKorisnik() == null)
+    { Layout = "_LayoutAnonim"; }
+}
+
+@if (Context.GetLogiraniKorisnik() != null)
+{<h2>Aktivne sesije za korisnika @Context.GetLogiraniKorisnik().KorisnickoIme</h2>}
+else
+{
+<h2>Aktivnesesije anonimnog korisnika</h2>
+}
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Vrijeme</th>
+            <th>Ip adresa</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.Rows)
+        {
+            <tr>
+                <td>
+                    @x.VrijemeLogiranja
+                    @if (x.token == Model.TrenutniToken)
+                    {
+                        <strong>(trenutna sesija)</strong>
+                    }
+                </td>
+                <td>@x.IpAdresa</td>
+                <td>
+                    <a asp-action="Obrisi" asp-route-token="@x.token" class="btn btn-danger">Obrisi</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

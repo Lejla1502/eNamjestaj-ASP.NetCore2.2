@@ -27,6 +27,7 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Raz
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\ProizvodiMenadzer\Uredi.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Proizvodi\Detalji.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Proizvodi\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Sesija\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Error.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Layout.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_LayoutAnonim.g.cshtml.cs

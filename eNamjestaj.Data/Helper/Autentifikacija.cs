@@ -18,38 +18,43 @@ namespace eNamjestaj.Data.Helper
 
         public static Korisnik GetLogiraniKorisnik(this HttpContext context)
         {
-            Korisnik korisnik = context.Session.Get<Korisnik>(LogiraniKorisnik);
-            if (korisnik == null)
-            {
-                MojContext db = context.RequestServices.GetService<MojContext>();
+            MojContext db = context.RequestServices.GetService<MojContext>();
 
-                string token = context.Request.GetCookieJson<string>(LogiraniKorisnik);
-                if (token == null)
-                    return null;
+            string token = context.Request.GetCookieJson<string>(LogiraniKorisnik);
+            if (token == null)
+                return null;
 
-               AutorizacijskiToken autorizacijskiToken= db.AutorizacijskiToken
-                    .Include(x => x.Korisnik )
-                    .SingleOrDefault(x=>x.Vrijednost==token);
-
-                if (autorizacijskiToken != null)
-                {
-                    context.Session.Set(LogiraniKorisnik, autorizacijskiToken.Korisnik);
-                }
-            
-            }
-            return korisnik;
+            return db.AutorizacijskiToken
+                .Where(x => x.Vrijednost == token)
+                .Select(s => s.Korisnik)
+                .SingleOrDefault();
         }
 
-       
+        public static string GetTrenutniToken(this HttpContext context)
+        {
+            return context.Request.GetCookieJson<string>(LogiraniKorisnik);
+        }
 
         public static void SetLogiraniKorisnik(this HttpContext context, Korisnik korisnik,bool snimiUCookie=false)
         {
-            
-            context.Session.Set(LogiraniKorisnik,korisnik);
+            MojContext db = context.RequestServices.GetService<MojContext>();
 
-            if (snimiUCookie)
+
+            string stariToken = context.Request.GetCookieJson<string>(LogiraniKorisnik);
+            if (stariToken != null)
             {
-                MojContext db = context.RequestServices.GetService<MojContext>();
+
+                AutorizacijskiToken obrisati = db.AutorizacijskiToken.FirstOrDefault(x => x.Vrijednost == stariToken);
+
+                if (obrisati != null)
+                {
+                    db.AutorizacijskiToken.Remove(obrisati);
+                    db.SaveChanges();
+                }
+            }
+
+            if (korisnik != null)
+            {
 
                 string token = Guid.NewGuid().ToString();
                 db.AutorizacijskiToken.Add(new AutorizacijskiToken
@@ -60,11 +65,7 @@ namespace eNamjestaj.Data.Helper
                 });
                 db.SaveChanges();
                 context.Response.SetCookieJson(LogiraniKorisnik, token);
-
-
             }
-            else
-                context.Response.SetCookieJson(LogiraniKorisnik, null );
 
 
         }

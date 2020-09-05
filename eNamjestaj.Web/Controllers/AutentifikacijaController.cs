@@ -30,7 +30,7 @@ namespace eNamjestaj.Web.Controllers
         }
         public IActionResult Login(LoginVM input)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 ViewData["poruka"] = "Niste unijeli ispravne podatke";
                 return View("Index", input);
@@ -43,8 +43,9 @@ namespace eNamjestaj.Web.Controllers
                 ViewData["poruka"] = "Pogrešan username ili password";
                 return View("Index", input);
             }
-
+int t=0;
             HttpContext.SetLogiraniKorisnik(korisnik, snimiUCookie: input.ZapamtiPassword);
+          
             return RedirectToAction("Index", "Proizvodi");
         }
 
