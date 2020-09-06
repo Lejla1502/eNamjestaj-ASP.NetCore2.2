@@ -38,4 +38,19 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\ModulAdministrator\Controllers\" />
+    <Folder Include="Areas\ModulAdministrator\Data\" />
+    <Folder Include="Areas\ModulAdministrator\Models\" />
+    <Folder Include="Areas\ModulAdministrator\Views\" />
+    <Folder Include="Areas\ModulKupac\Controllers\" />
+    <Folder Include="Areas\ModulKupac\Data\" />
+    <Folder Include="Areas\ModulKupac\Models\" />
+    <Folder Include="Areas\ModulKupac\Views\" />
+    <Folder Include="Areas\ModulMenadzer\Controllers\" />
+    <Folder Include="Areas\ModulMenadzer\Data\" />
+    <Folder Include="Areas\ModulMenadzer\Models\" />
+    <Folder Include="Areas\ModulMenadzer\Views\" />
+  </ItemGroup>
+
 </Project>
