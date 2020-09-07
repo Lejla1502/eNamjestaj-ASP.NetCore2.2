@@ -43,17 +43,17 @@ namespace eNamjestaj.Web.Controllers
                 ViewData["poruka"] = "Pogrešan username ili password";
                 return View("Index", input);
             }
-int t=0;
+
             HttpContext.SetLogiraniKorisnik(korisnik, snimiUCookie: input.ZapamtiPassword);
           
-            return RedirectToAction("Index", "Proizvodi");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Logout()
         {
             HttpContext.SetLogiraniKorisnik(null);
 
-            return RedirectToAction("Index","Proizvodi");
+            return RedirectToAction("Index");
         }
     }
 }

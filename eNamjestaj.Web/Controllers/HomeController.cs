@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using eNamjestaj.Web.Models;
 using eNamjestaj.Data.Helper;
 using eNamjestaj.Data;
+using eNamjestaj.Data.Models;
 
 namespace eNamjestaj.Web.Controllers
 {
@@ -19,10 +20,17 @@ namespace eNamjestaj.Web.Controllers
         }
         public IActionResult Index()
         {
-            if (HttpContext.GetLogiraniKorisnik() == null)
-               return RedirectToAction("Index", "Autentifikacija");
 
-            return View();
+            Korisnik k = Autentifikacija.GetLogiraniKorisnik(HttpContext);
+
+            if (k == null)
+                return Redirect("/ModulKupac/Proizvodi/Index");//return RedirectToAction("Logout", "Autentifikacija", new { area = "" });
+            else if (k.UlogaId == 1)
+                return Redirect("/ModulAdministrator/Korisnici/Index");
+            else if (k.UlogaId == 2)
+                return Redirect("/ModulMenadzer/ProizvodiMenadzer/Index");
+            else
+                return Redirect("/ModulKupac/Proizvodi/Index");
         }
 
         

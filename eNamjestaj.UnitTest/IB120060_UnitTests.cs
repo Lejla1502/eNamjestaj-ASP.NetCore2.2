@@ -4,7 +4,6 @@ using eNamjestaj.Data.Models;
 using eNamjestaj.Web.Controllers;
 using eNamjestaj.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using eNamjestaj.Data.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +30,11 @@ using Microsoft.AspNetCore.DataProtection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using eNamjestaj.Web.Areas;
+using eNamjestaj.Web.Areas.ModulMenadzer.ViewModels;
+using eNamjestaj.Web.Areas.ModulMenadzer.Controllers;
+using eNamjestaj.Web.Areas.ModulKupac.Controllers;
+using eNamjestaj.Web.Areas.ModulKupac.ViewModels;
 //using Xunit;
 
 namespace eNamjestaj.UnitTest
@@ -89,9 +93,15 @@ namespace eNamjestaj.UnitTest
             var drzava = new Drzava { Naziv = "..." };
             var kanton = new Kanton { Naziv = "...", Drzava = drzava };
             var opstina = new Opstina { Naziv = "...", Kanton = kanton, PostanskiBroj = "..." };
-            var uloga = new Uloga { TipUloge = "kupac" };
-            
-            
+            var uloga = new Uloga { TipUloge = "admin" };
+            _context.AddRange(drzava, kanton, opstina, uloga);
+            _context.SaveChanges();
+
+            _context.Uloga.Add(new Uloga { TipUloge="menadzer"});
+            _context.Uloga.Add(new Uloga { TipUloge = "skladistar" });
+            _context.Uloga.Add(new Uloga { TipUloge = "dostavljac" });
+            _context.Uloga.Add(new Uloga { TipUloge = "kupac" });
+            _context.SaveChanges();
 
 
             var korisnik = new Korisnik
@@ -99,7 +109,7 @@ namespace eNamjestaj.UnitTest
                 KorisnickoIme = "johndoe",
                 Lozinka = "...",
                 Opstina = opstina,
-                Uloga = uloga
+                UlogaId = 5
             };
 
             var kupac = new Kupac
@@ -112,14 +122,12 @@ namespace eNamjestaj.UnitTest
                 Korisnik = korisnik
 
             };
-            _context.AddRange(drzava, kanton, opstina, uloga, korisnik,
+            _context.AddRange( korisnik,
                 kupac
               );
 
             _context.SaveChanges();
-            _context.Uloga.Add(new Uloga {TipUloge="menadzer" });
-            _context.Uloga.Add(new Uloga { TipUloge="admin"});
-            _context.SaveChanges();
+
             _context.Korisnik.Add(new Korisnik
             {
                 KorisnickoIme = "zaposlenik",
@@ -251,24 +259,26 @@ namespace eNamjestaj.UnitTest
             //_context.Uloga.Add(new Uloga { TipUloge="admin" });
             //_context.Uloga.Add(new Uloga { TipUloge="menadzer"});
             //_context.SaveChanges();
-            //_context.Korisnik.Add(new Korisnik {
-            //    KorisnickoIme="zaposlenik",
-            //    Lozinka="zaposlenik",
-            //    Opstina=opstina,
-            //    UlogaId=3
-            //});
+            _context.Korisnik.Add(new Korisnik
+            {
+                KorisnickoIme = "admin",
+                Lozinka = "admin",
+                Opstina = opstina,
+                UlogaId = 1
+            });
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
-            //var zaposlenik = new Zaposlenik
-            //{
-            //  Ime="zaposlenik",
-            //  Prezime="zaposlenik",
-            //  Email="...",
-            //  Adresa="...",
-            //  Telefon="-...",
-            //  KorisnikId=2
-            //};
+            _context.Zaposlenik.Add (new Zaposlenik
+            {
+                Ime = "admin",
+                Prezime = "admin",
+                Email = "...",
+                Adresa = "...",
+                Telefon = "-...",
+                KorisnikId = 3
+            });
+            _context.SaveChanges();
         }
 
         [TestMethod]
@@ -279,9 +289,11 @@ namespace eNamjestaj.UnitTest
             // Assert.AreEqual("kupac", ocekivana[0].TipUloge);
             //Assert.AreEqual("menadzer", ocekivana[1].TipUloge);
             //Assert.AreEqual("admin", ocekivana[2].TipUloge);
-            Assert.AreEqual("johndoe",ocekivaniK[0].KorisnickoIme);
-            Assert.AreEqual(1,_context.Zaposlenik.ToList().Count);
-            Assert.AreEqual("menadzer", _context.Zaposlenik.First().Ime);
+            Assert.AreEqual(2, ocekivaniK[1].Id);
+            //Assert.AreEqual(1,_context.Zaposlenik.ToList().Count);
+            //Assert.AreEqual("menadzer", _context.Zaposlenik.First().Ime);
+            //Assert.AreEqual(3, ocekivaniK.Count);
+
         }
 
         //        ProizvodiController pc = new ProizvodiController();
@@ -369,17 +381,9 @@ namespace eNamjestaj.UnitTest
 
 
         // ProizvodiController pc = new ProizvodiController(_context);
-        private HttpContext GetMockedHttpContext()
+        private HttpContext GetMockedHttpContext(Korisnik kor=null)
         {
             
-
-            // The following line bypasses the Include call.
-          //  mockSet.Include(Arg.Any<string>()).Returns(mockSet);
-
-            //var mockMojContext = new Mock<MojContext>();
-            // _context.Set(c => c.AutorizacijskiToken).Returns(mockSet.Object);
-            //var queryfirstOrDefault = mockSet.Object.FirstOrDefault();
-            //configuration
             IConfiguration configuration = new ConfigurationBuilder()
       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
       .AddEnvironmentVariables()
@@ -400,9 +404,7 @@ namespace eNamjestaj.UnitTest
             services.AddSession();
             services.AddDbContext<MojContext>(options =>
               options.UseInMemoryDatabase(databaseName: "Test_Database"));
-
-            //services.AddTransient<IEmailSender, MessageServices>();
-
+            
            
             var serviceProvider = services.BuildServiceProvider();
 
@@ -410,90 +412,50 @@ namespace eNamjestaj.UnitTest
     serviceProviderGetContext.Setup(s => s.GetService(typeof(MojContext)))
     .Returns(_context);
             
-            //var mCtx = serviceProvider.GetRequiredService<MojContext>();
-
+            
             //httpContext i session
             var mockContext = new Mock<HttpContext>();
             var mockSession = new Mock<ISession>();
-            Korisnik sessionUser = _context.Korisnik.First();// new Korisnik() { KorisnickoIme = "MyValue" };
+            Korisnik sessionUser = kor;//_context.Korisnik.First();// new Korisnik() { KorisnickoIme = "MyValue" };
             var sessionValue = JsonConvert.SerializeObject(sessionUser);
             byte[] dummy = System.Text.Encoding.UTF8.GetBytes(sessionValue);
 
-          // mockSession.Setup(x => x.TryGetValue(It.IsAny<string>(), out dummy)).Returns(true); //the out dummy does the trick
-            //var cookies = new IRequestCookieCollection();
-            // cookies.Setup(c=>c.Keys);
-            
-
+            if (kor != null)
+            {
+                _context.AutorizacijskiToken.First().KorisnikId = kor.Id;
+                _context.SaveChanges();
+            }
        // mockContext.Setup(s => s.Session).Returns(mockSession.Object);
             mockContext.SetupGet(ctx => ctx.RequestServices).Returns(serviceProviderGetContext.Object);
             mockContext.SetupGet(c => c.Items).Returns(httpContextItems);
           
-            //mockContext.SetupGet(ctx => ctx.Request.Cookies).Returns(cookies.Object);
-            //var g = new HttpCookieCollection();
-            //CookieContainer
-            //token, request and respond
             var collection = Mock.Of<IFormCollection>();
             var mockDataProtector = new Mock<IDataProtector>();
             Mock<IDataProtectionProvider> mockDataProtectionProvider = new Mock<IDataProtectionProvider>();
 
-
-            //var cookieRequest = new Mock<IRequestCookieCollection>();
-            // var ck = new Cookie();
-            // var cookieOption = new Mock<IOptions<CookieManagerOptions>>();
-
-
-            //var cookieHeaders = new Dictionary<string, string>();
-            //cookieHeaders.Add("logirani_korisnik", "test1234");
-            //var respHeaders = new Dictionary<string, StringValues>();
-            //respHeaders.Add("logirani_korisnik", "logirani_korisnik=test1234; expires=Sat, 02 Sep 2020 23:19:18 GMT; path=/");
-            //var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-            //var cookieOption = new Mock<IOptions<CookieManagerOptions>>();
-            //var context = new DefaultHttpContext();
-
-            // var colReq = new Mock<RequestCookieCollection>(cookieRequestHeaderList);
-            //cookieRequest.Setup(cr => cr.Keys.Add("logirani_korisnik"));
+            
             var request = new Mock<HttpRequest>();
         //           request.Setup(f => f.ReadFormAsync(CancellationToken.None)).Returns
  // ---->                            (Task.FromResult(collection));
         request.SetupGet(r => r.Cookies).Returns(new RequestCookieCollection(cookieRequestHeaderList));
-            //request.Setup(r => r.Headers.Add(Cookie("Cookie", new CookieHeaderValue(cookie.Name, cookie.Value).ToString())));
-           // request.Setup(c=>c.)
-            // setting up any other used property or function of the HttpRequest
-           // mockContext.SetupGet(c => c.Request.Cookies).Returns(cookieRequest.Object);
-
+            
             mockContext.SetupGet(c => c.Request).Returns(request.Object);
-
-            //var cookieREsponse = new ResponseCookies();
-            //var colResp = new Mock<IResponseCookies>(new ResponseCookies( new HeaderDictionary(cookieResponseHeaders)));
-
+            
             var response = new Mock<HttpResponse>();
             response.SetupProperty(it => it.StatusCode);
-            //var token1 = "7843hdfh-57475hdhs";
-            //cookieREsponse.Setup(crsp => crsp.Append("logirani_korisnik",JsonConvert.SerializeObject(token1),option));
-
+           
             response.SetupGet(resp => resp.Cookies).Returns(new ResponseCookies(new HeaderDictionary(cookieResponseHeaders),null));
             response.SetupGet(resp => resp.Headers).Returns(new HeaderDictionary(cookieResponseHeaders));
 
             
-            //  response.Setup(resp =>
-            // resp.SetCookieJson(It.IsAny<string>(),It.IsAny<Korisnik>()))
-            // .Callback<Cookie>((cookie) => cookieREsponse.Add(cookie));
-            //response.Setup(resp => resp.Cookies.Append("logirani_korisnik", val, option)) ;
-            // setting up any other used property or function of the HttpResponse
-            //mockContext.Setup(c => c.Response.Cookies.Append("logirani_korisnik", val, option));
-
             mockContext.Setup(c => c.Response).Returns(response.Object);
-            //mockContext.Setup(c => c.Response.Cookie).Returns(cookieRequest.Object);
-
+            
             mockDataProtector.Setup(sut => sut.Protect(It.IsAny<byte[]>())).Returns(Encoding.UTF8.GetBytes("CfDJ8GnPj9ak8t1HphXa8mMbIoKnqw4YPtXOXoKasvmnPEhKDWkKreGRYzObYb6nsYj6zcIIiyuqWMic_lfwLkYv-Y-II7heGvYx0ffMSSIVD7JKrsX9ML74Ju2vmFPnhTtifbnFQBrUbluhJ2Pn34v3anAXHdYRTh2YlyJhJ3oJDUru_6xO_7EM9UJdwxU9VJOf0NpChZypR9Aa64JQX4CLx8i4Sy04gzxsKKvSq0TACNlY1RuW8fodu23osFIsIdQ96G2vIYwOyueFUXA2tcLCurbtm2kQGgqviZZoBQNdfiwTjxw6dvW5f9MmJHz_XpbQCYiEU8kG15DkyWglvq006C6A9xcCGvi6Fi0_Ow1gVhwSdvHun7M9vpNF9BWojdpdOwTD2y9nSjg3adU1IRml-zZxPJ0LVICVQ0yZ1ZnbqWfMxSVueoeEGVYoIu4h_EqT-Y6YqmSx0-Z5yOjK5AJauARFoU-5ho6yCSUIg_sdbhkRecFM0oChqfCFvjPl_T2irTUk2EO94FrC7TGZ-vM7VPs2F4_J7Td2IyaZBvwyGFL6A_Xp8MGoOoAgWUgBL4t-o8JscOLgVrGyBffQtM92sg6bsqEnrxerO4sE1QTxDF_TpCD5sLKMtaF3NItukOfVt9DPaTV9THgue6LVJFasotqv6b9UOd_o2Tpa_ZB0LHxhdZNRHYRqF0HcyCohphsRIJ5hCP5Os7DIT8isyYks_ZXKEmFd7TKTREVouO3T1EPx0bDV_qFGBZrQu6V_uybf7gNk9Crnge2Ekj6ElXgPIviauc7edKVnPsTRzwDsOYN1NWgk-UGkKFjISCrE_UkaMn8F6-y2umgVJTebmap-MczZq6eilD9r_7aDSJyZBIZPY0QdGSJlLx3CYySTJ0fsoz3t5sUlt1cuAeWng6oiE_ij0wbUfriP8YE1mF8RB8hSQtVXC3KH8_ukP2ofEuehzvm_NTRx5yKls4nkfnzaUpfU3VYvVUIuLWnQY5xeCnN2xn1Qgklbfv_Xx32ZEKAGmm6HxKkqlrz8y-WFUdrYcI4ng2EJvvt0B2IUopCL_DPEAh4sXmEy0pM_YOtOV_mCH4eMupKAD0tqBuTFrYeb85vsNqe4SOKkYTID83KtVxZ0fCo6Z4Gd6kLHQ4TQRokVnkHa1c9VHrzZKI6oy23uGwAyVGlFxTK4lM6Xg2HBjo_AYrxg5H6Yb3Kb1M188hImXvW8q6H-C7LMwM966FGTv1kOYYCPFxL-4876UziUcAw7hQGAoxCRZQVOmd7-K8DtQSeI4ctRzaghduMlYAbqG5s5ZerhUF-1Jbo3d4RTOxXdeH9l8D7St2WfHn1aObitZ8tPxY90V4y5YmOQbC267W9QaQUT0pcw7es6SZDbrNmxp6ktzxn34qcAkINmBnMTJKohl7tXCs3mJsXc7mpEeeFjy4NXa8f3pKKQ_hv4Qkfl-gOgfnFTQe6tD9VAQMdUQbjh_R4NoKaRGnRQTHSWBn4dHFQSWwSyshHbvyq8rXB4eRbB1yb5WD4BdpWVNa2d2k2NU1jZy_FI4SZoKsO-H5gPl3j6xnvyk20swbBE2RdLG_SGEWUNMYUdJEOxgH7FC3amwh3-MGhxwJ6m0maGukIL_uAjbH7N_Yt7pf1c5WNWbfQEGkhw3KBIf_vrbr4USZt_0zGWvFM64IXvJl8D5JNvsuVlOrrihfv0TMjhcmFinYM40FSVg3R9qkGHK-kftfYCxK_hoOrxkETEcNZfcE9sgr5F2abXqDM_nhExF35brEt3jrNRJb5DTFV9DV7VidQfec8qjF-c6UTosoa6hgkK2LCeriZ7x3olFjkeUSW501bYDDEJjcphMA5nr1HKsuPt1C9OR3O5UhPwR_quYKQRnbqvPbfljKlBIy0rzVUVVEoZz58vpoDC96di-L-TRLUVPFlukY5k43P5mFLRkWiMZ3GFz88qdOKM_AtPdc-Vi4r77h-fdzvtW5sBiBQ54ViAqHW592XRVjQZHx6_UFyT9rqVgVgjSn_PAJ9Nqv-1S4V30DT4QmgYhLb_UW8oyB7q4dAXPiQWz26LRkPRR-93fl-XiIYTm0TMTv3yT8p51Sl4LaPmJwlPSszPgziEnZET1ypX3xMaJ8oIBEakk5uAnvdToHintIN6a3z6L7Aon0DlEvfrUOvf7cTXtDrfrJx-6NX7Bkj5W2R24_QFTR-rst6gXNQJzBCU9H5ml9m8WVapWX25g4oADScfg72FiTAHBLn2T1lC16YncicOLsyK2jxvXtJ716ECq6b3Lv6lvuHkB_vWQYSpRCsnJnmDjWebUao11WhpwaqgDiDyGAgQpsSWKdMch8hpSK9911LWIc29lXozwb73igIvekGKIZRER9ZdxFiEnF5SggQyChvWsLW-SSSyaKd5nvcLO4PCJTjDAlkym7FIZWpHtqGvr_wGLPq_oFQ6nsy1AWn8gg6fVd6Zn4hqvan8_FEwJz44UTXJoG6s_IJns4SbivRyNnyByfGPr8ytzDUQ0fcCmtEJABu9SNr575q9-YuZr-6qa5bzDMtt7PAqSvrcI7z2IWW8quKmf5wD_u74rCuVfQk8aLxqxBb-yoJx-OGhWMAHO1Sxl5wW_MKkYeJvwJjC9vOang1aq_Rcpb0xnPEz5uhjJIUiugFdpL34-mjNyA4dXRHsHiUuOOHTg2tYnyaLZ5Lm1wjmjxv1PT3ks2_d17QHjbBiquE1Bz3k2k0KMvrl9PFqrvrVxBdUq8AFYI-43XpAuJGu2QpxmFcTTz1d5MKgCdfX2hqX3wbg0ehUcEEGHkZE0kjOcnOr2MGb_U9rutEYy4nmUWSIEubrBVFSIJ1vXUua0j7-q9_Zc7per08akEGqCMxxzTXsWxgAAetFb-X-PKNC03SC3KhrFvZu7VlRJUetOb75Vfjhtpv9iSKRhvnlOSDmki5iAlP7jViQdZCeQGI3jSS4734dnRbB44J3WustkK5sj33o0U7gOWTuXtm2KqTDhjMPU5-FdxKKVVd9u4SF71PP2aNfiYv4V14kAB4IVV3qjINz3XUdPRsJK3C8XoNdwJeZTJvQGCIkw7wXNfTC5i634c7c98CT6X2I4d-q2s8HvjLRD9gvTEUE-E0A4GEMWhFwCqfhR0MfRmYKo-OJq6JGz6Z6QqolN4toTGjBJVUhVRMKTyg7g5fJcjYQPLp3gOLpsLd2z0silP1jH9NMI85eGf5_Pp7DSA_aGiwR6nfzgSerJWyCLHlUHK0_vLz0s0rB2u4xtsdttZ1JeIUqlHHcSokzxTLn3cAZ4QfjufMOiWNxcSUKRdt9fMCW4A7ncVEJpraLkJcfEYiE5XVPM_cYL0O6cZQdkJLo8PssIiVz7VWHM6nfnqVb2ILQf0ccuS4_O-HrPo4yMM_Tx5eYbVVXesYUEdQ8fRo34SqFT7i1p5h8kRJGU2xBSUzyKTQxZyzuXqoW5nSj9FMyrHp3hbawKVYbAcX7__GdZ7LjVWiMvRDjhLUpvzGUSBNLQ7OeAM1-ElGwXxyD_T_HWxykpl7q0m1F6hnU-j1Kg4zMFoPSSEYqlQxx_odRrvzhfq2EpiyUeT82V_PjkIVj42s3SEYOqTvLWwGZvTIvLsEzUX4vMoSjpWH3ZBNT-mVw7EY_QRxTe-rughjccvUtS3XBquMfNt7UGW7hWWYUeFmpbbdwy4gWaOH3NCuom-zoHE3XcNrTvamdNDnko-gxMDtd7b90Rbzd-MCXukS6qFqa4sePFY3drMmgD1uz-Rhti3MrtSjC9jiCu98vQKJulf06079XeJffMCcGIyk7GUD_jfFLVeJ4yK3chTz90o5PoS7lpxqbzTTWBoWZA9TcWspXmOTm2p5g49YOHHfDfYRyjXCDDJPnaxRBHYroZrwZP7NjsOQTU8XZCTmmZiRe9EMnGJJBo7B4vKKbM5zmj3czp9ydwOfQamSvM1_YdfVybsa1mpfzIXY_xMenGBvTxCQsZEshhAcoWzC1X1ZoMzilLGxgEct70uXzsuK90HZwbIyynme03hTK4l4vTH1qMjBNti-VnhxiHWKf1zAjRj7g-islGDRgf9mos5wzJ0_FRobCEISuhhKSk3KqNCd4rCAyoJOz_yw8aISP_DzHmCzESdV7ykuOtqjAfkODDL29RyMEpR81Q_ihoD-kIor8xi4pNevAmqpr6EMYN4sweiH6SsZSeh5fCDU5MMRIxipw5w-_9bU6A9XBwYTe5AbCBfcauiCnGzS7ZP0Uxyg7euT2652U6QvcTn2lhHlovL7FCMs19nIXsTBkgNVdHlH7rm_Mi1VAW_lqBBI7rVV0juKITvZIeUrkjfVOhh0ZdeX0dVjp_WPU2BimWiZk_rWG98JSI3zrJFAyJBTj2jIefzueE6kSkQuc3O9uUZWfptLkmmRcKTwQ8piTdQagWxIZ_pNOJo5cLkeLncbA2nbQfuwdNFhprNs65MYa3Q8tZby9sAvbqeY3o3t1Q9ZOF0TNE509kpceZyaWU35eulK8mA3VcGyTGBcNxtCih8T0d1RNzUzlaqpgrsPZEeLJuS6XBr1TPeLMOKGI4a2gdsLKAU7Ce1rAQ-BBcYv_RS_YsFL_FyHSr0QTzE301-TPaowcJQQb7bTDaFgFc9bttDVpOUgm6Zh20-91af2HIw2H-BVjn0Y7uBwFEADo9nIU2cCtWelvvMzGqReBWXRsr2pftwJtbrZozMf2eSniyUzXXd7zYQaSc-WkiejeIA9quvKvaybK2RVldCqP_TF8SaBpDrmboaxFGaSwdsc6L5_apwLkv3MxTx113J1NqqCinYKxjWsNV6wJ2NLiJdEzBkblwNSwSwf2JVfzGvcSEEfHxdNhXvPs7u3iqe1U2hDCyD82GismNhWsdd8k5WtvJ45rlrq7F2ERCe33lqjIp7PwXjhWpfA6WI9OM5Yhnak5Kv-lWQMVnwnrQnOn7vfnw5DwItGgAKFtdHyYSzl0bRB_t4Rb4K8TdVI3vfaT6aPemrHb7IHGQhFlRBceFDQ06nJU9lvmz0lKhXs-oi7EsWSe2KGFHIU76FEiTQEfQmDIaj1tdXqrDlBBVLpi9W9PWtQfQjkGQEmLriln5MRrmwD7BAqw__oiCpkebgONRp1pNvS-TebsmzXgrlrVXHCiKJuLuD_dN5Lkr8m5XSRomqj-yBzVlCHtZTEkDhRiZ7hzcHTE58eJrForozyMMzkgo4ri9M4gWOx8EzE54XmhtRvQu1IzL_O3yBDQyArjqS6xUcv_TVlc9gWsCr3I2S0A7C7EGe2J8195Y363AT-g7tix4CxKGseEHY8SMrtSgngE00wiqsru7R2XMW4QjAZ13ZBOTlqf_qb2DADXKNVl7hFlc27GyQCSihriKJY5P-xizFuq-OStOrKT7VqypP5_hE8uOU0v22k6tzanU7xdeDF8s8S9rw6tKdea038jbr72J94V9KRXwHwoP8zsfw3mbSPMxrkEC0D-7UmkjQMcOYHaWn40cwtUX7B6gRU93AQy7sa8rOdoNHbrNbuuSUmwIMwQn0TEBG6ZDGesIn7yKeBopUip-MAzh3PrHQ8hYZ32hQGI3W76pJf5t42PmMKbtz858MNY3TsNJUNwX8YOb5CAsreUjIw4dRqgp1uhmjbE-VyXrIuI9qu8pju2e_BpwobJBQYXZvnbus3H7Bj2VPlsWNdTPQqk7HEl3qtvhacGo78ofgWjJswW4JOboLJQFbNxomn3rYH3oVbZRg1XJMcFBYzbXjRV89GV9IDNEOHtzx28nK4_gC_KzJCKi1URk6MTrwFl6NLCk64x1j_ZnBOwvne1yN-zjkcAoxBywSTbuheHQ_Mp79kxg9p5_GJMmexv_1FhNauTNdEbaKDuKq2CdNTPt5Z43J37hpzpKv-KftrlhHGj-dS4uZu7phTPKKhkCR_dUvWWy2RC6PVTj1hV8BA8K0y1q2VWWK2xf_XmbzG-VrSRb0wym28NadhCYTcB9uysnH3BhTirtR8Pqqy_kDaw6cURMVVedlEeWgdt-Hs2YhYEXy_q3FdM7LWPgl6HbDigIf2_Xw6JWjqeNTVCMaHrVOoEJax0rbXrqOm8LIB-UBshSrp6ximv0ARLED5jXHDGJgjhojYvWgvPGnUz-Ch8vhwYlwHO4j4kUJBcQqeQXztbqiXJc2KB9ftXDteLmd04tV7w-x_h21glp51p1rfasvarmurE8DNVJ4LlR4JFognzv7tunVwmMg0y8utKGukD9aa7NfZ-3W6srBbnfUcrFWH8Gn76WDq03EXwuRMJngcAh-ivLvjB-0_66O-lVJKLS1A-6yLj3XQc_0zNlZW4jcn_7KLePoZH3Yax6Kli5_BaJBtURK9F-Ot5jHibQub4-xnigiBMjyrLp8vG73bJ5RosfaCZ5qoCkN-PDg9bhSEwTjhPCVqNOC4Bt5OoymN6qzsvHwmI1Fj2h3HsuYxEEnbdQHcIsHGz5NBFHqNehh6pW2jhMm7gIJ2sBLWUxZzzWkO88uC3DqRUDTX8pmH0-bF1MrBYl8V382ADaPiG9Tox-elSPwe1HLDsPNAJzvQXlDHHLf9_MP8F_6AsOENr9wA4xtuHF4WcBMNAZzpHVZUomc1yk5wHiEIotBOQxcTYOEh9vigLXdrMeLRC3nJwTfjj9XG855HTgcAtUJv9A9CKCHu2lkKoCRefyrCixa36Ch9YJ113Fwjmtz9p1sQseflENtYOhj1_FPZVUl7U-yNWAI30fazh40TDGj9qca3KlLiPfAosGTuouzU0h-PmihTfJImDlCbC6BobgA"));
             mockDataProtector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(Encoding.UTF8.GetBytes(expectedTestString));
 
             mockDataProtectionProvider.Setup(s => s.CreateProtector(It.IsAny<string>())).Returns(mockDataProtector.Object);
 
-
-           // mockContext.Setup(mc => mc.GetLogiraniKorisnik()).Returns<Korisnik>(k=>_context.AutorizacijskiToken.Any(a=>a.Korisnik==k)
-
-            return mockContext.Object;
+             return mockContext.Object;
 
 
 
@@ -506,39 +468,72 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        public void Test_Home_IndexAction_LoggedUserNull_RedirectsToAutentifikacija()
+        public void Test_HomeController_Index_SendingNullUser_RedirectsToModulKupacProizvodiIndex()
         {
             HomeController hc = new HomeController(_context);
-            var mockContext = new Mock<HttpContext>();
-            var mockSession = new Mock<ISession>();
-            Korisnik sessionUser = null;// new Korisnik() { KorisnickoIme = "MyValue" };
-            var sessionValue = JsonConvert.SerializeObject(sessionUser);
-            byte[] dummy = System.Text.Encoding.UTF8.GetBytes(sessionValue);
-            mockSession.Setup(x => x.TryGetValue(It.IsAny<string>(), out dummy)).Returns(true); //the out dummy does the trick
-            mockContext.Setup(s => s.Session).Returns(mockSession.Object);
-
-            hc.ControllerContext = new ControllerContext
-            { HttpContext = mockContext.Object };
-
-            var result = (RedirectToActionResult)hc.Index();
-
-            Assert.AreEqual("Index", result.ActionName);
-            Assert.AreEqual("Autentifikacija", result.ControllerName);
-        }
-
-        [TestMethod]
-        public void Test_Home_IndexAction_ReturnsView()
-        {
-            HomeController hc = new HomeController(_context);
+            hc.Url = GetUrlHelper();
             hc.ControllerContext = new ControllerContext
             {
                 HttpContext = GetMockedHttpContext()
             };
-         
-            ViewResult result = hc.Index() as ViewResult;
-
-            Assert.IsNotNull(result);
+            var redirectResult= hc.Index() as RedirectResult;
+            Assert.AreEqual("/ModulKupac/Proizvodi/Index", redirectResult.Url);
         }
+
+        [TestMethod]
+        public void Test_HomeController_SendingUserKupac_RedirectsToAModulKupacProizvodiindex()
+        {
+            HomeController hc = new HomeController(_context);
+            hc.Url = GetUrlHelper();
+            Korisnik kor = _context.Korisnik.Where(k => k.Id == 1).First();
+
+            hc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(kor)
+            };
+            var redirectResult = hc.Index() as RedirectResult;
+            Assert.AreEqual("/ModulKupac/Proizvodi/Index", redirectResult.Url);
+
+        }
+
+        [TestMethod]
+        public void Test_HomeController_SendingUserMenadzer_RedirectsToAModulMenadzerProizvodiMenadzerIndex()
+        {
+            HomeController hc = new HomeController(_context);
+            hc.Url = GetUrlHelper();
+            Korisnik kor = _context.Korisnik.Where(k => k.Id == 2).First();
+
+            hc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(kor)
+            };
+
+            var redirectResult = hc.Index() as RedirectResult;
+            Assert.AreEqual("/ModulMenadzer/ProizvodiMenadzer/Index", redirectResult.Url);
+
+        }
+
+        [TestMethod]
+        public void Test_HomeController_SendingUserAdmin_RedirectsToAModulAdmiKorisniciIndexIndex()
+        {
+            HomeController hc = new HomeController(_context);
+            hc.Url = GetUrlHelper();
+            Korisnik kor = _context.Korisnik.Where(k => k.Id == 3).First();
+
+            hc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(kor)
+            };
+
+            var redirectResult = hc.Index() as RedirectResult;
+            Assert.AreEqual("/ModulAdministrator/Korisnici/Index", redirectResult.Url);
+
+        }
+
+
+
+
+
 
         [TestMethod]
         public void Test_Autentifikacija_Index_REturnsView()

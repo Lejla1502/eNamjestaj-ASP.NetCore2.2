@@ -1,0 +1,111 @@
+﻿@model eNamjestaj.Web.Areas.ModulKupac.ViewModels.ProizvodiDetaljiVM
+@using Microsoft.AspNetCore.Http
+@using eNamjestaj.Data.Helper
+@using eNamjestaj.Data.Models
+
+@*@{
+        if (Context.GetLogiraniKorisnik() == null)
+        {
+            Layout = "_LayoutAnonim";
+        }
+    }*@
+
+<br /><br />
+<h1>Detalji proizvoda</h1>
+
+<br />
+
+<form action="/ModulKupac/Proizvodi/ProvjeraKolicine">
+    <div>
+
+        <input type="hidden" name="Brojac" value="@Model.Brojac" />
+        @*<input type="hidden" name="Popust" value="@Model.Popust" />*@
+        <div>
+            <h3 style="display:inline-block; padding-left:25px;">@Model.Naziv</h3>
+            @*@if (Model.Popust != null)
+                {
+                    <p style=" display:inline-block;padding-left:60px">- @Model.Popust %</p>
+                }*@
+        </div>
+        <p>
+            <img src="@Url.Content(@Model.Slika)" style="width:400px;height:300px;" align="left" />
+            @*@if (Model.KonacnaCijena != null)
+                    {
+                    <p class="product-details"><b>Cijena: </b><s>@Model.Cijena KM  </s> @Math.Round(decimal.Parse(Model.KonacnaCijena.ToString()), 2) KM</p>}
+                else*@
+            {
+        <p class="product-details"><b>Cijena: </b>@Model.Cijena KM </p>}
+        @*<p class="product-details"><b>Cijena: </b>@Model.Cijena KM</p>*@
+        <p class="product-details"><b>Šifra: </b>@Model.Sifra</p>
+
+        @if (Model.Brojac > 1)
+            {
+        <p class="product-details">
+            <b>Boja: </b>
+            <select name="BojaID">
+
+                @foreach (var x in Model.Boje)
+                        {
+                <option value="@x.Value">@x.Text</option>
+                        }
+            </select>
+        </p>
+            }
+            else
+            {
+        <input type="hidden" name="BojaID" value="@Model.BojaID" />
+        <p class="product-details"><b>Boja: </b>@Model.Boja</p>
+            }
+
+        <p class="product-details">
+            <b>Vrsta: </b>@Model.Vrsta
+        </p>
+
+        <input type="hidden" name="ProizvodId" value="@Model.ProizvodId" />
+
+        <div class="form-group product-details">
+            <label>Količina : </label><br />
+            <input asp-for="kol" class="form-control" style="width:50px;" /><br />
+            <span asp-validation-for="kol" class=" text-danger"></span>
+        </div>
+
+    </div>
+
+
+    <br />
+    @*@if (Context.GetLogiraniKorisnik() == null)
+        {
+            <div>Da biste dodavali proizvode u košaricu potrebno je da se logirate</div>
+            <a class="btn btn-primary" href="/Autentifikacija/Index">Login</a>
+
+        }
+        else*@
+    {
+    <input style="margin-left:30px;" type="submit" value="Dodaj u košaricu" />
+    }
+</form>
+<br />
+<br />
+<br />
+<br />
+
+<a href="/ModulKupac/Proizvodi/Index">Back</a>
+
+<br />
+<br />
+<br />
+
+@*<div id="komOcjeneID"></div>
+
+    <script>
+    $(document).ready(function(parameters) {
+        $.get("/ModulKupac/Recenzije/Index?proizvodId=@Model.ProizvodId",
+            function(rezultat, status) {
+                $("#komOcjeneID").html(rezultat);
+
+            });
+    });
+    </script>*@
+
+
+
