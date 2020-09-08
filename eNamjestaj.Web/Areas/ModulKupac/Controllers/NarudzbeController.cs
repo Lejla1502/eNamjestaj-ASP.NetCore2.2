@@ -154,5 +154,31 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                 return View(null);
         }
 
+        public IActionResult OtkaziNarudzbu(int narudzbaId)
+        {
+            Narudzba n = ctx.Narudzba.Where(x => x.Id == narudzbaId).FirstOrDefault();
+            Izlaz i = ctx.Izlaz.Where(y => y.NarudzbaId == narudzbaId).FirstOrDefault();
+            Skladiste s = ctx.Skladiste.Where(z => z.Id == i.SkladisteId).FirstOrDefault();
+
+            List<IzlazStavka> proizvodi = ctx.IzlaziStavka.Where(p => p.IzlazId == i.IzlazId).ToList();
+
+            foreach (IzlazStavka p in proizvodi)
+            {
+                ctx.ProizvodSkladiste.Where(pi => pi.ProizvodId == p.ProizvodId && pi.SkladisteId == s.Id).First().Kolicina += p.Kolicina;
+            }
+
+            n.Status = false;
+            n.NaCekanju = false;
+            n.Otkazano = true;
+            i.PovratNovca = true;
+
+
+
+            ctx.SaveChanges();
+
+            return RedirectToAction("NaCekanjuIndex", "Narudzbe");
+        }
+
+
     }
 }

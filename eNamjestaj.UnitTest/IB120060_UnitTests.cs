@@ -1303,6 +1303,25 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual(1,model.Narudzbe[0].NarudzbaId);
         }
 
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Nardzbe_Nacekanjuu_Otkazi(int id)
+        {
+            NarudzbeController nc = new NarudzbeController(_context);
+            nc.Url = GetUrlHelper();
+            nc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(_context.Korisnik.Find(1))
+            };
+
+            var result = nc.OtkaziNarudzbu(id) as RedirectToActionResult;
+
+            Assert.AreEqual(true, _context.Narudzba.First().Otkazano);
+            Assert.AreEqual(false, _context.Narudzba.First().NaCekanju);
+            Assert.AreEqual("NaCekanjuIndex", result.ActionName);
+            Assert.AreEqual("Narudzbe", result.ControllerName);
+        }
+
     }
 
 

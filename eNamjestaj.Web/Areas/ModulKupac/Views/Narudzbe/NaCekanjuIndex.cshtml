@@ -33,8 +33,11 @@
                     <td>@(x.NaCekanju ? "Da" : "Ne")</td>
                     <td>
                         <button ajax-poziv="da" ajax-url="/ModulKupac/Narudzbe/Detalji?narudzbaId=@x.NarudzbaId" ajax-rezultat="detailsNaCekanjuDiv" class="btn btn-success">Detalji</button> |
-                        <button id="otkaziNarudzbu" class="btn btn-danger" par="@x.NarudzbaId">Otkaži</button> |
-
+                        @if (x.NaCekanju)
+                                { 
+        
+                                    <button id="otkaziNarudzbu" class="btn btn-danger" par="@x.NarudzbaId">Otkaži</button>
+                        }
                     </td>
                 </tr>
             }
