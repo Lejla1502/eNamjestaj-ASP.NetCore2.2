@@ -124,5 +124,35 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
             return PartialView(model);
         }
 
+        public IActionResult NaCekanjuIndex()
+        {
+            List<Narudzba> n = new List<Narudzba>();
+            Korisnik ko = HttpContext.GetLogiraniKorisnik();
+            Kupac k = ctx.Kupac.Where(x => x.KorisnikId == ko.Id).FirstOrDefault();
+
+            int brNarudzbi = ctx.Narudzba.Where(x => x.KupacId == k.Id && x.NaCekanju == true).Count();
+            // n=  ctx.Narudzba.Where(y => y.KupacId == HttpContext.GetLogiraniKorisnik().KupacId && y.Status == false).ToList();
+            if (brNarudzbi > 0)
+            {
+                NaCekanjuIndexVM model = new NaCekanjuIndexVM
+                {
+                    Narudzbe = ctx.Narudzba.Where(y => y.KupacId == k.Id && y.NaCekanju == true).Select(x => new NaCekanjuIndexVM.NarudzbeInfo
+                    {
+                        NarudzbaId = x.Id,
+                        Datum = x.Datum,
+                        UkupanIznos = ctx.Izlaz.Where(i => i.NarudzbaId == x.Id).FirstOrDefault().IznosSaPDV.ToString(),
+                        Status = x.Status,
+                        Otkazana = x.Otkazano,
+                        NaCekanju = x.NaCekanju
+                    }).ToList()
+                };
+
+                return View(model);
+            }
+
+            else
+                return View(null);
+        }
+
     }
 }

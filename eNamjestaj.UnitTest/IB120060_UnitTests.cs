@@ -1268,6 +1268,41 @@ namespace eNamjestaj.UnitTest
 
         }
 
+        [TestMethod]
+        public void Test_Naruudzbe_NaCekanju_VracaNullModel()
+        {
+            NarudzbeController nc = new NarudzbeController(_context);
+            nc.TempData = GetTempDataForRedirect();
+            nc.ControllerContext = new ControllerContext
+            {
+                HttpContext=GetMockedHttpContext(_context.Korisnik.Find(1))
+            };
+
+            ViewResult result = nc.NaCekanjuIndex() as ViewResult;
+            NaCekanjuIndexVM model = result.Model as NaCekanjuIndexVM;
+
+            Assert.AreEqual(null,model);
+        }
+
+        [TestMethod]
+        public void Test_Naruudzbe_NaCekanju_VracaIspravanModel()
+        {
+            NarudzbeController nc = new NarudzbeController(_context);
+            nc.TempData = GetTempDataForRedirect();
+            nc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(_context.Korisnik.Find(1))
+            };
+            _context.Narudzba.First().NaCekanju = true;
+            _context.SaveChanges();
+
+            ViewResult result = nc.NaCekanjuIndex() as ViewResult;
+            NaCekanjuIndexVM model = result.Model as NaCekanjuIndexVM;
+
+            Assert.AreEqual(1, model.Narudzbe.Count);
+            Assert.AreEqual(1,model.Narudzbe[0].NarudzbaId);
+        }
+
     }
 
 

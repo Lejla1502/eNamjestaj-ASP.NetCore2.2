@@ -1,0 +1,117 @@
+﻿@model eNamjestaj.Web.Areas.ModulKupac.ViewModels.NaCekanjuIndexVM
+@{
+    //Layout = null;
+}
+
+<br />
+<br />
+
+
+@if (Model != null)
+{
+    <h1>Narudžbe na čekanju</h1>
+    <br />
+
+    <table class=" table table-bordered">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Ukupan iznos</th>
+                <th>Otkazano</th>
+                <th>Na čekanju</th>
+
+                <th>Akcija</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model.Narudzbe)
+            {
+                <tr>
+                    <td>@x.Datum</td>
+                    <td>@x.UkupanIznos</td>
+                    <td>@(x.Otkazana ? "Da" : "Ne")</td>
+                    <td>@(x.NaCekanju ? "Da" : "Ne")</td>
+                    <td>
+                        <button ajax-poziv="da" ajax-url="/ModulKupac/Narudzbe/Detalji?narudzbaId=@x.NarudzbaId" ajax-rezultat="detailsNaCekanjuDiv" class="btn btn-success">Detalji</button> |
+                        <button id="otkaziNarudzbu" class="btn btn-danger" par="@x.NarudzbaId">Otkaži</button> |
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <div id="detailsNaCekanjuDiv"></div>
+    <br />
+    <a href="/ModulKupac/Proizvodi/Index" style="text-align:left">Back to shopping</a>
+    <br />
+
+
+
+
+
+
+    <script>
+       $("button[ajax-poziv='da']").click(function(event) {
+
+var btn = $(this);
+
+var url = btn.attr("ajax-url");
+var r = btn.attr("ajax-rezultat");
+
+$.get(url,
+    function(rezultat, status) {
+        $("#" + r).html(rezultat);
+
+});
+});
+
+
+$("#otkaziNarudzbu").click(function () {
+//e.preventDefault();
+var btn = $(this);
+var p1 = btn.attr("par");
+
+//var message_alert = $('<p>Da li ste sigurni da želite otkazati narudžbu?</p>').dialog({
+//    buttons: {
+//        "Yes": function () {
+//            var url = "/ModulKupac/Narudzbe/OtkaziNarudzbu?narudzbaId=" + p1;
+
+//            $.get(url,
+//                function (rezultat, status) {
+//                    window.location.reload();
+//                }); },
+//        "No": function () { alert('you clicked on no'); }
+//    }
+//});
+//})
+
+
+if (confirm('Da li ste sigurni da želite otkazati narudžbu?'))
+{
+    var url = "/ModulKupac/Narudzbe/OtkaziNarudzbu?narudzbaId=" + p1;
+
+    $.get(url,
+        function(rezultat, status) {
+        window.location.reload();
+    });
+}
+else
+{
+    return;
+}
+
+//alert("Da li ste sigurni da želite otkazati narudžbu?");
+});
+
+    </script>
+}
+else
+{
+    <br />
+    <br />
+    <div>Nema narudžbi na čekanju!</div>
+}
+
+
