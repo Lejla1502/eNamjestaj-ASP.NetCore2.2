@@ -1077,6 +1077,20 @@ namespace eNamjestaj.UnitTest
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
 
         }
+
+        [TestMethod]
+        [DataRow(2)]
+        public void Test_ProizvodiMenadzer_Obrisi(int id)
+        {
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
+            pmc.Url = GetUrlHelper();
+
+            var result = pmc.Obrisi(id) as RedirectToActionResult;
+            
+            Assert.AreEqual(1, _context.Proizvod.ToList().Count);
+            Assert.AreEqual("Index", result.ActionName);
+
+        }
         
 
         [TestMethod]

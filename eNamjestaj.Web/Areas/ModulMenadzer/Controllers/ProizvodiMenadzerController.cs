@@ -309,5 +309,21 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
 
         //    return RedirectToAction("Index");
         //}
+
+        public IActionResult Obrisi(int id)
+        {
+            Proizvod p = ctx.Proizvod.Find(id);
+
+            foreach (ProizvodBoja x in ctx.ProizvodBoja.Where(x => x.ProizvodId == id).ToList())
+            {
+                ctx.ProizvodBoja.Remove(x);
+                ctx.SaveChanges();
+            }
+
+            ctx.Proizvod.Remove(p);
+            ctx.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
     }
 }
