@@ -20,10 +20,10 @@ namespace eNamjestaj.Data.Helper
         {
             MojContext db = context.RequestServices.GetService<MojContext>();
 
-            string token = context.Request.GetCookieJson<string>(LogiraniKorisnik);
+           string token = context.Request.GetCookieJson<string>(LogiraniKorisnik);
             if (token == null)
                 return null;
-
+                 
             return db.AutorizacijskiToken
                 .Where(x => x.Vrijednost == token)
                 .Select(s => s.Korisnik)

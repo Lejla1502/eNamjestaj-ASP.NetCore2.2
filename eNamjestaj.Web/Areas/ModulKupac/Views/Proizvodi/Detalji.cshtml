@@ -3,12 +3,12 @@
 @using eNamjestaj.Data.Helper
 @using eNamjestaj.Data.Models
 
-@*@{
+@{
         if (Context.GetLogiraniKorisnik() == null)
         {
             Layout = "_LayoutAnonim";
         }
-    }*@
+}
 
 <br /><br />
 <h1>Detalji proizvoda</h1>
@@ -73,13 +73,13 @@
 
 
     <br />
-    @*@if (Context.GetLogiraniKorisnik() == null)
+    @if (Context.GetLogiraniKorisnik() == null)
         {
             <div>Da biste dodavali proizvode u košaricu potrebno je da se logirate</div>
             <a class="btn btn-primary" href="/Autentifikacija/Index">Login</a>
 
         }
-        else*@
+        else
     {
     <input style="margin-left:30px;" type="submit" value="Dodaj u košaricu" />
     }
@@ -95,7 +95,7 @@
 <br />
 <br />
 
-@*<div id="komOcjeneID"></div>
+<div id="komOcjeneID"></div>
 
     <script>
     $(document).ready(function(parameters) {
@@ -105,7 +105,7 @@
 
             });
     });
-    </script>*@
+    </script>
 
 
 

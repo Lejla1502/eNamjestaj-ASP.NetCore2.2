@@ -123,8 +123,7 @@ namespace eNamjestaj.Data
         public virtual DbSet<RadniNalog> RadniNalog { get; set; }
         public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<ProizvodBoja> ProizvodBoja { get; set; }
-        public virtual DbSet<Komentar> Komentar { get; set; }
-        public virtual DbSet<Ocjena> Ocjena { get; set; }
+        public virtual DbSet<Recenzija> Recenzija { get; set; }
         public virtual DbSet<Zaposlenik> Zaposlenik { get; set; }
 
 

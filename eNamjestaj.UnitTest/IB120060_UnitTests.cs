@@ -248,12 +248,20 @@ namespace eNamjestaj.UnitTest
                 VrijemeEvidentiranja = DateTime.Now
             };
 
-
+            var recenzija = new Recenzija
+            {
+                Proizvod=proizvod,
+                Kupac=kupac,
+                Ocjena=3,
+                Sadrzaj="..",
+                Datum=DateTime.Today
+            };
 
 
             _context.AddRange( vrstaProizvoda, proizvod, skladiste,
                 proizvodSkladiste, boja, proizvodBoja, dostava, narudzba,
-                narudzbaStavka, izlaz, izlazStavka, zaposlenik,autorizacijskiToken);
+                narudzbaStavka, izlaz, izlazStavka, zaposlenik,
+                autorizacijskiToken, recenzija);
             _context.SaveChanges();
 
             //_context.Uloga.Add(new Uloga { TipUloge="admin" });
@@ -1193,6 +1201,71 @@ namespace eNamjestaj.UnitTest
             sc.Obrisi(expectedTestString);
 
             Assert.AreEqual(0,_context.AutorizacijskiToken.ToList().Count);
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Recenzije_Index_VracaListuRecenzija(int id)
+        {
+            RecenzijeController rc = new RecenzijeController(_context);
+            
+            rc.ControllerContext = new ControllerContext
+            {
+                HttpContext =GetMockedHttpContext(_context.Korisnik.Find(1))
+            };
+            rc.Url = GetUrlHelper();
+            rc.TempData = GetTempDataForRedirect();
+
+            PartialViewResult result=rc.Index(id) as PartialViewResult;
+            RecenzijeIndexVM model = result.Model as RecenzijeIndexVM;
+
+            Assert.AreEqual(1,model.Recenzijes.Count);
+            Assert.AreEqual(3, model.Recenzijes[0].Ocjena);
+            Assert.AreEqual("..", model.Recenzijes[0].Sadrzaj);
+
+
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Recenzije_Dodaj_VracaViewDodaj(int id)
+        {
+            RecenzijeController rc = new RecenzijeController(_context);
+            
+            rc.Url = GetUrlHelper();
+            rc.TempData = GetTempDataForRedirect();
+
+            PartialViewResult result = rc.Dodaj(id) as PartialViewResult;
+            RecenzijeDodajVM model = result.Model as RecenzijeDodajVM;
+
+            Assert.AreEqual(1, model.ProizvodId);
+
+
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Recenzije_Snimi_VracaListuRecenzija(int id)
+        {
+            RecenzijeController rc = new RecenzijeController(_context);
+
+            rc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(_context.Korisnik.Find(1))
+            };
+            rc.Url = GetUrlHelper();
+            RecenzijeDodajVM model = new RecenzijeDodajVM
+            {
+                ProizvodId = id,
+                Sadrzaj = "..",
+                Ocjena = 3
+            };
+            RedirectToActionResult result = rc.Snimi(model) as RedirectToActionResult;
+           
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("Recenzije", result.ControllerName);
+
+
         }
 
     }

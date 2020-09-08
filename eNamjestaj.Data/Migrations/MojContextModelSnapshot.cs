@@ -234,25 +234,6 @@ namespace eNamjestaj.Data.Migrations
                     b.ToTable("KatalogStavka");
                 });
 
-            modelBuilder.Entity("eNamjestaj.Data.Models.Komentar", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Datum");
-
-                    b.Property<int>("KupacId");
-
-                    b.Property<string>("Sadrzaj");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KupacId");
-
-                    b.ToTable("Komentar");
-                });
-
             modelBuilder.Entity("eNamjestaj.Data.Models.Korisnik", b =>
                 {
                     b.Property<int>("Id")
@@ -386,25 +367,6 @@ namespace eNamjestaj.Data.Migrations
                     b.ToTable("NarudzbaStavka");
                 });
 
-            modelBuilder.Entity("eNamjestaj.Data.Models.Ocjena", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Datum");
-
-                    b.Property<int>("KupacId");
-
-                    b.Property<int>("OcjenaBr");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KupacId");
-
-                    b.ToTable("Ocjena");
-                });
-
             modelBuilder.Entity("eNamjestaj.Data.Models.Opstina", b =>
                 {
                     b.Property<int>("Id")
@@ -508,6 +470,31 @@ namespace eNamjestaj.Data.Migrations
                     b.HasIndex("NarudzbaId");
 
                     b.ToTable("RadniNalog");
+                });
+
+            modelBuilder.Entity("eNamjestaj.Data.Models.Recenzija", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Datum");
+
+                    b.Property<int>("KupacId");
+
+                    b.Property<decimal>("Ocjena");
+
+                    b.Property<int>("ProizvodId");
+
+                    b.Property<string>("Sadrzaj");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KupacId");
+
+                    b.HasIndex("ProizvodId");
+
+                    b.ToTable("Recenzija");
                 });
 
             modelBuilder.Entity("eNamjestaj.Data.Models.Skladiste", b =>
@@ -710,14 +697,6 @@ namespace eNamjestaj.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eNamjestaj.Data.Models.Komentar", b =>
-                {
-                    b.HasOne("eNamjestaj.Data.Models.Kupac", "Kupac")
-                        .WithMany()
-                        .HasForeignKey("KupacId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("eNamjestaj.Data.Models.Korisnik", b =>
                 {
                     b.HasOne("eNamjestaj.Data.Models.Opstina", "Opstina")
@@ -763,14 +742,6 @@ namespace eNamjestaj.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ProizvodId")
                         .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("eNamjestaj.Data.Models.Ocjena", b =>
-                {
-                    b.HasOne("eNamjestaj.Data.Models.Kupac", "Kupac")
-                        .WithMany()
-                        .HasForeignKey("KupacId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("eNamjestaj.Data.Models.Opstina", b =>
@@ -830,6 +801,19 @@ namespace eNamjestaj.Data.Migrations
                     b.HasOne("eNamjestaj.Data.Models.Narudzba", "Narudzba")
                         .WithMany()
                         .HasForeignKey("NarudzbaId");
+                });
+
+            modelBuilder.Entity("eNamjestaj.Data.Models.Recenzija", b =>
+                {
+                    b.HasOne("eNamjestaj.Data.Models.Kupac", "Kupac")
+                        .WithMany()
+                        .HasForeignKey("KupacId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("eNamjestaj.Data.Models.Proizvod", "Proizvod")
+                        .WithMany()
+                        .HasForeignKey("ProizvodId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("eNamjestaj.Data.Models.Skladiste", b =>

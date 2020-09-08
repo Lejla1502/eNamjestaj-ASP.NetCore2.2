@@ -1,0 +1,95 @@
+﻿@model eNamjestaj.Web.Areas.ModulKupac.ViewModels.RecenzijeDodajVM
+
+<link href="~/lib/css/jquery.rateyo.min.css" rel="stylesheet" type="text/css" />
+<script src="~/lib/js/jquery.rateyo.js"></script>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.validate.js"></script>
+<script type="text/javascript" src="jquery.metadata.js"></script>
+<script>
+    $(function () {
+
+        $("#rateYo").rateYo({
+            rating: 0,
+            numStars: 5,
+            maxValue: 5,
+            minValue:1,
+            halfStar: true,
+            onChange: function (Ocjena, rateYoInstance) {
+                $('#Ocjena').val(Ocjena);
+            }
+        });
+
+    });
+</script>
+@*<h2>Dodaj komentar
+    i ocjenu</h2>*@
+
+<form ajax-poziv="da" id="formaDodajRec" ajax-url="/ModulKupac/Recenzije/Snimi" ajax-rezultat="komOcjeneID" data-ajax="true" data-ajax-update="#formaDodajRec" data-ajax-mode="replace">
+    <input type="hidden" value="@Model.ProizvodId" name="ProizvodId" />
+
+    <div class="form-group">
+        <label>Ocjena: </label>
+        <div id="rateYo">
+
+        </div>
+        <input type="hidden" id="Ocjena" name="Ocjena" />
+    </div>
+    @*<input type="hidden" id="rating" name="rating" />*@
+    <br />
+    <div class="form-group">
+        <label>Komentar: </label>
+        <div>
+            @Html.TextAreaFor(m => m.Sadrzaj, new { @class = "form-control" })
+
+            @*<textarea asp-for="Sadrzaj" class="form-control" cols="20" rows="5"></textarea>*@
+            @*<span asp-validation-for="Sadrzaj" class="text-danger"></span>*@
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Sadrzaj)</span>
+
+        </div>
+    </div>
+    <br />
+    <input type="submit" value="Dodaj" class="btn btn-primary" />
+</form>
+
+<script>
+    //this code goes in your partial view
+    $(function () {
+        //allow the validation framework to re-prase the DOM
+        jQuery.validator.unobtrusive.parse();
+
+        //or to give the parser some context, supply it with a selector
+        //jQuery validator will parse all child elements (deep) starting
+        //from the selector element supplied
+        jQuery.validator.unobtrusive.parse("#formaDodajRec");
+    });
+    $(document).ready(function () {
+        $("form[ajax-poziv='da']").submit(function (event) {
+            $('#formaDodajRec').validate();
+            $(this).attr("ajax-poziv", "dodan");
+            event.preventDefault();
+
+
+            if (!$("#formaDodajRec").valid()) {
+                return false;
+            }
+            else {
+                var urlZaPoziv1 = $(this).attr("ajax-url");
+
+                var form = $(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: urlZaPoziv1,
+                    data: form.serialize(),
+                    success: function (data) {
+                        $("#komOcjeneID").html(data);
+                    }
+                });
+            }
+
+        });
+    });
+</script>
+
+

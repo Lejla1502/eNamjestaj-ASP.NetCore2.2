@@ -1,0 +1,66 @@
+﻿@model eNamjestaj.Web.Areas.ModulKupac.ViewModels.RecenzijeIndexVM
+@using Microsoft.AspNetCore.Http
+@using eNamjestaj.Data.Helper
+@{
+    //Layout = null;
+}
+<!DOCTYPE html>
+<head>
+    <link href="~/lib/css/jquery.rateyo.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/lib/js/jquery.rateyo.js"></script>
+    
+</head>
+
+<body>
+    <h3>Recenzije</h3>
+    @{int i = 1; }
+    @foreach (var x in Model.Recenzijes)
+    {
+
+        <script>
+            $(function () {
+
+                $('#@("rating"+i)').rateYo({
+                    rating: @x.Ocjena,
+                    readOnly: true,
+                    starWidth:"10px"
+                });
+
+            });
+        </script>
+
+        <br />
+
+
+        <p>@x.Sadrzaj <b>@x.ImeKupca</b> <div id="@("rating"+i)"></div></p>
+        i++;
+    }
+
+    <br />
+    @if (Context.GetLogiraniKorisnik() == null)
+    {
+        <div>Da biste ostavili recenziju potrebno je da se logirate</div><br />
+        <a class="btn btn-primary" href="/Autentifikacija/Index">Login</a>
+    }
+    else
+    {
+        <a class="btn btn-danger" ajax-poziv="da" ajax-rezultat="komOcjeneID" href="/ModulKupac/Recenzije/Dodaj?proizvodId=@Model.ProizvodId">Dodaj recenziju</a>
+    }
+</body>
+
+<script>
+
+$("a[ajax-poziv='da']").click(function (event)
+    {
+
+event.preventDefault();
+        var urlZaPoziv2 = $(this).attr("href");
+        var divZaRezultat = $(this).attr("ajax-rezultat");
+
+
+
+$.get(urlZaPoziv2, function(data, status) {
+    $("#" + divZaRezultat).html(data);
+        });
+    });</script>
+
