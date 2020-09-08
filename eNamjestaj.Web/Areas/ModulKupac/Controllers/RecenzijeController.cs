@@ -44,35 +44,40 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
         [Autorizacija(false, true, false, false)]
         public IActionResult Dodaj(int proizvodId)
         {
-            RecenzijeDodajVM model = new RecenzijeDodajVM
-            {
-                ProizvodId = proizvodId
-            };
-
-
-
-            return PartialView(model);
+            
+                RecenzijeDodajVM model = new RecenzijeDodajVM
+                {
+                    ProizvodId = proizvodId
+                };
+                return PartialView(model);
+           
+            
         }
 
         [Autorizacija(false, true, false, false)]
         public IActionResult Snimi(RecenzijeDodajVM model)
         {
-            Korisnik k = HttpContext.GetLogiraniKorisnik();
-            Kupac kupac = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
-
-            Recenzija r = new Recenzija
+            if (ModelState.IsValid)
             {
-                Datum = DateTime.Now,
-                KupacId = kupac.Id,
-                ProizvodId = model.ProizvodId,
-                Sadrzaj = model.Sadrzaj,
-                Ocjena = model.Ocjena
-            };
+                Korisnik k = HttpContext.GetLogiraniKorisnik();
+                Kupac kupac = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
 
-            ctx.Recenzija.Add(r);
-            ctx.SaveChanges();
+                Recenzija r = new Recenzija
+                {
+                    Datum = DateTime.Now,
+                    KupacId = kupac.Id,
+                    ProizvodId = model.ProizvodId,
+                    Sadrzaj = model.Sadrzaj,
+                    Ocjena = model.Ocjena
+                };
 
-            return RedirectToAction("Index", "Recenzije", new { @proizvodId = model.ProizvodId });
+                ctx.Recenzija.Add(r);
+                ctx.SaveChanges();
+
+                return RedirectToAction("Index", "Recenzije", new { @proizvodId = model.ProizvodId });
+            }
+            else
+                return BadRequest(ModelState);
         }
     }
 }

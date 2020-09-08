@@ -1,0 +1,102 @@
+﻿@model eNamjestaj.Web.Areas.ModulMenadzer.ViewModels.ProizvodiIndexMenadzerVM
+@{
+    //Layout = null;
+}
+
+<br />
+<br />
+<br />
+
+<!DOCTYPE html>
+<br />
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Proizvodi</title>
+</head>
+<body>
+
+    <form action="/Proizvodi/Index">
+        <select style="margin-left:20px;" name="vrstaID">
+            <option>(Odaberite vrstu namještaja)</option>
+            @foreach (var x in Model.Vrste)
+            {
+                <option value="@x.Value">@x.Text</option>
+            }
+        </select>
+
+        <input type="submit" value="Pretraga" class="btn btn-primary" />
+    </form>
+    <br />
+
+
+
+    <table class=" table table-bordered">
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Sifra</th>
+                <th>Cijena</th>
+                <th>Slika</th>
+                <th>Akcija</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model.Proizvodi)
+            {
+                <tr>
+                    <td>@x.Naziv</td>
+                    <td>@x.Sifra</td>
+                    <td>@x.Cijena</td>
+                    <td><img src=@x.Slika class="img-thumbnail" style="width:80px;height:50px" /></td>
+                    <td>
+
+                        <a class="btn btn-danger" asp-action="Obrisi" asp-route-id="@x.Id" asp-area="ModulMenadzer">Obrisi</a>
+                        <a class="btn btn-warning" ajax-poziv="da" ajax-rezultat="divProizvodirezultat" asp-action="Uredi" asp-route-id="@x.Id" asp-route-vrstaID="@Model.vrstaID" asp-area="ModulMenadzer">Uredi</a>
+                      </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a class="btn btn-danger" ajax-poziv="da" ajax-rezultat="divProizvodirezultat" asp-action="Dodaj" asp-area="ModulMenadzer">Dodaj</a>
+
+    <br />
+    <br />
+    <div id="divProizvodirezultat"></div>
+    <br />
+
+    <br />
+
+
+
+
+
+    <script>
+
+        $("a[ajax-poziv='da']").click(function (event) {
+            $(this).attr("ajax-poziv", "dodan");
+            event.preventDefault();
+            var urlZaPoziv1 = $(this).attr("ajax-url");
+            var urlZaPoziv2 = $(this).attr("href");
+            var divZaRezultat = $(this).attr("ajax-rezultat");
+
+            var urlZaPoziv;
+
+            if (urlZaPoziv1 instanceof String)
+                urlZaPoziv = urlZaPoziv1;
+            else
+                urlZaPoziv = urlZaPoziv2;
+
+            $.get(urlZaPoziv, function (data, status) {
+                $("#" + divZaRezultat).html(data);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

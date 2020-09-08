@@ -145,7 +145,7 @@ namespace eNamjestaj.UnitTest
                 KorisnikId = 2
             };
 
-            var vrstaProizvoda = new VrstaProizvoda { Naziv = "..." };
+            var vrstaProizvoda = new VrstaProizvoda { Naziv = "Ormar" };
 
             var proizvod = new Proizvod
             {
@@ -286,6 +286,27 @@ namespace eNamjestaj.UnitTest
                 Telefon = "-...",
                 KorisnikId = 3
             });
+            _context.SaveChanges();
+
+            _context.VrstaProizvoda.Add(
+                new VrstaProizvoda
+                {
+                    Naziv = "Komoda"
+                }
+                );
+            _context.SaveChanges();
+
+            _context.Proizvod.Add(
+                new Proizvod
+                {
+                    Cijena = 300,
+                    Naziv = "Pr2",
+                    KorisnikId = 2,
+                    Sifra = "456888",
+                    Slika = "...",
+                    VrstaProizvodaId = 2
+                }
+                );
             _context.SaveChanges();
         }
 
@@ -988,13 +1009,57 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual("Index", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
             Assert.AreEqual("Proizvodi", result.ControllerName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
+           // Assert.AreEqual(3, _context.Proizvod.Count); 
+        }
+
+        [TestMethod]
+        public void Test_ProizvodiMenadzer_Index_VrstaNull_VracaSveProizvode()
+        {
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
+            pmc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            pmc.TempData = GetTempDataForRedirect();
+
+            
+
+            var result = pmc.Index(null) as ViewResult;
+            ProizvodiIndexMenadzerVM model = result.Model as ProizvodiIndexMenadzerVM;
+
+
+            Assert.AreEqual(2,model.Proizvodi.Count);
+
+        }
+
+        [TestMethod]
+        [DataRow(2)]
+        public void Test_ProizvodiMenadzer_Index_Vrsta2_VracaProizvodteVrste(int id)
+        {
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
+            pmc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            pmc.TempData = GetTempDataForRedirect();
+
+            
+            var result = pmc.Index(id) as ViewResult;
+            ProizvodiIndexMenadzerVM model = result.Model as ProizvodiIndexMenadzerVM;
+
+
+            Assert.AreEqual(1, model.Proizvodi.Count);
+            Assert.AreEqual("456888", model.Proizvodi[0].Sifra);
+            Assert.AreEqual(2, model.Proizvodi[0].Id);
 
         }
 
         [TestMethod]
         public void Test_ProizvodiMenadzer_EditProductSave_ModelStateNotValid_ReturnsBadRequest()
         {
-            GetMockedHttpContext();
+            
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
             pmc.ControllerContext = new ControllerContext()
             {
@@ -1243,9 +1308,11 @@ namespace eNamjestaj.UnitTest
 
         }
 
+
+
         [TestMethod]
         [DataRow(1)]
-        public void Test_Recenzije_Snimi_VracaListuRecenzija(int id)
+        public void Test_Recenzije_Snimi_RedirectsToIndexrecenzije(int id)
         {
             RecenzijeController rc = new RecenzijeController(_context);
 
@@ -1264,6 +1331,29 @@ namespace eNamjestaj.UnitTest
            
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("Recenzije", result.ControllerName);
+
+
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Recenzije_Snimi_ReturnsBadRequest(int id)
+        {
+            RecenzijeController rc = new RecenzijeController(_context);
+
+            rc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(_context.Korisnik.Find(1))
+            };
+            rc.Url = GetUrlHelper();
+
+           rc.ModelState.AddModelError("Sadrzaj", "Required");
+            
+
+            var result = rc.Snimi(new RecenzijeDodajVM());
+
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+
 
 
         }

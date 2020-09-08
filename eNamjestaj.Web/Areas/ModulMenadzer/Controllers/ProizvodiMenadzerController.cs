@@ -27,9 +27,41 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
             hostingEnvironment = environment;
             ctx = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? vrstaID)
         {
-            return View();
+            ProizvodiIndexMenadzerVM model = new ProizvodiIndexMenadzerVM();
+            model.Vrste = ctx.VrstaProizvoda.Select(y => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = y.Id.ToString(),
+                Text = y.Naziv
+            }).ToList();
+
+            model.vrstaID = vrstaID;
+            if (vrstaID == null)
+            {
+                model.Proizvodi = ctx.Proizvod.Select(x => new ProizvodiIndexMenadzerVM.ProizvodiInfo
+                {
+                    Id = x.Id,
+                    Naziv = x.Naziv,
+                    Cijena = x.Cijena.ToString("0.00"),
+                    Sifra = x.Sifra,
+                    Slika = x.Slika
+                }).ToList();
+
+            }
+            else
+            {
+                model.Proizvodi = ctx.Proizvod.Where(x => x.VrstaProizvodaId == vrstaID).Select(x => new ProizvodiIndexMenadzerVM.ProizvodiInfo
+                {
+                    Id = x.Id,
+                    Naziv = x.Naziv,
+                    Cijena = x.Cijena.ToString("0.00"),
+                    Sifra = x.Sifra,
+                    Slika = x.Slika
+                }).ToList();
+            }
+            return View("Index", model);
+
         }
 
         public IActionResult Dodaj()
