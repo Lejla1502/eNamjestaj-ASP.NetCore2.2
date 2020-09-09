@@ -1462,6 +1462,60 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
+        public void Test_AkcijskiKatalog_Dodaj_ReturnsPartialView()
+        {
+            AkcijskiKatalogController ac = new AkcijskiKatalogController(_context);
+            ac.TempData = GetTempDataForRedirect();
+
+            PartialViewResult result = ac.Dodaj() as PartialViewResult;
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_AkcijskiKatalog_Obriši_RedirectToIndex(int id)
+        {
+            AkcijskiKatalogController ac = new AkcijskiKatalogController(_context);
+            ac.Url = GetUrlHelper();
+
+            RedirectToActionResult result = ac.Obrisi(id) as RedirectToActionResult;
+            Assert.AreEqual("Index", result.ActionName);
+        }
+
+        [TestMethod]
+        public void Test_AkcijskiKatalog_SnimiModelStateNotValid_ReturnsBadreq()
+        {
+            AkcijskiKatalogController ac = new AkcijskiKatalogController(_context);
+            ac.Url = GetUrlHelper();
+            ac.ModelState.AddModelError("Opis", "Required");
+            ac.ModelState.AddModelError("DatumPocetka", "Required");
+            ac.ModelState.AddModelError("DatumZavrsetka", "Required");
+
+            var result = ac.Snimi(new AkcijskiKatalogDodajVM());
+            Assert.IsInstanceOfType(result,typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public void Test_AkcijskiKatalog_SnimiModelStateValid_RedirectTOIndex()
+        {
+            AkcijskiKatalogController ac = new AkcijskiKatalogController(_context);
+            ac.Url = GetUrlHelper();
+
+            AkcijskiKatalogDodajVM model = new AkcijskiKatalogDodajVM
+            {
+                Opis="...",
+                DatumPocetka=Convert.ToDateTime("01/01/2020"),
+                DatumZavrsetka=Convert.ToDateTime("01/02/2020")
+            };
+
+            var result = ac.Snimi(model) as RedirectToActionResult;
+            Assert.AreEqual(model.Opis, _context.AkcijskiKatalog.Last().Opis);
+            Assert.AreEqual("Index",result.ActionName);
+            Assert.AreEqual("AkcijskiKatalog", result.ControllerName);
+
+        }
+
+        [TestMethod]
         [DataRow(1)]
         public void Test_AkcijskikatalogStavke_Index(int id)
         {

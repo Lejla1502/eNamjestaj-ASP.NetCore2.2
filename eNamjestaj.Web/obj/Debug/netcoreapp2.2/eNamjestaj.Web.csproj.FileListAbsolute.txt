@@ -40,6 +40,7 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Raz
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\_ViewStart.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\AkcijskiKatalogStavke\Dodaj.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\AkcijskiKatalogStavke\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\AkcijskiKatalog\Dodaj.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\AkcijskiKatalog\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\ProizvodiMenadzer\Dodaj.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\ProizvodiMenadzer\Index.g.cshtml.cs

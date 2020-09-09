@@ -1,0 +1,47 @@
+﻿@model eNamjestaj.Web.Areas.ModulMenadzer.ViewModels.AkcijskiKatalogDodajVM
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<br />
+<h2>Dodaj akcijski katalog</h2>
+<br />
+<form action="/ModulMenadzer/AkcijskiKatalog/Snimi" id="dodajKatalog">
+    <div class="form-group">
+        <label>Opis: </label>
+        <div>
+            <input asp-for="Opis" class="form-control" />
+            <span asp-validation-for="Opis" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Datum početka: </label>
+        <div>
+            <input asp-for="DatumPocetka " class="form-control" />
+            <span asp-validation-for="DatumPocetka" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Datum završetka: </label>
+        <div>
+            <input asp-for="DatumZavrsetka" class="form-control" />
+            <span asp-validation-for="DatumZavrsetka" class="text-danger"></span>
+        </div>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Snimi" />
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    $(function () {
+        //allow the validation framework to re-prase the DOM
+        jQuery.validator.unobtrusive.parse();
+
+        //or to give the parser some context, supply it with a selector
+        //jQuery validator will parse all child elements (deep) starting
+        //from the selector element supplied
+        jQuery.validator.unobtrusive.parse("#dodajKatalog");
+    });
+</script>

@@ -46,5 +46,47 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
 
             return View(model);
         }
+
+        public IActionResult Dodaj()
+        {
+            AkcijskiKatalogDodajVM model = new AkcijskiKatalogDodajVM();
+            return PartialView(model);
+        }
+
+        public IActionResult Obrisi(int katalogId)
+        {
+            AkcijskiKatalog a = ctx.AkcijskiKatalog.Find(katalogId);
+
+            foreach (KatalogStavka x in ctx.KatalogStavka.Where(x => x.AkcijskiKatalogId == katalogId).ToList())
+            {
+                ctx.KatalogStavka.Remove(x);
+                ctx.SaveChanges();
+            }
+
+            ctx.AkcijskiKatalog.Remove(a);
+            ctx.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult Snimi(AkcijskiKatalogDodajVM a)
+        {
+            if (ModelState.IsValid)
+            {
+                AkcijskiKatalog ak = new AkcijskiKatalog();
+                ak.Opis = a.Opis;
+                ak.DatumPocetka = (DateTime)a.DatumPocetka;
+                ak.DatumZavrsetka = (DateTime)a.DatumZavrsetka;
+                ak.Aktivan = true;
+
+                ctx.AkcijskiKatalog.Add(ak);
+                ctx.SaveChanges();
+
+                return RedirectToAction("Index", "AkcijskiKatalog");
+            }
+            else
+                return BadRequest(ModelState);
+        }
     }
 }
