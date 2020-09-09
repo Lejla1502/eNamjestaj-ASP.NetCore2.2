@@ -265,10 +265,17 @@ namespace eNamjestaj.UnitTest
                 Aktivan=false
             };
 
+            var katalogStavka = new KatalogStavka
+            {
+                PopustProcent=10,
+                Proizvod=proizvod,
+                AkcijskiKatalog=akcijskiKatalog
+            };
+
             _context.AddRange( vrstaProizvoda, proizvod, skladiste,
                 proizvodSkladiste, boja, proizvodBoja, dostava, narudzba,
                 narudzbaStavka, izlaz, izlazStavka, zaposlenik,
-                autorizacijskiToken, recenzija, akcijskiKatalog);
+                autorizacijskiToken, recenzija, akcijskiKatalog, katalogStavka);
             _context.SaveChanges();
 
             _context.AkcijskiKatalog.Add(new AkcijskiKatalog
@@ -1452,6 +1459,20 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual(2, model.Katalozi.Count);
 
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_AkcijskikatalogStavke_Index(int id)
+        {
+            AkcijskiKatalogStavkeController asc = new AkcijskiKatalogStavkeController(_context);
+            asc.TempData = GetTempDataForRedirect();
+
+            PartialViewResult result = asc.Index(id) as PartialViewResult;
+            AkcijskiKatalogStavkeIndexVM model = result.Model as AkcijskiKatalogStavkeIndexVM;
+
+            Assert.AreEqual(1,model.KatalogId);
+            Assert.AreEqual(1,model.KatalogProizvodi.Count);
         }
 
     }

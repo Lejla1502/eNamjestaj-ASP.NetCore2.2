@@ -4,6 +4,7 @@
     //Layout = null;
 }
 
+ 
 <br />
 <br />
 <!DOCTYPE html>
@@ -37,7 +38,7 @@
                     <td>@x.DatumZavrsetka</td>
                     <td>@x.Aktivan</td>
                     <td>
-                        <button ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalog/ProizvodiIndex?katalogId=@x.Id" class="btn btn-success">Proizvodi</button>
+                        <button ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Index?katalogId=@x.Id" class="btn btn-success">Proizvodi</button>
 
                         <a class="btn btn-danger" asp-action="Obrisi" asp-route-katalogId="@x.Id" asp-area="ModulMenadzer">Obrisi</a>
                     </td>

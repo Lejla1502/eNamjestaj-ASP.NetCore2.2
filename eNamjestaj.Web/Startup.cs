@@ -27,10 +27,12 @@ namespace eNamjestaj.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<MojContext>(options =>
-              options.UseSqlServer(Configuration.GetConnectionString("lokalni")));
-            //services.AddDbContext<MojContext>(x => x.UseSqlServer(Configuration.GetConnectionString("lokalni")));
+             options.UseSqlServer(Configuration.GetConnectionString("lokalni")));
+
+
+            //services.AddDbContext<MojContext>(options =>
+            //  options.UseSqlServer(Configuration.GetConnectionString("fit-server")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc(options =>
