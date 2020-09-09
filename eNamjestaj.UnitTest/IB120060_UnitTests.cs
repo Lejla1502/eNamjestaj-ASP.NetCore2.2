@@ -257,12 +257,27 @@ namespace eNamjestaj.UnitTest
                 Datum=DateTime.Today
             };
 
+            var akcijskiKatalog = new AkcijskiKatalog
+            {
+                Opis="junski k.",
+                DatumPocetka=Convert.ToDateTime("01/06/2020"),
+                DatumZavrsetka=Convert.ToDateTime("01/07/2020"),
+                Aktivan=false
+            };
 
             _context.AddRange( vrstaProizvoda, proizvod, skladiste,
                 proizvodSkladiste, boja, proizvodBoja, dostava, narudzba,
                 narudzbaStavka, izlaz, izlazStavka, zaposlenik,
-                autorizacijskiToken, recenzija);
+                autorizacijskiToken, recenzija, akcijskiKatalog);
             _context.SaveChanges();
+
+            _context.AkcijskiKatalog.Add(new AkcijskiKatalog
+            {
+                Opis="august k.",
+                DatumPocetka=Convert.ToDateTime("01/08/2020"),
+                DatumZavrsetka=Convert.ToDateTime("01/09/2020"),
+                Aktivan=true
+            });
 
             //_context.Uloga.Add(new Uloga { TipUloge="admin" });
             //_context.Uloga.Add(new Uloga { TipUloge="menadzer"});
@@ -1424,6 +1439,19 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual(false, _context.Narudzba.First().NaCekanju);
             Assert.AreEqual("NaCekanjuIndex", result.ActionName);
             Assert.AreEqual("Narudzbe", result.ControllerName);
+        }
+
+        [TestMethod]
+        public void Test_AkcijskiKatalog_Index_VracaListuKataloga()
+        {
+            AkcijskiKatalogController ac = new AkcijskiKatalogController(_context);
+            ac.TempData = GetTempDataForRedirect();
+
+            ViewResult result = ac.Index() as ViewResult;
+            AkcijskiKatalogIndexVM model = result.Model as AkcijskiKatalogIndexVM;
+
+            Assert.AreEqual(2, model.Katalozi.Count);
+
         }
 
     }

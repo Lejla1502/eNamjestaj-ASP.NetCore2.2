@@ -61,3 +61,4 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\R
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Recenzije\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Narudzbe\NaCekanjuIndex.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\ProizvodiMenadzer\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\AkcijskiKatalog\Index.g.cshtml.cs
