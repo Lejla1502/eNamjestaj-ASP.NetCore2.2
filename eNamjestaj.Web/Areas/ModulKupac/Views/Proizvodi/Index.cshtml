@@ -44,7 +44,10 @@
                 {
                     <div class="col-sm-4 col-sm-4 col-sm-4">
                         <div style="height:450px;" class="thumbnail">
-
+                            @if (x.Popust != null && x.Popust != 0)
+                            {
+                                <p style="float:right">- @x.Popust %</p>
+                            }
                             <p> <h3>@x.Naziv  </h3> </p>
                             <img src=@x.Slika class="img-thumbnail" style="width:242px;height:200px" />
                             <div class="caption" align="left">

@@ -286,6 +286,13 @@ namespace eNamjestaj.UnitTest
                 Aktivan=true
             });
 
+            _context.KatalogStavka.Add(new KatalogStavka
+            {
+               AkcijskiKatalogId=2,
+               ProizvodId=1,
+               PopustProcent=10
+            });
+
             //_context.Uloga.Add(new Uloga { TipUloge="admin" });
             //_context.Uloga.Add(new Uloga { TipUloge="menadzer"});
             //_context.SaveChanges();
@@ -1449,7 +1456,7 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        public void Test_AkcijskiKatalog_Index_VracaListuKataloga()
+        public void Test_AkcijskiKatalogMenadzer_Index_VracaListuKataloga()
         {
             AkcijskiKatalogController ac = new AkcijskiKatalogController(_context);
             ac.TempData = GetTempDataForRedirect();
@@ -1589,6 +1596,32 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual(0,_context.KatalogStavka.ToList().Count);
             Assert.AreEqual("Index", result.ActionName);
 
+        }
+
+        [TestMethod]
+        public void test_AkcijskiKatalogKupacIndex_returnsNullInView()
+        {
+            AkcijskiKatalogKupacController akkc = new AkcijskiKatalogKupacController(_context);
+            akkc.TempData = GetTempDataForRedirect();
+
+            _context.AkcijskiKatalog.Find(2).Aktivan = false;
+            _context.SaveChanges();
+            ViewResult result = akkc.Index() as ViewResult;
+            
+            Assert.AreEqual(null, result.Model);
+        }
+
+        [TestMethod]
+        public void test_AkcijskiKatalogKupacIndex_returnsStavkeAktivnogAkcijskogKatalogaInView()
+        {
+            AkcijskiKatalogKupacController akkc = new AkcijskiKatalogKupacController(_context);
+            akkc.TempData = GetTempDataForRedirect();
+            
+            ViewResult result = akkc.Index() as ViewResult;
+            AkcijskiKatalogKupacIndexVM ocekivani = result.Model as AkcijskiKatalogKupacIndexVM;
+
+            Assert.AreEqual("august k.", ocekivani.NazivKataloga);
+            Assert.AreEqual(1, ocekivani.Proizvodi.Count);
         }
 
     }

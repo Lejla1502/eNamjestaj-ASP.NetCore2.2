@@ -15,11 +15,10 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 
     public class ProizvodiController : Controller
     {
-        //MojContext ctx = new MojContext();
+        
 
         private MojContext ctx;
-
-        //private readonly IUserSession _userSession;
+        
 
         public ProizvodiController(MojContext context)
         {
@@ -45,6 +44,12 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                 Text = y.Naziv
             }).ToList();
 
+            int katalogAkt = ctx.AkcijskiKatalog.Where(a => a.Aktivan == true).Count();
+            int katalogID = 0;
+            if (katalogAkt > 0)
+                katalogID = ctx.AkcijskiKatalog.Where(a => a.Aktivan == true).FirstOrDefault().Id;
+
+
 
             if (vrstaID == null && bojaID == null)
             {
@@ -55,10 +60,10 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                     Cijena = x.Cijena,
                     Sifra = x.Sifra,
                     Slika = x.Slika,
-                    KonacnaCijena = x.Cijena,
+                    Popust = (katalogID == 0) ? 0 : ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent,
                     BrojacBoja = ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count(),
                     Boja = (ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 1) ? (ctx.ProizvodBoja.Where(pb => pb.ProizvodId == x.Id)).First().Boja.Naziv : ((ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 0) ? "Boja nije određena" : "**Više boja"),
-                    // KonacnaCijena = x.Cijena - (x.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == x.Id).FirstOrDefault().PopustProcent / 100)
+                    KonacnaCijena = x.Cijena - (x.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == katalogID && s.ProizvodId == x.Id).FirstOrDefault().PopustProcent / 100)
                 }).ToList();
             }
             else
@@ -75,8 +80,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                                         Slika = x.Slika,
                                         BrojacBoja = ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count(),
                                         Boja = (ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 1) ? (ctx.ProizvodBoja.Where(pb => pb.ProizvodId == x.Id)).First().Boja.Naziv : ((ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 0) ? "Boja nije određena" : "**Više boja"),
-                                        //Popust = (katalogID == null) ? 0 : ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent,
-                                        //KonacnaCijena = x.Cijena - (x.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == x.Id).FirstOrDefault().PopustProcent / 100)
+                                        Popust = (katalogID == 0) ? 0 : ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent,
+                                        KonacnaCijena = x.Cijena - (x.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == katalogID && s.ProizvodId == x.Id).FirstOrDefault().PopustProcent / 100)
                                     }).ToList();
             }
 
