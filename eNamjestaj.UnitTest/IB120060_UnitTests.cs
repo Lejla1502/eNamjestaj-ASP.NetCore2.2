@@ -1475,6 +1475,68 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual(1,model.KatalogProizvodi.Count);
         }
 
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_akcijskiKatalogStavke_Dodaj_VracaPartialview(int id)
+        {
+            AkcijskiKatalogStavkeController asc = new AkcijskiKatalogStavkeController(_context);
+            asc.TempData = GetTempDataForRedirect();
+
+            PartialViewResult result = asc.Dodaj(id) as PartialViewResult;
+            AkcijskiKatalogStavkeDodajVM model = result.Model as AkcijskiKatalogStavkeDodajVM;
+
+            Assert.AreEqual(1,model.Proizvodi.Count);
+            Assert.AreEqual(id, model.KatalogID);
+        }
+
+        [TestMethod]
+        public void Test_AkcijskiKatalogStavke_SnimiSlanjeNullVracaPartialviewIndex()
+        {
+            AkcijskiKatalogStavkeController asc = new AkcijskiKatalogStavkeController(_context);
+            asc.TempData = GetTempDataForRedirect();
+            asc.ModelState.AddModelError("ProizvodID", "Required");
+            asc.ModelState.AddModelError("Procenat", "Required");
+
+            AkcijskiKatalogStavkeDodajVM par = new AkcijskiKatalogStavkeDodajVM
+            {
+                KatalogID=1
+            };
+
+            PartialViewResult result = asc.Snimi(par) as PartialViewResult;
+            Assert.AreEqual("Index", result.ViewName);
+            
+        }
+
+        [TestMethod]
+        public void Test_AkcijskiKatalogStavke_SnimiSlanjeIspravnogModelaVracaPartialviewIndex()
+        {
+            AkcijskiKatalogStavkeController asc = new AkcijskiKatalogStavkeController(_context);
+            asc.TempData = GetTempDataForRedirect();
+            AkcijskiKatalogStavkeDodajVM ocekivani = new AkcijskiKatalogStavkeDodajVM
+            {
+                KatalogID=1,
+                Procenat=10,
+                ProizvodID=1
+            };
+
+            PartialViewResult result = asc.Snimi(ocekivani) as PartialViewResult;
+            Assert.AreEqual("Index", result.ViewName);
+
+        }
+
+        [TestMethod]
+        [DataRow(1,1)]
+        public void Test_AkcijskiKatalogStavke_Obrisi_SlanjeStavkaIKatalogID_RedirectToIndex(int katalogID, int stavkaID)
+        {
+            AkcijskiKatalogStavkeController asc = new AkcijskiKatalogStavkeController(_context);
+            asc.Url = GetUrlHelper();
+
+            var result = asc.Obrisi(katalogID, stavkaID) as RedirectToActionResult;
+            Assert.AreEqual(0,_context.KatalogStavka.ToList().Count);
+            Assert.AreEqual("Index", result.ActionName);
+
+        }
+
     }
 
 

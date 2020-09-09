@@ -21,12 +21,12 @@
                 <td>@x.Cijena</td>
                 <td>@x.Procenat</td>
                 <td>@x.KonacnaCijena</td>
-                <td><button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/ObrisiProizvod?katalogId=@Model.KatalogId&stavkaId=@x.Id">Obriši</button></td>
+                <td><button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Obrisi?katalogId=@Model.KatalogId&stavkaId=@x.Id">Obriši</button></td>
             </tr>
         }
     </tbody>
 </table>
-<button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/ProizvodiDodaj?katalogId=@Model.KatalogId">Dodaj</button>
+<button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Dodaj?katalogId=@Model.KatalogId">Dodaj</button>
 
 <div id="divProizvodi"></div>
 <script>
