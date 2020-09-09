@@ -1,0 +1,31 @@
+﻿@model  eNamjestaj.Web.Areas.ModulKupac.ViewModels.ProfilIndexVM
+
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+
+</head>
+<br />
+<div class="=row userProfile">
+
+    <div class="col-md-8">
+        <span class="glyphicon glyphicon-user gi-5x " style="display:block !important; padding-left:45px !important;"></span>
+        <span id="imePrezimeLabel">@Model.Ime  @Model.Prezime</span>
+        <span id="userName">Korisničko ime: @Model.KorisnickoIme</span>
+        <span id="emailLabel">Email: @Model.Email</span>
+        <span id="adresaLabel">Adresa: @Model.Adresa</span>
+        <span id="opstinaLabel">Opstina: @Model.Opstina</span>
+    </div>
+</div>
+
+<br />
+<br />
+<div class="row userProfile">
+    <div class="col-md-8" style="padding-left:32px !important;">
+        <br />
+
+        <a class="btn btn-primary" href="/ModulKupac/Profil/Uredi">Uredi profil</a>
+    </div>
+</div>
+
+
+

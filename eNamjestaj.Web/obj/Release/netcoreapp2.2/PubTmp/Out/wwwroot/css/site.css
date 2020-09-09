@@ -3,8 +3,37 @@
     padding-bottom: 20px;
 }
 
+.userProfile {
+    padding: 32px 0px 64px 24px;
+    background-color: #fff;
+}
+
+
+.gi-5x {
+    font-size: 5em;
+}
+
+#emailLabel, #adresaLabel, #opstinaLabel, #userName {
+    display: block;
+    color: #444;
+    font-family: 'Roboto';
+    font-size: 1.7em;
+}
+
+
+
+#imePrezimeLabel {
+    display: block;
+    color: black;
+    font-family: 'Roboto';
+    font-size: 2em;
+    padding-bottom: 20px;
+    padding-left: 20px;
+}
+
+
 /* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
+    /* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;

@@ -114,7 +114,7 @@ namespace eNamjestaj.UnitTest
 
             var kupac = new Kupac
             {
-                Ime = "...",
+                Ime = "kupac",
                 Prezime = "...",
                 Email = "...",
                 Adresa = "...",
@@ -1599,7 +1599,7 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        public void test_AkcijskiKatalogKupacIndex_returnsNullInView()
+        public void Test_AkcijskiKatalogKupacIndex_returnsNullInView()
         {
             AkcijskiKatalogKupacController akkc = new AkcijskiKatalogKupacController(_context);
             akkc.TempData = GetTempDataForRedirect();
@@ -1612,7 +1612,7 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        public void test_AkcijskiKatalogKupacIndex_returnsStavkeAktivnogAkcijskogKatalogaInView()
+        public void Test_AkcijskiKatalogKupacIndex_returnsStavkeAktivnogAkcijskogKatalogaInView()
         {
             AkcijskiKatalogKupacController akkc = new AkcijskiKatalogKupacController(_context);
             akkc.TempData = GetTempDataForRedirect();
@@ -1622,6 +1622,23 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual("august k.", ocekivani.NazivKataloga);
             Assert.AreEqual(1, ocekivani.Proizvodi.Count);
+        }
+
+        [TestMethod]
+        public void Test_Profil_Index_VracaPodatkeOKupcu()
+        {
+            ProfilController pc = new ProfilController(_context);
+            pc.ControllerContext = new ControllerContext
+            {
+                HttpContext=GetMockedHttpContext(_context.Korisnik.First())
+            };
+            pc.TempData = GetTempDataForRedirect();
+
+            ViewResult result = pc.Index() as ViewResult;
+            ProfilIndexVM model = result.Model as ProfilIndexVM;
+
+            Assert.AreEqual("kupac",model.Ime);
+            Assert.AreEqual("johndoe", model.KorisnickoIme);
         }
 
     }
