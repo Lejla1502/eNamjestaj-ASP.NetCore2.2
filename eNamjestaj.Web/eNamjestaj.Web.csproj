@@ -40,7 +40,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\ModulAdministrator\Data\" />
-    <Folder Include="Areas\ModulAdministrator\ViewModels\" />
     <Folder Include="Areas\ModulKupac\Data\" />
     <Folder Include="Areas\ModulMenadzer\Data\" />
   </ItemGroup>

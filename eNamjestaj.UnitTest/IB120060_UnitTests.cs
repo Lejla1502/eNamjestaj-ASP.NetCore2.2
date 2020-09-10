@@ -35,6 +35,8 @@ using eNamjestaj.Web.Areas.ModulMenadzer.ViewModels;
 using eNamjestaj.Web.Areas.ModulMenadzer.Controllers;
 using eNamjestaj.Web.Areas.ModulKupac.Controllers;
 using eNamjestaj.Web.Areas.ModulKupac.ViewModels;
+using eNamjestaj.Web.Areas.ModulAdministrator.Controllers;
+using eNamjestaj.Web.Areas.ModulAdministrator.ViewModels;
 //using Xunit;
 
 namespace eNamjestaj.UnitTest
@@ -97,7 +99,7 @@ namespace eNamjestaj.UnitTest
             _context.AddRange(drzava, kanton, opstina, uloga);
             _context.SaveChanges();
 
-            _context.Uloga.Add(new Uloga { TipUloge="menadzer"});
+            _context.Uloga.Add(new Uloga { TipUloge = "menadzer" });
             _context.Uloga.Add(new Uloga { TipUloge = "skladistar" });
             _context.Uloga.Add(new Uloga { TipUloge = "dostavljac" });
             _context.Uloga.Add(new Uloga { TipUloge = "kupac" });
@@ -122,7 +124,7 @@ namespace eNamjestaj.UnitTest
                 Korisnik = korisnik
 
             };
-            _context.AddRange( korisnik,
+            _context.AddRange(korisnik,
                 kupac
               );
 
@@ -138,7 +140,7 @@ namespace eNamjestaj.UnitTest
 
             var zaposlenik = new Zaposlenik {
                 Ime = "menadzer",
-                Prezime="menadzer",
+                Prezime = "menadzer",
                 Email = "...",
                 Adresa = "...",
                 Telefon = "-...",
@@ -250,29 +252,29 @@ namespace eNamjestaj.UnitTest
 
             var recenzija = new Recenzija
             {
-                Proizvod=proizvod,
-                Kupac=kupac,
-                Ocjena=3,
-                Sadrzaj="..",
-                Datum=DateTime.Today
+                Proizvod = proizvod,
+                Kupac = kupac,
+                Ocjena = 3,
+                Sadrzaj = "..",
+                Datum = DateTime.Today
             };
 
             var akcijskiKatalog = new AkcijskiKatalog
             {
-                Opis="junski k.",
-                DatumPocetka=Convert.ToDateTime("01/06/2020"),
-                DatumZavrsetka=Convert.ToDateTime("01/07/2020"),
-                Aktivan=false
+                Opis = "junski k.",
+                DatumPocetka = Convert.ToDateTime("01/06/2020"),
+                DatumZavrsetka = Convert.ToDateTime("01/07/2020"),
+                Aktivan = false
             };
 
             var katalogStavka = new KatalogStavka
             {
-                PopustProcent=10,
-                Proizvod=proizvod,
-                AkcijskiKatalog=akcijskiKatalog
+                PopustProcent = 10,
+                Proizvod = proizvod,
+                AkcijskiKatalog = akcijskiKatalog
             };
 
-            _context.AddRange( vrstaProizvoda, proizvod, skladiste,
+            _context.AddRange(vrstaProizvoda, proizvod, skladiste,
                 proizvodSkladiste, boja, proizvodBoja, dostava, narudzba,
                 narudzbaStavka, izlaz, izlazStavka, zaposlenik,
                 autorizacijskiToken, recenzija, akcijskiKatalog, katalogStavka);
@@ -280,17 +282,17 @@ namespace eNamjestaj.UnitTest
 
             _context.AkcijskiKatalog.Add(new AkcijskiKatalog
             {
-                Opis="august k.",
-                DatumPocetka=Convert.ToDateTime("01/08/2020"),
-                DatumZavrsetka=Convert.ToDateTime("01/09/2020"),
-                Aktivan=true
+                Opis = "august k.",
+                DatumPocetka = Convert.ToDateTime("01/08/2020"),
+                DatumZavrsetka = Convert.ToDateTime("01/09/2020"),
+                Aktivan = true
             });
 
             _context.KatalogStavka.Add(new KatalogStavka
             {
-               AkcijskiKatalogId=2,
-               ProizvodId=1,
-               PopustProcent=10
+                AkcijskiKatalogId = 2,
+                ProizvodId = 1,
+                PopustProcent = 10
             });
 
             //_context.Uloga.Add(new Uloga { TipUloge="admin" });
@@ -306,7 +308,7 @@ namespace eNamjestaj.UnitTest
 
             _context.SaveChanges();
 
-            _context.Zaposlenik.Add (new Zaposlenik
+            _context.Zaposlenik.Add(new Zaposlenik
             {
                 Ime = "admin",
                 Prezime = "admin",
@@ -408,7 +410,7 @@ namespace eNamjestaj.UnitTest
                 return cookieHeaders;
             }
         }
-                Random random = new Random();
+        Random random = new Random();
         private IHostingEnvironment hostingEnvironment;
         private Dictionary<object, object> httpContextItems = new Dictionary<object, object>();
 
@@ -439,9 +441,9 @@ namespace eNamjestaj.UnitTest
 
 
         // ProizvodiController pc = new ProizvodiController(_context);
-        private HttpContext GetMockedHttpContext(Korisnik kor=null)
+        private HttpContext GetMockedHttpContext(Korisnik kor = null)
         {
-            
+
             IConfiguration configuration = new ConfigurationBuilder()
       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
       .AddEnvironmentVariables()
@@ -450,7 +452,7 @@ namespace eNamjestaj.UnitTest
             //services
             var services = new ServiceCollection();
             //services.AddLogging();
-            
+
             services.AddMvc().AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.SerializerSettings.ContractResolver =
@@ -462,15 +464,15 @@ namespace eNamjestaj.UnitTest
             services.AddSession();
             services.AddDbContext<MojContext>(options =>
               options.UseInMemoryDatabase(databaseName: "Test_Database"));
-            
-           
+
+
             var serviceProvider = services.BuildServiceProvider();
 
             var serviceProviderGetContext = new Mock<IServiceProvider>();
-    serviceProviderGetContext.Setup(s => s.GetService(typeof(MojContext)))
-    .Returns(_context);
-            
-            
+            serviceProviderGetContext.Setup(s => s.GetService(typeof(MojContext)))
+            .Returns(_context);
+
+
             //httpContext i session
             var mockContext = new Mock<HttpContext>();
             var mockSession = new Mock<ISession>();
@@ -483,37 +485,37 @@ namespace eNamjestaj.UnitTest
                 _context.AutorizacijskiToken.First().KorisnikId = kor.Id;
                 _context.SaveChanges();
             }
-       // mockContext.Setup(s => s.Session).Returns(mockSession.Object);
+            // mockContext.Setup(s => s.Session).Returns(mockSession.Object);
             mockContext.SetupGet(ctx => ctx.RequestServices).Returns(serviceProviderGetContext.Object);
             mockContext.SetupGet(c => c.Items).Returns(httpContextItems);
-          
+
             var collection = Mock.Of<IFormCollection>();
             var mockDataProtector = new Mock<IDataProtector>();
             Mock<IDataProtectionProvider> mockDataProtectionProvider = new Mock<IDataProtectionProvider>();
 
-            
+
             var request = new Mock<HttpRequest>();
-        //           request.Setup(f => f.ReadFormAsync(CancellationToken.None)).Returns
- // ---->                            (Task.FromResult(collection));
-        request.SetupGet(r => r.Cookies).Returns(new RequestCookieCollection(cookieRequestHeaderList));
-            
+            //           request.Setup(f => f.ReadFormAsync(CancellationToken.None)).Returns
+            // ---->                            (Task.FromResult(collection));
+            request.SetupGet(r => r.Cookies).Returns(new RequestCookieCollection(cookieRequestHeaderList));
+
             mockContext.SetupGet(c => c.Request).Returns(request.Object);
-            
+
             var response = new Mock<HttpResponse>();
             response.SetupProperty(it => it.StatusCode);
-           
-            response.SetupGet(resp => resp.Cookies).Returns(new ResponseCookies(new HeaderDictionary(cookieResponseHeaders),null));
+
+            response.SetupGet(resp => resp.Cookies).Returns(new ResponseCookies(new HeaderDictionary(cookieResponseHeaders), null));
             response.SetupGet(resp => resp.Headers).Returns(new HeaderDictionary(cookieResponseHeaders));
 
-            
+
             mockContext.Setup(c => c.Response).Returns(response.Object);
-            
+
             mockDataProtector.Setup(sut => sut.Protect(It.IsAny<byte[]>())).Returns(Encoding.UTF8.GetBytes("CfDJ8GnPj9ak8t1HphXa8mMbIoKnqw4YPtXOXoKasvmnPEhKDWkKreGRYzObYb6nsYj6zcIIiyuqWMic_lfwLkYv-Y-II7heGvYx0ffMSSIVD7JKrsX9ML74Ju2vmFPnhTtifbnFQBrUbluhJ2Pn34v3anAXHdYRTh2YlyJhJ3oJDUru_6xO_7EM9UJdwxU9VJOf0NpChZypR9Aa64JQX4CLx8i4Sy04gzxsKKvSq0TACNlY1RuW8fodu23osFIsIdQ96G2vIYwOyueFUXA2tcLCurbtm2kQGgqviZZoBQNdfiwTjxw6dvW5f9MmJHz_XpbQCYiEU8kG15DkyWglvq006C6A9xcCGvi6Fi0_Ow1gVhwSdvHun7M9vpNF9BWojdpdOwTD2y9nSjg3adU1IRml-zZxPJ0LVICVQ0yZ1ZnbqWfMxSVueoeEGVYoIu4h_EqT-Y6YqmSx0-Z5yOjK5AJauARFoU-5ho6yCSUIg_sdbhkRecFM0oChqfCFvjPl_T2irTUk2EO94FrC7TGZ-vM7VPs2F4_J7Td2IyaZBvwyGFL6A_Xp8MGoOoAgWUgBL4t-o8JscOLgVrGyBffQtM92sg6bsqEnrxerO4sE1QTxDF_TpCD5sLKMtaF3NItukOfVt9DPaTV9THgue6LVJFasotqv6b9UOd_o2Tpa_ZB0LHxhdZNRHYRqF0HcyCohphsRIJ5hCP5Os7DIT8isyYks_ZXKEmFd7TKTREVouO3T1EPx0bDV_qFGBZrQu6V_uybf7gNk9Crnge2Ekj6ElXgPIviauc7edKVnPsTRzwDsOYN1NWgk-UGkKFjISCrE_UkaMn8F6-y2umgVJTebmap-MczZq6eilD9r_7aDSJyZBIZPY0QdGSJlLx3CYySTJ0fsoz3t5sUlt1cuAeWng6oiE_ij0wbUfriP8YE1mF8RB8hSQtVXC3KH8_ukP2ofEuehzvm_NTRx5yKls4nkfnzaUpfU3VYvVUIuLWnQY5xeCnN2xn1Qgklbfv_Xx32ZEKAGmm6HxKkqlrz8y-WFUdrYcI4ng2EJvvt0B2IUopCL_DPEAh4sXmEy0pM_YOtOV_mCH4eMupKAD0tqBuTFrYeb85vsNqe4SOKkYTID83KtVxZ0fCo6Z4Gd6kLHQ4TQRokVnkHa1c9VHrzZKI6oy23uGwAyVGlFxTK4lM6Xg2HBjo_AYrxg5H6Yb3Kb1M188hImXvW8q6H-C7LMwM966FGTv1kOYYCPFxL-4876UziUcAw7hQGAoxCRZQVOmd7-K8DtQSeI4ctRzaghduMlYAbqG5s5ZerhUF-1Jbo3d4RTOxXdeH9l8D7St2WfHn1aObitZ8tPxY90V4y5YmOQbC267W9QaQUT0pcw7es6SZDbrNmxp6ktzxn34qcAkINmBnMTJKohl7tXCs3mJsXc7mpEeeFjy4NXa8f3pKKQ_hv4Qkfl-gOgfnFTQe6tD9VAQMdUQbjh_R4NoKaRGnRQTHSWBn4dHFQSWwSyshHbvyq8rXB4eRbB1yb5WD4BdpWVNa2d2k2NU1jZy_FI4SZoKsO-H5gPl3j6xnvyk20swbBE2RdLG_SGEWUNMYUdJEOxgH7FC3amwh3-MGhxwJ6m0maGukIL_uAjbH7N_Yt7pf1c5WNWbfQEGkhw3KBIf_vrbr4USZt_0zGWvFM64IXvJl8D5JNvsuVlOrrihfv0TMjhcmFinYM40FSVg3R9qkGHK-kftfYCxK_hoOrxkETEcNZfcE9sgr5F2abXqDM_nhExF35brEt3jrNRJb5DTFV9DV7VidQfec8qjF-c6UTosoa6hgkK2LCeriZ7x3olFjkeUSW501bYDDEJjcphMA5nr1HKsuPt1C9OR3O5UhPwR_quYKQRnbqvPbfljKlBIy0rzVUVVEoZz58vpoDC96di-L-TRLUVPFlukY5k43P5mFLRkWiMZ3GFz88qdOKM_AtPdc-Vi4r77h-fdzvtW5sBiBQ54ViAqHW592XRVjQZHx6_UFyT9rqVgVgjSn_PAJ9Nqv-1S4V30DT4QmgYhLb_UW8oyB7q4dAXPiQWz26LRkPRR-93fl-XiIYTm0TMTv3yT8p51Sl4LaPmJwlPSszPgziEnZET1ypX3xMaJ8oIBEakk5uAnvdToHintIN6a3z6L7Aon0DlEvfrUOvf7cTXtDrfrJx-6NX7Bkj5W2R24_QFTR-rst6gXNQJzBCU9H5ml9m8WVapWX25g4oADScfg72FiTAHBLn2T1lC16YncicOLsyK2jxvXtJ716ECq6b3Lv6lvuHkB_vWQYSpRCsnJnmDjWebUao11WhpwaqgDiDyGAgQpsSWKdMch8hpSK9911LWIc29lXozwb73igIvekGKIZRER9ZdxFiEnF5SggQyChvWsLW-SSSyaKd5nvcLO4PCJTjDAlkym7FIZWpHtqGvr_wGLPq_oFQ6nsy1AWn8gg6fVd6Zn4hqvan8_FEwJz44UTXJoG6s_IJns4SbivRyNnyByfGPr8ytzDUQ0fcCmtEJABu9SNr575q9-YuZr-6qa5bzDMtt7PAqSvrcI7z2IWW8quKmf5wD_u74rCuVfQk8aLxqxBb-yoJx-OGhWMAHO1Sxl5wW_MKkYeJvwJjC9vOang1aq_Rcpb0xnPEz5uhjJIUiugFdpL34-mjNyA4dXRHsHiUuOOHTg2tYnyaLZ5Lm1wjmjxv1PT3ks2_d17QHjbBiquE1Bz3k2k0KMvrl9PFqrvrVxBdUq8AFYI-43XpAuJGu2QpxmFcTTz1d5MKgCdfX2hqX3wbg0ehUcEEGHkZE0kjOcnOr2MGb_U9rutEYy4nmUWSIEubrBVFSIJ1vXUua0j7-q9_Zc7per08akEGqCMxxzTXsWxgAAetFb-X-PKNC03SC3KhrFvZu7VlRJUetOb75Vfjhtpv9iSKRhvnlOSDmki5iAlP7jViQdZCeQGI3jSS4734dnRbB44J3WustkK5sj33o0U7gOWTuXtm2KqTDhjMPU5-FdxKKVVd9u4SF71PP2aNfiYv4V14kAB4IVV3qjINz3XUdPRsJK3C8XoNdwJeZTJvQGCIkw7wXNfTC5i634c7c98CT6X2I4d-q2s8HvjLRD9gvTEUE-E0A4GEMWhFwCqfhR0MfRmYKo-OJq6JGz6Z6QqolN4toTGjBJVUhVRMKTyg7g5fJcjYQPLp3gOLpsLd2z0silP1jH9NMI85eGf5_Pp7DSA_aGiwR6nfzgSerJWyCLHlUHK0_vLz0s0rB2u4xtsdttZ1JeIUqlHHcSokzxTLn3cAZ4QfjufMOiWNxcSUKRdt9fMCW4A7ncVEJpraLkJcfEYiE5XVPM_cYL0O6cZQdkJLo8PssIiVz7VWHM6nfnqVb2ILQf0ccuS4_O-HrPo4yMM_Tx5eYbVVXesYUEdQ8fRo34SqFT7i1p5h8kRJGU2xBSUzyKTQxZyzuXqoW5nSj9FMyrHp3hbawKVYbAcX7__GdZ7LjVWiMvRDjhLUpvzGUSBNLQ7OeAM1-ElGwXxyD_T_HWxykpl7q0m1F6hnU-j1Kg4zMFoPSSEYqlQxx_odRrvzhfq2EpiyUeT82V_PjkIVj42s3SEYOqTvLWwGZvTIvLsEzUX4vMoSjpWH3ZBNT-mVw7EY_QRxTe-rughjccvUtS3XBquMfNt7UGW7hWWYUeFmpbbdwy4gWaOH3NCuom-zoHE3XcNrTvamdNDnko-gxMDtd7b90Rbzd-MCXukS6qFqa4sePFY3drMmgD1uz-Rhti3MrtSjC9jiCu98vQKJulf06079XeJffMCcGIyk7GUD_jfFLVeJ4yK3chTz90o5PoS7lpxqbzTTWBoWZA9TcWspXmOTm2p5g49YOHHfDfYRyjXCDDJPnaxRBHYroZrwZP7NjsOQTU8XZCTmmZiRe9EMnGJJBo7B4vKKbM5zmj3czp9ydwOfQamSvM1_YdfVybsa1mpfzIXY_xMenGBvTxCQsZEshhAcoWzC1X1ZoMzilLGxgEct70uXzsuK90HZwbIyynme03hTK4l4vTH1qMjBNti-VnhxiHWKf1zAjRj7g-islGDRgf9mos5wzJ0_FRobCEISuhhKSk3KqNCd4rCAyoJOz_yw8aISP_DzHmCzESdV7ykuOtqjAfkODDL29RyMEpR81Q_ihoD-kIor8xi4pNevAmqpr6EMYN4sweiH6SsZSeh5fCDU5MMRIxipw5w-_9bU6A9XBwYTe5AbCBfcauiCnGzS7ZP0Uxyg7euT2652U6QvcTn2lhHlovL7FCMs19nIXsTBkgNVdHlH7rm_Mi1VAW_lqBBI7rVV0juKITvZIeUrkjfVOhh0ZdeX0dVjp_WPU2BimWiZk_rWG98JSI3zrJFAyJBTj2jIefzueE6kSkQuc3O9uUZWfptLkmmRcKTwQ8piTdQagWxIZ_pNOJo5cLkeLncbA2nbQfuwdNFhprNs65MYa3Q8tZby9sAvbqeY3o3t1Q9ZOF0TNE509kpceZyaWU35eulK8mA3VcGyTGBcNxtCih8T0d1RNzUzlaqpgrsPZEeLJuS6XBr1TPeLMOKGI4a2gdsLKAU7Ce1rAQ-BBcYv_RS_YsFL_FyHSr0QTzE301-TPaowcJQQb7bTDaFgFc9bttDVpOUgm6Zh20-91af2HIw2H-BVjn0Y7uBwFEADo9nIU2cCtWelvvMzGqReBWXRsr2pftwJtbrZozMf2eSniyUzXXd7zYQaSc-WkiejeIA9quvKvaybK2RVldCqP_TF8SaBpDrmboaxFGaSwdsc6L5_apwLkv3MxTx113J1NqqCinYKxjWsNV6wJ2NLiJdEzBkblwNSwSwf2JVfzGvcSEEfHxdNhXvPs7u3iqe1U2hDCyD82GismNhWsdd8k5WtvJ45rlrq7F2ERCe33lqjIp7PwXjhWpfA6WI9OM5Yhnak5Kv-lWQMVnwnrQnOn7vfnw5DwItGgAKFtdHyYSzl0bRB_t4Rb4K8TdVI3vfaT6aPemrHb7IHGQhFlRBceFDQ06nJU9lvmz0lKhXs-oi7EsWSe2KGFHIU76FEiTQEfQmDIaj1tdXqrDlBBVLpi9W9PWtQfQjkGQEmLriln5MRrmwD7BAqw__oiCpkebgONRp1pNvS-TebsmzXgrlrVXHCiKJuLuD_dN5Lkr8m5XSRomqj-yBzVlCHtZTEkDhRiZ7hzcHTE58eJrForozyMMzkgo4ri9M4gWOx8EzE54XmhtRvQu1IzL_O3yBDQyArjqS6xUcv_TVlc9gWsCr3I2S0A7C7EGe2J8195Y363AT-g7tix4CxKGseEHY8SMrtSgngE00wiqsru7R2XMW4QjAZ13ZBOTlqf_qb2DADXKNVl7hFlc27GyQCSihriKJY5P-xizFuq-OStOrKT7VqypP5_hE8uOU0v22k6tzanU7xdeDF8s8S9rw6tKdea038jbr72J94V9KRXwHwoP8zsfw3mbSPMxrkEC0D-7UmkjQMcOYHaWn40cwtUX7B6gRU93AQy7sa8rOdoNHbrNbuuSUmwIMwQn0TEBG6ZDGesIn7yKeBopUip-MAzh3PrHQ8hYZ32hQGI3W76pJf5t42PmMKbtz858MNY3TsNJUNwX8YOb5CAsreUjIw4dRqgp1uhmjbE-VyXrIuI9qu8pju2e_BpwobJBQYXZvnbus3H7Bj2VPlsWNdTPQqk7HEl3qtvhacGo78ofgWjJswW4JOboLJQFbNxomn3rYH3oVbZRg1XJMcFBYzbXjRV89GV9IDNEOHtzx28nK4_gC_KzJCKi1URk6MTrwFl6NLCk64x1j_ZnBOwvne1yN-zjkcAoxBywSTbuheHQ_Mp79kxg9p5_GJMmexv_1FhNauTNdEbaKDuKq2CdNTPt5Z43J37hpzpKv-KftrlhHGj-dS4uZu7phTPKKhkCR_dUvWWy2RC6PVTj1hV8BA8K0y1q2VWWK2xf_XmbzG-VrSRb0wym28NadhCYTcB9uysnH3BhTirtR8Pqqy_kDaw6cURMVVedlEeWgdt-Hs2YhYEXy_q3FdM7LWPgl6HbDigIf2_Xw6JWjqeNTVCMaHrVOoEJax0rbXrqOm8LIB-UBshSrp6ximv0ARLED5jXHDGJgjhojYvWgvPGnUz-Ch8vhwYlwHO4j4kUJBcQqeQXztbqiXJc2KB9ftXDteLmd04tV7w-x_h21glp51p1rfasvarmurE8DNVJ4LlR4JFognzv7tunVwmMg0y8utKGukD9aa7NfZ-3W6srBbnfUcrFWH8Gn76WDq03EXwuRMJngcAh-ivLvjB-0_66O-lVJKLS1A-6yLj3XQc_0zNlZW4jcn_7KLePoZH3Yax6Kli5_BaJBtURK9F-Ot5jHibQub4-xnigiBMjyrLp8vG73bJ5RosfaCZ5qoCkN-PDg9bhSEwTjhPCVqNOC4Bt5OoymN6qzsvHwmI1Fj2h3HsuYxEEnbdQHcIsHGz5NBFHqNehh6pW2jhMm7gIJ2sBLWUxZzzWkO88uC3DqRUDTX8pmH0-bF1MrBYl8V382ADaPiG9Tox-elSPwe1HLDsPNAJzvQXlDHHLf9_MP8F_6AsOENr9wA4xtuHF4WcBMNAZzpHVZUomc1yk5wHiEIotBOQxcTYOEh9vigLXdrMeLRC3nJwTfjj9XG855HTgcAtUJv9A9CKCHu2lkKoCRefyrCixa36Ch9YJ113Fwjmtz9p1sQseflENtYOhj1_FPZVUl7U-yNWAI30fazh40TDGj9qca3KlLiPfAosGTuouzU0h-PmihTfJImDlCbC6BobgA"));
             mockDataProtector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(Encoding.UTF8.GetBytes(expectedTestString));
 
             mockDataProtectionProvider.Setup(s => s.CreateProtector(It.IsAny<string>())).Returns(mockDataProtector.Object);
 
-             return mockContext.Object;
+            return mockContext.Object;
 
 
 
@@ -522,7 +524,7 @@ namespace eNamjestaj.UnitTest
         public void GetServicesTest()
         {
             var services = new ServiceCollection();
-         
+
         }
 
         [TestMethod]
@@ -534,7 +536,7 @@ namespace eNamjestaj.UnitTest
             {
                 HttpContext = GetMockedHttpContext()
             };
-            var redirectResult= hc.Index() as RedirectResult;
+            var redirectResult = hc.Index() as RedirectResult;
             Assert.AreEqual("/ModulKupac/Proizvodi/Index", redirectResult.Url);
         }
 
@@ -615,7 +617,7 @@ namespace eNamjestaj.UnitTest
             LoginVM model = result.Model as LoginVM;
 
             Assert.AreEqual("Niste unijeli ispravne podatke", result.ViewData["poruka"]);
-            Assert.AreEqual("Index",result.ViewName);
+            Assert.AreEqual("Index", result.ViewName);
             Assert.IsNull(model.username);
             Assert.IsNull(model.password);
         }
@@ -626,15 +628,15 @@ namespace eNamjestaj.UnitTest
             AutentifikacijaController ac = new AutentifikacijaController(_context);
             LoginVM novi = new LoginVM
             {
-                username="mmm",
-                password="mmm"
+                username = "mmm",
+                password = "mmm"
             };
             var result = ac.Login(novi) as ViewResult;
             LoginVM model = result.Model as LoginVM;
 
             Assert.AreEqual("Pogrešan username ili password", result.ViewData["poruka"]);
             Assert.AreEqual("Index", result.ViewName);
-            Assert.AreEqual(novi,model);
+            Assert.AreEqual(novi, model);
         }
 
         [TestMethod]
@@ -672,38 +674,38 @@ namespace eNamjestaj.UnitTest
             ac.Url = GetUrlHelper();
             ac.ControllerContext = new ControllerContext
             {
-                
+
                 HttpContext = GetMockedHttpContext()
             };
 
-            
+
 
             LoginVM novi = new LoginVM
             {
                 username = "johndoe",
                 password = "..."
             };
-            var result =(RedirectToActionResult) ac.Login(novi);
+            var result = (RedirectToActionResult)ac.Login(novi);
 
             //Assert.AreEqual("johndoe", ac.ControllerContext.HttpContext.GetLogiraniKorisnik().KorisnickoIme);
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("Proizvodi", result.ControllerName);
-         }
+        }
 
         [TestMethod]
         public void Test_Autentifikacija_Logout__redirectsToIndex()
         {
             AutentifikacijaController ac = new AutentifikacijaController(_context);
-            
+
 
             ac.ControllerContext = new ControllerContext
             { HttpContext = GetMockedHttpContext() };
-            
+
 
             var result = (RedirectToActionResult)ac.Logout();
-            
-           // var kor = ac.ControllerContext.HttpContext.GetLogiraniKorisnik();
-           // Assert.IsNull(ac.ControllerContext.HttpContext.GetLogiraniKorisnik());
+
+            // var kor = ac.ControllerContext.HttpContext.GetLogiraniKorisnik();
+            // Assert.IsNull(ac.ControllerContext.HttpContext.GetLogiraniKorisnik());
             Assert.AreEqual("Index", result.ActionName);
         }
 
@@ -856,7 +858,7 @@ namespace eNamjestaj.UnitTest
         [TestMethod]
         public void Test_ProizvodiMenadzer_AkcijaUploadProduct_ModelStateNotValid()
         {
-           // GetMockedHttpContext();
+            // GetMockedHttpContext();
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
             pmc.ControllerContext = new ControllerContext()
             {
@@ -925,10 +927,10 @@ namespace eNamjestaj.UnitTest
             };
 
             //var serviceProviderMock = new Mock<IServiceProvider>();
-           
+
 
             //erviceProviderMock.Setup(serviceProvider => serviceProvider.GetService(typeof(MojContext)));
-          //  pmc.ControllerContext.HttpContext.RequestServices = serviceProviderMock.Object;
+            //  pmc.ControllerContext.HttpContext.RequestServices = serviceProviderMock.Object;
 
             //var services = new ServiceCollection();
             //pmc.ControllerContext.HttpContext.RequestServices =services.BuildServiceProvider();
@@ -1024,7 +1026,7 @@ namespace eNamjestaj.UnitTest
             int[] temp = { 1, 2 };
             ProizvodiUrediVM newPr = new ProizvodiUrediVM
             {
-                ProizvodId=1,
+                ProizvodId = 1,
                 Naziv = "Proizvod123",
                 Sifra = "11111",
                 Cijena = "111.11",
@@ -1038,7 +1040,7 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual("Index", result.ActionName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
             Assert.AreEqual("Proizvodi", result.ControllerName);//(result as RedirectToActionResult).RouteValues["Detalji"]);//result.ActionName);
-           // Assert.AreEqual(3, _context.Proizvod.Count); 
+                                                                // Assert.AreEqual(3, _context.Proizvod.Count); 
         }
 
         [TestMethod]
@@ -1052,13 +1054,13 @@ namespace eNamjestaj.UnitTest
             };
             pmc.TempData = GetTempDataForRedirect();
 
-            
+
 
             var result = pmc.Index(null) as ViewResult;
             ProizvodiIndexMenadzerVM model = result.Model as ProizvodiIndexMenadzerVM;
 
 
-            Assert.AreEqual(2,model.Proizvodi.Count);
+            Assert.AreEqual(2, model.Proizvodi.Count);
 
         }
 
@@ -1074,7 +1076,7 @@ namespace eNamjestaj.UnitTest
             };
             pmc.TempData = GetTempDataForRedirect();
 
-            
+
             var result = pmc.Index(id) as ViewResult;
             ProizvodiIndexMenadzerVM model = result.Model as ProizvodiIndexMenadzerVM;
 
@@ -1088,7 +1090,7 @@ namespace eNamjestaj.UnitTest
         [TestMethod]
         public void Test_ProizvodiMenadzer_EditProductSave_ModelStateNotValid_ReturnsBadRequest()
         {
-            
+
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
             pmc.ControllerContext = new ControllerContext()
             {
@@ -1100,7 +1102,7 @@ namespace eNamjestaj.UnitTest
             pmc.ModelState.AddModelError("Cijena", "Required");
             pmc.ModelState.AddModelError("VrstaID", "Required");
             pmc.ModelState.AddModelError("BojaID", "Required");
-           
+
 
             var result = pmc.EditProductSave(new ProizvodiUrediVM());
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
@@ -1115,18 +1117,18 @@ namespace eNamjestaj.UnitTest
             pmc.Url = GetUrlHelper();
 
             var result = pmc.Obrisi(id) as RedirectToActionResult;
-            
+
             Assert.AreEqual(1, _context.Proizvod.ToList().Count);
             Assert.AreEqual("Index", result.ActionName);
 
         }
-        
+
 
         [TestMethod]
         public void Test_NarudzbaStavke_IndexAkcijaNotNull_CheckIfITreturnsCorrectModel()
         {
             GetMockedHttpContext();
-            NarudzbaStavkeController ns = new NarudzbaStavkeController( _context);
+            NarudzbaStavkeController ns = new NarudzbaStavkeController(_context);
             ns.ControllerContext = new ControllerContext()
             {
 
@@ -1135,12 +1137,12 @@ namespace eNamjestaj.UnitTest
 
 
             _context.Narudzba.First().Aktivna = true;
-            _context.SaveChanges(); 
-        
-            
+            _context.SaveChanges();
+
+
             ViewResult result = ns.Index() as ViewResult;
             NarudzbaStavkeIndexVM model = result.Model as NarudzbaStavkeIndexVM;
-            Assert.AreEqual(1,model.proizvodiNarudzbe.Count);
+            Assert.AreEqual(1, model.proizvodiNarudzbe.Count);
 
         }
 
@@ -1154,7 +1156,7 @@ namespace eNamjestaj.UnitTest
 
                 HttpContext = GetMockedHttpContext()
             };
-            
+
 
             ViewResult result = ns.Index() as ViewResult;
             Assert.IsNull(result.Model);
@@ -1162,13 +1164,13 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        [DataRow(1,1)]
+        [DataRow(1, 1)]
         public void Test_NarudzbaStavke_ObrisiAkcija_RedirectsToIndex(int id, int narudzbaId)
         {
             GetMockedHttpContext();
             NarudzbaStavkeController ns = new NarudzbaStavkeController(_context);
 
-           var result = (RedirectToActionResult)ns.Obrisi(id, narudzbaId);
+            var result = (RedirectToActionResult)ns.Obrisi(id, narudzbaId);
 
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("NarudzbaStavke", result.ControllerName);
@@ -1178,28 +1180,28 @@ namespace eNamjestaj.UnitTest
 
 
         [TestMethod]
-        [DataRow(1,"100")]
+        [DataRow(1, "100")]
         public void Test_Dostava_IndexAkcija_ProvjeraDaLiProsljedjujeIspravanModelNaView(int narudzbaId, string total)
         {
             DostavaController dc = new DostavaController(_context);
             ViewResult result = dc.Index(narudzbaId, total) as ViewResult;
             DostavaIndexVM model = result.Model as DostavaIndexVM;
 
-            Assert.AreEqual(1,model.Dostave.Count);
+            Assert.AreEqual(1, model.Dostave.Count);
         }
 
 
 
         [TestMethod]
-        [DataRow(1,0,"100")]
+        [DataRow(1, 0, "100")]
         public void Test_Narudzbe_ZakljuciAkcija_ModelStateNotValid(int narudzbaId, int dostava, string total)
         {
             NarudzbeController nc = new NarudzbeController(_context);
             nc.ModelState.AddModelError("dostava", "Required");
 
 
-            var result = (RedirectToActionResult)nc.Zakljuci(narudzbaId,dostava,total);
-            Assert.AreEqual("Index",result.ActionName);
+            var result = (RedirectToActionResult)nc.Zakljuci(narudzbaId, dostava, total);
+            Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("NarudzbaStavke", result.ControllerName);
         }
 
@@ -1208,7 +1210,7 @@ namespace eNamjestaj.UnitTest
         public void Test_Narudzbe_ZakljuciAkcija_ModelStateValid_ReturnsPartialView(int narudzbaId, int dostava, string total)
         {
             NarudzbeController nc = new NarudzbeController(_context);
-            
+
             PartialViewResult result = nc.Zakljuci(narudzbaId, dostava, total) as PartialViewResult;
             Assert.AreEqual("Zakljuci", result.ViewName);
         }
@@ -1257,9 +1259,9 @@ namespace eNamjestaj.UnitTest
         {
             NarudzbeController nc = new NarudzbeController(_context);
             var result = nc.Detalji(id);
-            
 
-            Assert.IsInstanceOfType(result,typeof( PartialViewResult));
+
+            Assert.IsInstanceOfType(result, typeof(PartialViewResult));
         }
 
         [TestMethod]
@@ -1270,7 +1272,7 @@ namespace eNamjestaj.UnitTest
             PartialViewResult result = nc.Detalji(id) as PartialViewResult;
             NarudzbeDetaljiVM model = result.Model as NarudzbeDetaljiVM;
 
-            
+
 
             Assert.AreEqual(1, model.DetaljiNarudzbe.Count); ;
         }
@@ -1285,15 +1287,15 @@ namespace eNamjestaj.UnitTest
                 HttpContext = GetMockedHttpContext()
             };
 
-           sc.TempData = GetTempDataForRedirect();
+            sc.TempData = GetTempDataForRedirect();
 
-             var result = sc.Index() as ViewResult;
+            var result = sc.Index() as ViewResult;
 
 
             SesijaIndexVM vraceneSesije = result.Model as SesijaIndexVM;
 
             Assert.AreEqual(sesijeOcekivane[0].Vrijednost, vraceneSesije.Rows[0].token);
-           
+
         }
 
         [TestMethod]
@@ -1308,7 +1310,7 @@ namespace eNamjestaj.UnitTest
 
             sc.Obrisi(expectedTestString);
 
-            Assert.AreEqual(0,_context.AutorizacijskiToken.ToList().Count);
+            Assert.AreEqual(0, _context.AutorizacijskiToken.ToList().Count);
         }
 
         [TestMethod]
@@ -1316,18 +1318,18 @@ namespace eNamjestaj.UnitTest
         public void Test_Recenzije_Index_VracaListuRecenzija(int id)
         {
             RecenzijeController rc = new RecenzijeController(_context);
-            
+
             rc.ControllerContext = new ControllerContext
             {
-                HttpContext =GetMockedHttpContext(_context.Korisnik.Find(1))
+                HttpContext = GetMockedHttpContext(_context.Korisnik.Find(1))
             };
             rc.Url = GetUrlHelper();
             rc.TempData = GetTempDataForRedirect();
 
-            PartialViewResult result=rc.Index(id) as PartialViewResult;
+            PartialViewResult result = rc.Index(id) as PartialViewResult;
             RecenzijeIndexVM model = result.Model as RecenzijeIndexVM;
 
-            Assert.AreEqual(1,model.Recenzijes.Count);
+            Assert.AreEqual(1, model.Recenzijes.Count);
             Assert.AreEqual(3, model.Recenzijes[0].Ocjena);
             Assert.AreEqual("..", model.Recenzijes[0].Sadrzaj);
 
@@ -1339,7 +1341,7 @@ namespace eNamjestaj.UnitTest
         public void Test_Recenzije_Dodaj_VracaViewDodaj(int id)
         {
             RecenzijeController rc = new RecenzijeController(_context);
-            
+
             rc.Url = GetUrlHelper();
             rc.TempData = GetTempDataForRedirect();
 
@@ -1371,7 +1373,7 @@ namespace eNamjestaj.UnitTest
                 Ocjena = 3
             };
             RedirectToActionResult result = rc.Snimi(model) as RedirectToActionResult;
-           
+
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("Recenzije", result.ControllerName);
 
@@ -1390,8 +1392,8 @@ namespace eNamjestaj.UnitTest
             };
             rc.Url = GetUrlHelper();
 
-           rc.ModelState.AddModelError("Sadrzaj", "Required");
-            
+            rc.ModelState.AddModelError("Sadrzaj", "Required");
+
 
             var result = rc.Snimi(new RecenzijeDodajVM());
 
@@ -1408,13 +1410,13 @@ namespace eNamjestaj.UnitTest
             nc.TempData = GetTempDataForRedirect();
             nc.ControllerContext = new ControllerContext
             {
-                HttpContext=GetMockedHttpContext(_context.Korisnik.Find(1))
+                HttpContext = GetMockedHttpContext(_context.Korisnik.Find(1))
             };
 
             ViewResult result = nc.NaCekanjuIndex() as ViewResult;
             NaCekanjuIndexVM model = result.Model as NaCekanjuIndexVM;
 
-            Assert.AreEqual(null,model);
+            Assert.AreEqual(null, model);
         }
 
         [TestMethod]
@@ -1433,7 +1435,7 @@ namespace eNamjestaj.UnitTest
             NaCekanjuIndexVM model = result.Model as NaCekanjuIndexVM;
 
             Assert.AreEqual(1, model.Narudzbe.Count);
-            Assert.AreEqual(1,model.Narudzbe[0].NarudzbaId);
+            Assert.AreEqual(1, model.Narudzbe[0].NarudzbaId);
         }
 
         [TestMethod]
@@ -1499,7 +1501,7 @@ namespace eNamjestaj.UnitTest
             ac.ModelState.AddModelError("DatumZavrsetka", "Required");
 
             var result = ac.Snimi(new AkcijskiKatalogDodajVM());
-            Assert.IsInstanceOfType(result,typeof(BadRequestObjectResult));
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
         }
 
         [TestMethod]
@@ -1510,14 +1512,14 @@ namespace eNamjestaj.UnitTest
 
             AkcijskiKatalogDodajVM model = new AkcijskiKatalogDodajVM
             {
-                Opis="...",
-                DatumPocetka=Convert.ToDateTime("01/01/2020"),
-                DatumZavrsetka=Convert.ToDateTime("01/02/2020")
+                Opis = "...",
+                DatumPocetka = Convert.ToDateTime("01/01/2020"),
+                DatumZavrsetka = Convert.ToDateTime("01/02/2020")
             };
 
             var result = ac.Snimi(model) as RedirectToActionResult;
             Assert.AreEqual(model.Opis, _context.AkcijskiKatalog.Last().Opis);
-            Assert.AreEqual("Index",result.ActionName);
+            Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("AkcijskiKatalog", result.ControllerName);
 
         }
@@ -1532,8 +1534,8 @@ namespace eNamjestaj.UnitTest
             PartialViewResult result = asc.Index(id) as PartialViewResult;
             AkcijskiKatalogStavkeIndexVM model = result.Model as AkcijskiKatalogStavkeIndexVM;
 
-            Assert.AreEqual(1,model.KatalogId);
-            Assert.AreEqual(1,model.KatalogProizvodi.Count);
+            Assert.AreEqual(1, model.KatalogId);
+            Assert.AreEqual(1, model.KatalogProizvodi.Count);
         }
 
         [TestMethod]
@@ -1546,7 +1548,7 @@ namespace eNamjestaj.UnitTest
             PartialViewResult result = asc.Dodaj(id) as PartialViewResult;
             AkcijskiKatalogStavkeDodajVM model = result.Model as AkcijskiKatalogStavkeDodajVM;
 
-            Assert.AreEqual(1,model.Proizvodi.Count);
+            Assert.AreEqual(1, model.Proizvodi.Count);
             Assert.AreEqual(id, model.KatalogID);
         }
 
@@ -1560,12 +1562,12 @@ namespace eNamjestaj.UnitTest
 
             AkcijskiKatalogStavkeDodajVM par = new AkcijskiKatalogStavkeDodajVM
             {
-                KatalogID=1
+                KatalogID = 1
             };
 
             PartialViewResult result = asc.Snimi(par) as PartialViewResult;
             Assert.AreEqual("Index", result.ViewName);
-            
+
         }
 
         [TestMethod]
@@ -1575,9 +1577,9 @@ namespace eNamjestaj.UnitTest
             asc.TempData = GetTempDataForRedirect();
             AkcijskiKatalogStavkeDodajVM ocekivani = new AkcijskiKatalogStavkeDodajVM
             {
-                KatalogID=1,
-                Procenat=10,
-                ProizvodID=1
+                KatalogID = 1,
+                Procenat = 10,
+                ProizvodID = 1
             };
 
             PartialViewResult result = asc.Snimi(ocekivani) as PartialViewResult;
@@ -1586,14 +1588,14 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        [DataRow(1,1)]
+        [DataRow(1, 1)]
         public void Test_AkcijskiKatalogStavke_Obrisi_SlanjeStavkaIKatalogID_RedirectToIndex(int katalogID, int stavkaID)
         {
             AkcijskiKatalogStavkeController asc = new AkcijskiKatalogStavkeController(_context);
             asc.Url = GetUrlHelper();
 
             var result = asc.Obrisi(katalogID, stavkaID) as RedirectToActionResult;
-            Assert.AreEqual(0,_context.KatalogStavka.ToList().Count);
+            Assert.AreEqual(0, _context.KatalogStavka.ToList().Count);
             Assert.AreEqual("Index", result.ActionName);
 
         }
@@ -1607,7 +1609,7 @@ namespace eNamjestaj.UnitTest
             _context.AkcijskiKatalog.Find(2).Aktivan = false;
             _context.SaveChanges();
             ViewResult result = akkc.Index() as ViewResult;
-            
+
             Assert.AreEqual(null, result.Model);
         }
 
@@ -1616,7 +1618,7 @@ namespace eNamjestaj.UnitTest
         {
             AkcijskiKatalogKupacController akkc = new AkcijskiKatalogKupacController(_context);
             akkc.TempData = GetTempDataForRedirect();
-            
+
             ViewResult result = akkc.Index() as ViewResult;
             AkcijskiKatalogKupacIndexVM ocekivani = result.Model as AkcijskiKatalogKupacIndexVM;
 
@@ -1630,14 +1632,14 @@ namespace eNamjestaj.UnitTest
             ProfilController pc = new ProfilController(_context);
             pc.ControllerContext = new ControllerContext
             {
-                HttpContext=GetMockedHttpContext(_context.Korisnik.First())
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
             };
             pc.TempData = GetTempDataForRedirect();
 
             ViewResult result = pc.Index() as ViewResult;
             ProfilIndexVM model = result.Model as ProfilIndexVM;
 
-            Assert.AreEqual("kupac",model.Ime);
+            Assert.AreEqual("kupac", model.Ime);
             Assert.AreEqual("johndoe", model.KorisnickoIme);
         }
 
@@ -1673,7 +1675,7 @@ namespace eNamjestaj.UnitTest
 
 
 
-            var result =pc.Snimi(new ProfilUrediVM());
+            var result = pc.Snimi(new ProfilUrediVM());
 
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
         }
@@ -1690,7 +1692,7 @@ namespace eNamjestaj.UnitTest
 
             ProfilUrediVM model = new ProfilUrediVM
             {
-                KorisnickoIme="user",
+                KorisnickoIme = "user",
                 Lozinka = "user",
                 OpstinaID = 1,
                 Email = "user_mail",
@@ -1698,7 +1700,7 @@ namespace eNamjestaj.UnitTest
             };
 
             var result = pc.Snimi(model) as RedirectToActionResult;
-            
+
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("user", _context.Korisnik.First().KorisnickoIme);
             Assert.AreEqual("user_mail", _context.Kupac.First().Email);
@@ -1733,7 +1735,7 @@ namespace eNamjestaj.UnitTest
 
             var result = rc.Snimi(new RegistracijaIndexVM());
 
-            Assert.IsInstanceOfType(result,typeof(BadRequestObjectResult));
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
         }
 
         [TestMethod]
@@ -1742,24 +1744,24 @@ namespace eNamjestaj.UnitTest
             RegistracijaController rc = new RegistracijaController(_context);
             rc.ControllerContext = new ControllerContext
             {
-                HttpContext=GetMockedHttpContext()
+                HttpContext = GetMockedHttpContext()
             };
             rc.Url = GetUrlHelper();
 
             RegistracijaIndexVM model = new RegistracijaIndexVM
             {
-                KorisnickoIme="neki",
-                Lozinka="neki",
-                PotvrdaLozinke="neki",
-                Ime= "neki",
-                Prezime= "neki",
-                Email= "neki",
-                Adresa= "neki",
-                Spol="M",
-                OpstinaID=1
+                KorisnickoIme = "neki",
+                Lozinka = "neki",
+                PotvrdaLozinke = "neki",
+                Ime = "neki",
+                Prezime = "neki",
+                Email = "neki",
+                Adresa = "neki",
+                Spol = "M",
+                OpstinaID = 1
             };
 
-            RedirectToActionResult result=rc.Snimi(model) as RedirectToActionResult;
+            RedirectToActionResult result = rc.Snimi(model) as RedirectToActionResult;
 
             Assert.AreEqual("PrikazPoruke", result.ActionName);
             Assert.AreEqual("neki", _context.Korisnik.Last().KorisnickoIme);
@@ -1772,6 +1774,38 @@ namespace eNamjestaj.UnitTest
         {
             RegistracijaController rc = new RegistracijaController(_context);
             Assert.IsNotNull(rc.PrikazPoruke());
+        }
+
+        [TestMethod]
+        public void Test_Admin_Korisnici_Index()
+        {
+            KorisniciController kc = new KorisniciController(_context);
+
+            Assert.IsNotNull(kc.Index());
+        }
+
+        [TestMethod]
+        public void Test_Admin_Korisnici_IndexKupci_VracaListuKupaca()
+        {
+            KorisniciController kc = new KorisniciController(_context);
+            kc.TempData = GetTempDataForRedirect();
+
+            ViewResult result = kc.IndexKupci() as ViewResult;
+            KupciIndexVM model = result.Model as KupciIndexVM;
+
+            Assert.AreEqual(1,model.Kupci.Count);
+        }
+
+        [TestMethod]
+        public void Test_Admin_Korisnici_IndexZaposlenici_VracaListuZaposlenika()
+        {
+            KorisniciController kc = new KorisniciController(_context);
+            kc.TempData = GetTempDataForRedirect();
+
+            ViewResult result = kc.IndexZaposlenici() as ViewResult;
+            ZaposleniciIndexVM model = result.Model as ZaposleniciIndexVM;
+
+            Assert.AreEqual(2, model.Zaposlenici.Count);
         }
 
     }

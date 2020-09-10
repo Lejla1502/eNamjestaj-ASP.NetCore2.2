@@ -1,7 +1,37 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    // Layout = null;
 }
+<br />
+<br />
+<br />
+<br />
+<h1>Upravljanje korisnicima</h1>
+<button class="btn btn-success" ajax-poziv="da" ajax-rezultat="divKupci" ajax-url="/ModulAdministrator/Korisnici/IndexKupci">Kupci</button>
+<br />
+<br />
+<div id="divKupci"></div>
+<br />
+<button class="btn btn-success" ajax-poziv="da" ajax-rezultat="divZaposlenici" ajax-url="/ModulAdministrator/Korisnici/IndexZaposlenici">Zaposlenici</button>
+<br />
+<br />
+<div id="divZaposlenici"></div>
+<br />
 
-<h2>Index</h2>
+<script>
+    $("button[ajax-poziv='da']").click(function (event) {
+
+        var btn = $(this);
+
+        var url = btn.attr("ajax-url");
+        var r = btn.attr("ajax-rezultat");
+
+        $.get(url,
+            function (rezultat, status) {
+                $("#" + r).html(rezultat);
+
+            });
+    });
+</script>
+
 

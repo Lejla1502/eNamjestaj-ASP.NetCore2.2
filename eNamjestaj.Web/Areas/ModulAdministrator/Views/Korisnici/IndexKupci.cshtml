@@ -1,0 +1,50 @@
+﻿@model eNamjestaj.Web.Areas.ModulAdministrator.ViewModels.KupciIndexVM
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<table class=" table table-bordered">
+    <thead>
+        <tr>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Korisničko ime</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.Kupci)
+        {
+            <tr>
+                <td>@x.Ime</td>
+                <td>@x.Prezime</td>
+                <td>@x.KorisnickoIme</td>
+                <td>
+                    <button ajax-poziv="da" ajax-rezultat="divUrediKupac" ajax-url="/ModulAdministrator/Kupci/Uredi?kupacId=@x.KupacId" class="btn btn-primary">Uredi</button>|
+                    <button ajax-poziv="da" ajax-rezultat="divKupci" ajax-url="/ModulAdministrator/Kupci/Obrisi?=@x.KupacId" class="btn btn-danger">Obriši</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<br />
+<div id="divUrediKupac"></div>
+<br />
+<br />
+
+<script>
+    $("button[ajax-poziv='da']").click(function (event) {
+
+        var btn = $(this);
+
+        var url = btn.attr("ajax-url");
+        var r = btn.attr("ajax-rezultat");
+
+        $.get(url,
+            function (rezultat, status) {
+                $("#" + r).html(rezultat);
+
+            });
+    });
+</script>
