@@ -102,8 +102,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                 Sifra = y.Sifra,
                 Vrsta = y.VrstaProizvoda.Naziv,
                 Brojac = brojac,
-                //Popust = ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == y.Id).FirstOrDefault().PopustProcent,
-                //KonacnaCijena = y.Cijena - (y.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == y.Id).FirstOrDefault().PopustProcent / 100)
+                Popust = ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == y.Id).FirstOrDefault().PopustProcent,
+                KonacnaCijena = y.Cijena - (y.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == y.Id).FirstOrDefault().PopustProcent / 100)
             }).FirstOrDefault();
 
 
@@ -201,7 +201,7 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                                 nsUpdate.Kolicina += kol;
                                 ctx.SaveChanges();
                                 ps.Kolicina -= kol;
-                                nsUpdate.TotalStavke = p.Cijena * nsUpdate.Kolicina;//(p.Cijena - (p.Cijena * (decimal)Popust / 100)) * nsUpdate.Kolicina;
+                                nsUpdate.TotalStavke = (p.Cijena - (p.Cijena * (decimal)Popust / 100)) * nsUpdate.Kolicina;
                                 postoji = true;
                             }
                         }

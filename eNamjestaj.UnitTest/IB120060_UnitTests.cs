@@ -1930,6 +1930,55 @@ namespace eNamjestaj.UnitTest
 
         }
 
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Admin_Kupci_Uredi(int id)
+        {
+            KupciController kc = new KupciController(_context);
+            kc.TempData = GetTempDataForRedirect();
+
+            PartialViewResult result = kc.Uredi(id) as PartialViewResult;
+            KupciUrediVM model = result.Model as KupciUrediVM;
+
+            Assert.AreEqual("johndoe", model.KorisnickoIme);
+            Assert.AreEqual("kupac", model.Ime);
+             Assert.AreEqual(id, model.KupacId);
+        }
+
+        [TestMethod]
+        public void Test_Admin_Kupci_Snimi_ModelStateNotValid_ReturnsBadReq()
+        {
+            KupciController kc = new KupciController(_context);
+            kc.ModelState.AddModelError("KorisnickoIme", "Required");
+            kc.ModelState.AddModelError("Lozinka", "Required");
+            kc.ModelState.AddModelError("PotvrdaLozinke", "Required");
+
+            var result = kc.Snimi(new KupciUrediVM());
+
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+
+        }
+
+        [TestMethod]
+        public void Test_Admin_Kupci_Snimi_ModelStateValid_RedirectsToIndexKupci()
+        {
+            KupciController kc = new KupciController(_context);
+            kc.Url = GetUrlHelper();
+
+            KupciUrediVM model = new KupciUrediVM
+            {
+                KupacId=1,
+                KorisnickoIme="novi",
+                Ime="novi",
+                Prezime="novi"
+            };
+
+            RedirectToActionResult result = kc.Snimi(model) as RedirectToActionResult;
+
+            Assert.AreEqual("IndexKupci", result.ActionName);
+            Assert.AreEqual("Korisnici", result.ControllerName);
+        }
+
     }
 
 

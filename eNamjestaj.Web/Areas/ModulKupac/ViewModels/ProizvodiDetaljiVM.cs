@@ -13,8 +13,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.ViewModels
         public string Naziv { get; set; }
         public string Sifra { get; set; }
         public decimal Cijena { get; set; }
-        //public int? Popust { get; set; } = 0;
-        //public decimal? KonacnaCijena { get; set; } = 0;
+        public int? Popust { get; set; } = 0;
+        public decimal? KonacnaCijena { get; set; } = 0;
         public List<SelectListItem> Boje { get; set; }
         public int BojaID { get; set; }
         [Required(ErrorMessage = "Polje je obavezno")]

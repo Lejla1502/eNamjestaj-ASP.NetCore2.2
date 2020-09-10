@@ -22,17 +22,17 @@
         @*<input type="hidden" name="Popust" value="@Model.Popust" />*@
         <div>
             <h3 style="display:inline-block; padding-left:25px;">@Model.Naziv</h3>
-            @*@if (Model.Popust != null)
+            @if (Model.Popust != null)
                 {
                     <p style=" display:inline-block;padding-left:60px">- @Model.Popust %</p>
-                }*@
+                }
         </div>
         <p>
             <img src="@Url.Content(@Model.Slika)" style="width:400px;height:300px;" align="left" />
-            @*@if (Model.KonacnaCijena != null)
+            @if (Model.KonacnaCijena != null)
                     {
                     <p class="product-details"><b>Cijena: </b><s>@Model.Cijena KM  </s> @Math.Round(decimal.Parse(Model.KonacnaCijena.ToString()), 2) KM</p>}
-                else*@
+                else
             {
         <p class="product-details"><b>Cijena: </b>@Model.Cijena KM </p>}
         @*<p class="product-details"><b>Cijena: </b>@Model.Cijena KM</p>*@
