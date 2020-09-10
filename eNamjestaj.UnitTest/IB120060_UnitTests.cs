@@ -1870,6 +1870,66 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual("Korisnici", result.ControllerName);
         }
 
+        [TestMethod]
+        public void Test_Admin_Zaposlenici_Dodaj_VracaListuOpstinaIUloga()
+        {
+            ZaposleniciController zc = new ZaposleniciController(_context);
+            zc.TempData = GetTempDataForRedirect();
+
+            PartialViewResult result = zc.Dodaj() as PartialViewResult;
+            ZaposleniciDodajVM model = result.Model as ZaposleniciDodajVM;
+
+            Assert.AreEqual(1, model.Opstine.Count);
+            Assert.AreEqual(5, model.Uloge.Count);
+        }
+
+        [TestMethod]
+        public void Test_Admin_Zaposlenici_SnimiNovogZaposlenika_ModelStateNotValid_REturnBadReq()
+        {
+            ZaposleniciController zc = new ZaposleniciController(_context);
+            zc.ModelState.AddModelError("KorisnickoIme", "Required");
+            zc.ModelState.AddModelError("Lozinka", "Required");
+            zc.ModelState.AddModelError("PotvrdaLozinke", "Required");
+            zc.ModelState.AddModelError("Ime", "Required");
+            zc.ModelState.AddModelError("Prezime", "Required");
+            zc.ModelState.AddModelError("Email", "Required");
+            zc.ModelState.AddModelError("Adresa", "Required");
+            zc.ModelState.AddModelError("UlogaId", "Required");
+            zc.ModelState.AddModelError("OpstinaId", "Required");
+
+            var result = zc.SpremiNovogZaposlenika(new ZaposleniciDodajVM());
+
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public void Test_Admin_Zaposlenici_SpremiNovog_ModelStateValid_REdirectToIndexZaposlenici()
+        {
+            ZaposleniciController zc = new ZaposleniciController(_context);
+            zc.Url = GetUrlHelper();
+
+            ZaposleniciDodajVM model = new ZaposleniciDodajVM
+            {
+                KorisnickoIme = "neki",
+                Lozinka = "neki",
+                PotvrdaLozinke = "neki",
+                Ime = "neki",
+                Prezime = "neki",
+                Email = "neki",
+                Adresa = "neki",
+                UlogaId = 1,
+                OpstinaId = 1,
+                Telefon="..."
+            };
+
+            var result = zc.SpremiNovogZaposlenika(model) as RedirectResult;
+
+            Assert.AreEqual("neki",_context.Zaposlenik.Last().Email);
+            Assert.AreEqual("neki", _context.Korisnik.Last().KorisnickoIme);
+            Assert.AreEqual("/ModulAdministrator/Korisnici/IndexZaposlenici", result.Url);
+
+        }
+
     }
 
 
