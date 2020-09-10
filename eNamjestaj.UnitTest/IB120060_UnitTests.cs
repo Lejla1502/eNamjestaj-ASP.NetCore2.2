@@ -1705,7 +1705,17 @@ namespace eNamjestaj.UnitTest
 
         }
 
+        [TestMethod]
+        public void Test_Registracija_Index_VracaListuOpstina()
+        {
+            RegistracijaController rc = new RegistracijaController(_context);
+            rc.TempData = GetTempDataForRedirect();
 
+            ViewResult result = rc.Index() as ViewResult;
+            RegistracijaIndexVM model = result.Model as RegistracijaIndexVM;
+
+            Assert.AreEqual(1, model.Opstine.Count);
+        }
     }
 
 

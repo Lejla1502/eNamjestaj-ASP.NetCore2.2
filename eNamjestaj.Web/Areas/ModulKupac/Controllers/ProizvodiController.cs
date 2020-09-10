@@ -130,22 +130,16 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                 Proizvod p = ctx.Proizvod.Find(ProizvodId);
             ProizvodSkladiste ps = ctx.ProizvodSkladiste.Where(x => x.ProizvodId == p.Id).First();
 
-
-
-                //if (Popust == null)
-                //    Popust = 0;
-
+                
                 Korisnik k = HttpContext.GetLogiraniKorisnik();
-            //User user = _userSession.User;
                 Kupac kupacLogiran = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
-                //Kupac kupacLogiran = ctx.Kupac.Where(x => x.Korisnik.KorisnickoIme == user.Username).FirstOrDefault();
 
                 if (kupacLogiran == null)
                 return RedirectToAction("Index", "Login");
 
 
 
-            Narudzba aktivna = null;// HttpContext.GetAktivnaNarudzba();
+            Narudzba aktivna = null;
             int aktivnaBr = ctx.Narudzba.Where(x => x.KupacId == kupacLogiran.Id && x.Aktivna == true).Count();
             if (aktivnaBr > 0)
                 aktivna = ctx.Narudzba.Where(x => x.KupacId == kupacLogiran.Id && x.Aktivna == true).First();
@@ -183,9 +177,9 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                             NarudzbaId = n.Id,
                             BojaId = BojaID,
                             CijenaProizvoda = p.Cijena,
-                            //PopustNaCijenu = Popust ?? 0,
-                            TotalStavke=p.Cijena*kol
-                            //TotalStavke = (p.Cijena - (p.Cijena * (decimal)Popust / 100)) * kol
+                            PopustNaCijenu = Popust ?? 0,
+                            //TotalStavke=p.Cijena*kol
+                            TotalStavke = (p.Cijena - (p.Cijena * (decimal)Popust / 100)) * kol
                         };
                         ctx.NarudzbaStavka.Add(ns);
                         //broj++;
@@ -221,8 +215,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                                 NarudzbaId = n1.Id,
                                 BojaId = BojaID,
                                 CijenaProizvoda = p.Cijena,
-                                //PopustNaCijenu = Popust ?? 0,
-                                TotalStavke = p.Cijena*kol//(p.Cijena - (p.Cijena * (decimal)Popust / 100)) * kol
+                                PopustNaCijenu = Popust ?? 0,
+                                TotalStavke = (p.Cijena - (p.Cijena * (decimal)Popust / 100)) * kol
                             });
                             ps.Kolicina -= kol;
                         }
