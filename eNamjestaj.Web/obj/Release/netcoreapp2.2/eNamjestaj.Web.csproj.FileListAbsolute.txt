@@ -72,3 +72,4 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\R
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\IndexKupci.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\IndexZaposlenici.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Registracija\PrikazPoruke.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Zaposlenici\Uredi.g.cshtml.cs

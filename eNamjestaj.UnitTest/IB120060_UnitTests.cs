@@ -141,7 +141,7 @@ namespace eNamjestaj.UnitTest
             var zaposlenik = new Zaposlenik {
                 Ime = "menadzer",
                 Prezime = "menadzer",
-                Email = "...",
+                Email = "menadzerMail",
                 Adresa = "...",
                 Telefon = "-...",
                 KorisnikId = 2
@@ -1820,6 +1820,54 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual("IndexZaposlenici", result.ActionName);
             Assert.AreEqual("Korisnici", result.ControllerName);
             Assert.AreEqual(1, _context.Zaposlenik.ToList().Count);
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Admin_Zaposlenici_Uredi_SaljeSeIDZaposlenika_VracaDatogZaposlenika(int id)
+        {
+            ZaposleniciController zc = new ZaposleniciController(_context);
+            zc.TempData = GetTempDataForRedirect();
+            
+            PartialViewResult result = zc.Uredi(id) as PartialViewResult;
+            ZaposleniciUrediVM aktualni = result.Model as ZaposleniciUrediVM;
+
+            Assert.AreEqual("menadzer",aktualni.Ime);
+            Assert.AreEqual(2, aktualni.UlogaID);
+            Assert.AreEqual("zaposlenik",aktualni.KorisnickoIme);
+
+        }
+
+        [TestMethod]
+        public void Test_Admin_Zaposlenici_Snimi_ModelStateNotValidReturnsBadReq()
+        {
+            ZaposleniciController zc = new ZaposleniciController(_context);
+            zc.ModelState.AddModelError("KorisnickoIme", "Required");
+            zc.ModelState.AddModelError("UlogaID", "Required");
+
+            var result = zc.Snimi(new ZaposleniciUrediVM());
+
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public void Test_Admin_Zaposlenici_Snimi_ModelStateValidRedirectTOIndexZaposlenici()
+        {
+            ZaposleniciController zc = new ZaposleniciController(_context);
+            zc.Url = GetUrlHelper();
+
+            ZaposleniciUrediVM model = new ZaposleniciUrediVM
+            {
+                ZaposlenikId=1,
+                Ime="Zapo",
+                Prezime="zapo",
+                KorisnickoIme="zapo",
+                UlogaID=1
+            };
+
+            var result = zc.Snimi(model) as RedirectToActionResult;
+            Assert.AreEqual("IndexZaposlenici", result.ActionName);
+            Assert.AreEqual("Korisnici", result.ControllerName);
         }
 
     }

@@ -17,9 +17,12 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNa
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.TagHelpers.output.cache
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.RazorCoreGenerate.cache
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\IndexKupci.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\IndexZaposlenici.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Shared\Error.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Shared\_Layout.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Shared\_ValidationScriptsPartial.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Zaposlenici\Uredi.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\_ViewImports.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\_ViewStart.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\AkcijskiKatalogKupac\Index.g.cshtml.cs
@@ -36,6 +39,7 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Raz
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Recenzije\Dodaj.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Recenzije\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Registracija\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Registracija\PrikazPoruke.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Shared\Error.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Shared\_Layout.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Shared\_LayoutAnonim.g.cshtml.cs
@@ -69,6 +73,3 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNa
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.csproj.CopyComplete
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.dll
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\eNamjestaj.Web.pdb
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Registracija\PrikazPoruke.g.cshtml.cs
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\IndexKupci.g.cshtml.cs
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Debug\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\IndexZaposlenici.g.cshtml.cs

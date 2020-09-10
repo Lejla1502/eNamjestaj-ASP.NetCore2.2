@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using eNamjestaj.Data;
 using eNamjestaj.Data.Helper;
 using eNamjestaj.Data.Models;
+using eNamjestaj.Web.Areas.ModulAdministrator.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
@@ -23,6 +24,40 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Uredi(int zaposlenikId)
+        {
+            Zaposlenik z = ctx.Zaposlenik.Where(x => x.Id == zaposlenikId).First();
+            Korisnik k = ctx.Korisnik.Where(y => y.Id == z.KorisnikId).First();
+            ZaposleniciUrediVM model = new ZaposleniciUrediVM
+            {
+                ZaposlenikId = zaposlenikId,
+                Ime = z.Ime,
+                Prezime = z.Prezime,
+                KorisnickoIme = k.KorisnickoIme,
+                UlogaID = k.UlogaId,
+                Uloge = ctx.Uloga.ToList()
+            };
+
+            return PartialView(model);
+        }
+
+        public IActionResult Snimi(ZaposleniciUrediVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                Zaposlenik z = ctx.Zaposlenik.Where(x => x.Id == model.ZaposlenikId).First();
+                Korisnik k = ctx.Korisnik.Where(x => x.Id == z.KorisnikId).First();
+                k.KorisnickoIme = model.KorisnickoIme;
+
+                k.UlogaId = model.UlogaID;
+                ctx.SaveChanges();
+
+                return RedirectToAction("IndexZaposlenici", "Korisnici");
+            }
+            else
+                return BadRequest(ModelState);
         }
 
         public IActionResult Obrisi(int zaposlenikId)
