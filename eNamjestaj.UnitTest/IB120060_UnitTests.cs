@@ -1808,6 +1808,20 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual(2, model.Zaposlenici.Count);
         }
 
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Admin_Zaposlenici_Obrisi_RedirectTOIndexZaposlenici(int id)
+        {
+            ZaposleniciController zc = new ZaposleniciController(_context);
+            zc.Url = GetUrlHelper();
+
+            var result = zc.Obrisi(id) as RedirectToActionResult;
+
+            Assert.AreEqual("IndexZaposlenici", result.ActionName);
+            Assert.AreEqual("Korisnici", result.ControllerName);
+            Assert.AreEqual(1, _context.Zaposlenik.ToList().Count);
+        }
+
     }
 
 
