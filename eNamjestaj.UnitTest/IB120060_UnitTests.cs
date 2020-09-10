@@ -1716,6 +1716,64 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual(1, model.Opstine.Count);
         }
+
+        [TestMethod]
+        public void Test_Registracija_Snimi_SlanjeNullVrijednosti_VracaBadReq()
+        {
+            RegistracijaController rc = new RegistracijaController(_context);
+            rc.ModelState.AddModelError("KorisnickoIme", "Required");
+            rc.ModelState.AddModelError("Lozinka", "Required");
+            rc.ModelState.AddModelError("PotvrdaLozinke", "Required");
+            rc.ModelState.AddModelError("Ime", "Required");
+            rc.ModelState.AddModelError("Prezime", "Required");
+            rc.ModelState.AddModelError("Email", "Required");
+            rc.ModelState.AddModelError("Adresa", "Required");
+            rc.ModelState.AddModelError("Spol", "Required");
+            rc.ModelState.AddModelError("OpstinaID", "Required");
+
+            var result = rc.Snimi(new RegistracijaIndexVM());
+
+            Assert.IsInstanceOfType(result,typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public void Test_Registracija_Snimi_SlanjeIspravneVrijednosti_RedirectToPrikazPoruke()
+        {
+            RegistracijaController rc = new RegistracijaController(_context);
+            rc.ControllerContext = new ControllerContext
+            {
+                HttpContext=GetMockedHttpContext()
+            };
+            rc.Url = GetUrlHelper();
+
+            RegistracijaIndexVM model = new RegistracijaIndexVM
+            {
+                KorisnickoIme="neki",
+                Lozinka="neki",
+                PotvrdaLozinke="neki",
+                Ime= "neki",
+                Prezime= "neki",
+                Email= "neki",
+                Adresa= "neki",
+                Spol="M",
+                OpstinaID=1
+            };
+
+            RedirectToActionResult result=rc.Snimi(model) as RedirectToActionResult;
+
+            Assert.AreEqual("PrikazPoruke", result.ActionName);
+            Assert.AreEqual("neki", _context.Korisnik.Last().KorisnickoIme);
+            Assert.AreEqual("neki", _context.Kupac.Last().Email);
+
+        }
+
+        [TestMethod]
+        public void Test_Registracija_PrikazPoruke_NotNull()
+        {
+            RegistracijaController rc = new RegistracijaController(_context);
+            Assert.IsNotNull(rc.PrikazPoruke());
+        }
+
     }
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using eNamjestaj.Data;
 using eNamjestaj.Data.Helper;
+using eNamjestaj.Data.Models;
 using eNamjestaj.Web.Areas.ModulKupac.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,10 +34,49 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 
         public IActionResult Snimi(RegistracijaIndexVM model)
         {
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                Korisnik k = new Korisnik
+                {
+                    KorisnickoIme = model.KorisnickoIme,
+                    Lozinka = model.Lozinka,
+                    OpstinaId = model.OpstinaID,
+                    UlogaId = 5
+                };
+
+                ctx.Korisnik.Add(k);
+                ctx.SaveChanges();
+
+                Kupac kupac = new Kupac
+                {
+                    Ime = model.Ime,
+                    Prezime = model.Prezime,
+                    Email = model.Email,
+                    Adresa = model.Adresa,
+                    Spol = model.Spol,
+                    KorisnikId = k.Id
+                };
+
+                ctx.Kupac.Add(kupac);
+                ctx.SaveChanges();
+
+                HttpContext.SetLogiraniKorisnik(k);
+                return RedirectToAction("PrikazPoruke");
+            }
+            else
+                return BadRequest(ModelState);
+
+
         }
 
-            public IActionResult ProvjeraPassworda(string PotvrdaLozinke, string Lozinka)
+        public IActionResult PrikazPoruke()
+        {
+
+            return View();
+        }
+
+
+        public IActionResult ProvjeraPassworda(string PotvrdaLozinke, string Lozinka)
         {
             if (PotvrdaLozinke.Equals(Lozinka))
                 return Json(true);
