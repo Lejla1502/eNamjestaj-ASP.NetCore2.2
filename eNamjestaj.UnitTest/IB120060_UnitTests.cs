@@ -1641,6 +1641,71 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual("johndoe", model.KorisnickoIme);
         }
 
+        [TestMethod]
+        public void Test_Profil_Uredi_VracaIspravanModel()
+        {
+            ProfilController pc = new ProfilController(_context);
+            pc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
+            };
+            pc.TempData = GetTempDataForRedirect();
+
+            ViewResult result = pc.Uredi() as ViewResult;
+            ProfilUrediVM model = result.Model as ProfilUrediVM;
+
+            Assert.AreEqual("kupac", model.Ime);
+            Assert.AreEqual("johndoe", model.KorisnickoIme);
+        }
+
+        [TestMethod]
+        public void Test_Profil_Snimi_SlanjeNullModela_VracaBadReq()
+        {
+            ProfilController pc = new ProfilController(_context);
+            pc.ModelState.AddModelError("KorisnickoIme", "Required");
+            pc.ModelState.AddModelError("Lozinka", "Required");
+            pc.ModelState.AddModelError("PotvrdaLozinke", "Required");
+            pc.ModelState.AddModelError("Ime", "Required");
+            pc.ModelState.AddModelError("Prezime", "Required");
+            pc.ModelState.AddModelError("Email", "Required");
+            pc.ModelState.AddModelError("Adresa", "Required");
+            pc.ModelState.AddModelError("OpstinaID", "Required");
+
+
+
+            var result =pc.Snimi(new ProfilUrediVM());
+
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public void Test_Profil_Snimi_SlanjeIspravnogModela_RedirectsTOIndex()
+        {
+            ProfilController pc = new ProfilController(_context);
+            pc.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
+            };
+            pc.Url = GetUrlHelper();
+
+            ProfilUrediVM model = new ProfilUrediVM
+            {
+                KorisnickoIme="user",
+                Lozinka = "user",
+                OpstinaID = 1,
+                Email = "user_mail",
+                Adresa = "user_Adr",
+            };
+
+            var result = pc.Snimi(model) as RedirectToActionResult;
+            
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("user", _context.Korisnik.First().KorisnickoIme);
+            Assert.AreEqual("user_mail", _context.Kupac.First().Email);
+
+        }
+
+
     }
 
 

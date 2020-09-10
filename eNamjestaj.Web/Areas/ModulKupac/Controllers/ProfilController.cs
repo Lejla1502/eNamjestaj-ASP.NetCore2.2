@@ -39,6 +39,55 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
             return View(model);
         }
 
+        public IActionResult Uredi()
+        {
+            Korisnik k = HttpContext.GetLogiraniKorisnik();
+            Kupac kupac = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
+            ProfilUrediVM model = new ProfilUrediVM
+            {
+                Ime = kupac.Ime,
+                Prezime = kupac.Prezime,
+                KorisnickoIme = k.KorisnickoIme,
+                Email = kupac.Email,
+                Adresa = kupac.Adresa,
+                OpstinaID = k.OpstinaId,
+                Opstine = ctx.Opstina.ToList()
+            };
+
+            return View(model);
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> SnimiK(ProfilUrediVM model)
+        //{
+        //    IdentityResult x=await _userManager.UpdateAsync(model)
+        //}
+
+        public IActionResult Snimi(ProfilUrediVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                Korisnik k = HttpContext.GetLogiraniKorisnik();
+                Kupac kupac = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
+                k.KorisnickoIme = model.KorisnickoIme;
+                k.Lozinka = model.Lozinka;
+                k.OpstinaId = model.OpstinaID;
+                HttpContext.SetLogiraniKorisnik(k);
+                ctx.SaveChanges();
+
+
+
+                kupac.Email = model.Email;
+                kupac.Adresa = model.Adresa;
+
+                ctx.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            else
+                return BadRequest(ModelState);
+        }
+
         public IActionResult VerifyUsername(string KorisnickoIme)
         {
             Korisnik ko = HttpContext.GetLogiraniKorisnik();

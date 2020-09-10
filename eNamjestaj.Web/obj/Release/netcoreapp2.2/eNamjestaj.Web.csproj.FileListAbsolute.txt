@@ -67,3 +67,4 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\R
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\AkcijskiKatalog\Dodaj.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\AkcijskiKatalogKupac\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Profil\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\Profil\Uredi.g.cshtml.cs
