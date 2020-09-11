@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
 {
+    [Audit]
     [Autorizacija(false, false, true, false)]
     [Area("ModulMenadzer")]
     public class AkcijskiKatalogStavkeController : Controller

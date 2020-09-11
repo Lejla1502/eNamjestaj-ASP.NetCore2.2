@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 {
     [Autorizacija(false, true, false, false)]
+    [Audit]
     [Area("ModulKupac")]
 
     public class NarudzbaStavkeController : Controller

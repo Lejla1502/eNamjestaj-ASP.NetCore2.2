@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
 {
+    [Audit]
     [Autorizacija(false, false, true, false)]
     [Area("ModulMenadzer")]
 

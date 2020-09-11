@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 {
     [Autorizacija(false, true, false, true)]
+    [Audit]
+    [Audit]
     [Area("ModulKupac")]
     public class AkcijskiKatalogKupacController : Controller
     {

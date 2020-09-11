@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 {
+    [Audit]
     [Area("ModulKupac")]
     public class RecenzijeController : Controller
     {

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 {
+    [Audit]
     [Area("ModulKupac")]
 
     public class ProizvodiController : Controller

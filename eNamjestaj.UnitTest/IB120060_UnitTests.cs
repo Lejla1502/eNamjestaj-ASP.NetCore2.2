@@ -274,10 +274,18 @@ namespace eNamjestaj.UnitTest
                 AkcijskiKatalog = akcijskiKatalog
             };
 
+            var log = new Log
+            {
+                Username="korisnik",
+                IPAddress="ip adresa",
+                AreaAccessed="area",
+                Timestamp=DateTime.Now
+            };
+
             _context.AddRange(vrstaProizvoda, proizvod, skladiste,
                 proizvodSkladiste, boja, proizvodBoja, dostava, narudzba,
                 narudzbaStavka, izlaz, izlazStavka, zaposlenik,
-                autorizacijskiToken, recenzija, akcijskiKatalog, katalogStavka);
+                autorizacijskiToken, recenzija, akcijskiKatalog, katalogStavka, log);
             _context.SaveChanges();
 
             _context.AkcijskiKatalog.Add(new AkcijskiKatalog
@@ -1990,6 +1998,18 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual("IndexKupci", result.ActionName);
             Assert.AreEqual("Korisnici", result.ControllerName);
+        }
+
+        [TestMethod]
+        public void Test_Admin_Logs_Index()
+        {
+            LogController lc = new LogController(_context);
+            lc.TempData = GetTempDataForRedirect();
+
+            ViewResult result = lc.Index() as ViewResult;
+            LogIndexVM model = result.Model as LogIndexVM;
+
+            Assert.AreEqual(1, model.Audits.Count);
         }
     }
 

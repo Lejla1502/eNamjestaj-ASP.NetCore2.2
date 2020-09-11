@@ -1,0 +1,32 @@
+﻿
+@model eNamjestaj.Web.Areas.ModulAdministrator.ViewModels.LogIndexVM
+@{
+    //Layout = null;
+}
+
+<br />
+<br />
+<br />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+
+            <th>Korisničko ime</th>
+            <th>IP adresa</th>
+            <th>Akcija poduzeta</th>
+            <th>Vrijeme</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.Audits)
+        {
+            <tr>
+                <td>@x.Username</td>
+                <td>@x.IPAddress</td>
+                <td>@x.AreaAccessed</td>
+                <td>@x.Timestamp</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
