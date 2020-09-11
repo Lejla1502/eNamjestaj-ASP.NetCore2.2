@@ -1979,6 +1979,18 @@ namespace eNamjestaj.UnitTest
             Assert.AreEqual("Korisnici", result.ControllerName);
         }
 
+        [TestMethod]
+        [DataRow(1)]
+        public void Test_Admin_Kupci_Obrisi_RedirectToIndexKupci(int id)
+        {
+            KupciController kc = new KupciController(_context);
+            kc.Url = GetUrlHelper();
+
+            RedirectToActionResult result = kc.Obrisi(id) as RedirectToActionResult;
+
+            Assert.AreEqual("IndexKupci", result.ActionName);
+            Assert.AreEqual("Korisnici", result.ControllerName);
+        }
     }
 
 

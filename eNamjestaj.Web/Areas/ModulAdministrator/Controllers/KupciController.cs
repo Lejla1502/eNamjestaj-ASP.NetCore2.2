@@ -68,6 +68,8 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
                 return BadRequest(ModelState);
         }
 
+        
+
         public IActionResult VerifyUsername(string KorisnickoIme, int KupacId)
         {
             Kupac kupac = ctx.Kupac.Where(x => x.Id == KupacId).First();

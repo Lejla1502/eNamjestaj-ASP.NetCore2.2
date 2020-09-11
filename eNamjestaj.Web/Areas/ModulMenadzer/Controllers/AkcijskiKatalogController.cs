@@ -74,11 +74,13 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
         {
             if (ModelState.IsValid)
             {
-                AkcijskiKatalog ak = new AkcijskiKatalog();
-                ak.Opis = a.Opis;
-                ak.DatumPocetka = (DateTime)a.DatumPocetka;
-                ak.DatumZavrsetka = (DateTime)a.DatumZavrsetka;
-                ak.Aktivan = true;
+                AkcijskiKatalog ak = new AkcijskiKatalog
+                {
+                    Opis = a.Opis,
+                    DatumPocetka = (DateTime)a.DatumPocetka,
+                    DatumZavrsetka = (DateTime)a.DatumZavrsetka,
+                    Aktivan = true
+                };
 
                 ctx.AkcijskiKatalog.Add(ak);
                 ctx.SaveChanges();
