@@ -26,7 +26,6 @@ namespace eNamjestaj.Web.Areas.ModulKupac.ViewModels
         [Required(ErrorMessage = "Molimo potvrdite sifru"), DataType(DataType.Password),
             MaxLength(14), MinLength(3, ErrorMessage = "Sifra mora imati minimalno 3 karaktera")]
         [Remote(action: "ProvjeraPassworda", controller: "Registracija", areaName: "ModulKupac", AdditionalFields = "Lozinka")]
-
         public string PotvrdaLozinke { get; set; }
 
 

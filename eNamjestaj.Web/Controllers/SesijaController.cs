@@ -10,24 +10,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web.Controllers
 {
+    
     public class SesijaController : Controller
     {
-        private MojContext _db;
+        private MojContext ctx;
 
-        public SesijaController(MojContext db)
+        public SesijaController(MojContext _ctx)
         {
-            _db = db;
+            ctx = _ctx;
         }
-
         public IActionResult Index()
         {
 
             SesijaIndexVM model = new SesijaIndexVM();
-            model.Rows = _db.AutorizacijskiToken.Select(s => new SesijaIndexVM.Row
+            model.Rows = ctx.AutorizacijskiToken.Select(s => new SesijaIndexVM.Row
             {
                 VrijemeLogiranja = s.VrijemeEvidentiranja,
-                token = s.Vrijednost,
-                IpAdresa = s.IpAdresa
+                token = s.Vrijednost
             }).ToList();
             model.TrenutniToken = HttpContext.GetTrenutniToken();
 
@@ -38,11 +37,11 @@ namespace eNamjestaj.Web.Controllers
 
         public IActionResult Obrisi(string token)
         {
-            AutorizacijskiToken obrisati = _db.AutorizacijskiToken.FirstOrDefault(x => x.Vrijednost == token);
+            AutorizacijskiToken obrisati = ctx.AutorizacijskiToken.FirstOrDefault(x => x.Vrijednost == token);
             if (obrisati != null)
             {
-                _db.AutorizacijskiToken.Remove(obrisati);
-                _db.SaveChanges();
+                ctx.AutorizacijskiToken.Remove(obrisati);
+                ctx.SaveChanges();
             }
             return RedirectToAction("Index");
         }

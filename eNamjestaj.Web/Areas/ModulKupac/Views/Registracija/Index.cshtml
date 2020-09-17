@@ -3,19 +3,124 @@
     Layout = "_LayoutAnonim";
 }
 
-<br />
-<br />
+
+<body class="bg-primary">
+
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Registracija</h3></div>
+                                <div class="card-body">
+                                    <form method="post" asp-controller="Registracija" asp-action="Snimi" asp-area="ModulKupac">
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1">Ime</label>
+                                                    <input asp-for="Ime" class="form-control py-4" type="text" placeholder="Unesite ime" />
+                                                    <span asp-validation-for="Ime" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1">Prezime</label>
+                                                    <input asp-for="Prezime" class="form-control py-4" type="text" placeholder="Unesite prezime" />
+                                                    <span asp-validation-for="Prezime" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small mb-1">Korisničko ime</label>
+                                            <input asp-for="KorisnickoIme" class="form-control py-4" placeholder="Unesite korisničko ime" />
+                                            <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small mb-1">Email</label>
+                                            <input asp-for="Email" class="form-control py-4" type="email" aria-describedby="emailHelp" placeholder="Unesite email" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1">Lozinka</label>
+                                                    <input asp-for="Lozinka" class="form-control py-4" type="password" placeholder="Unesite lozinku" />
+                                                    <span asp-validation-for="Lozinka" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1">Potvrda lozinke</label>
+                                                    <input asp-for="PotvrdaLozinke" class="form-control py-4" type="password" placeholder="Potvrda lozinke" />
+                                                    <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small mb-1">Adresa</label>
+                                            <input asp-for="Adresa" class="form-control py-4" placeholder="Unesite adresu" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="Spol">Spol:</label>
+                                                    <div>
+                                                        @Html.RadioButton("Spol", "M")  M
+                                                        @Html.RadioButton("Spol", "Z")  Ž
+
+                                                    </div>
+                                                    <span asp-validation-for="Spol" class="text-danger"></span><br />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Opština: </label>
+
+                                                   
+                                                        <select class="custom-select" asp-for="OpstinaID" asp-items="@{new SelectList(Model.Opstine,"Id","Naziv")}">
+                                                            <option value=""></option>
+                                                        </select>
+                                                        <span asp-validation-for="OpstinaID" class="text-danger"></span>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mt-4 mb-0"><input type="submit" value="Snimi" class="btn btn-primary btn-block" /></div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="/Autentifikacija/Index">Imate račun? Prijavite se</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+    </div>
+</body>
 
 
-<h3>Registracija</h3>
-<br />
-<br />
+
+
+
+
+
+
+
+@*@*<h3>Registracija</h3>
 
 <form method="post" asp-controller="Registracija" asp-action="Snimi" asp-area="ModulKupac">
     @*<div asp-validation-summary = "ValidationSummary.ModelOnly"></div>*@
 
 
-    <div class="form-group">
+    @*<div class="form-group">
         <label for="KorisnickoIme">Korisnicko ime:</label>
         <input class="form-control" asp-for="KorisnickoIme" placeholder="Korisnicko ime">
         <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
@@ -33,52 +138,56 @@
         <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label for="Ime">Ime:</label>
-        <input class="form-control" asp-for="Ime" placeholder="Ime">
-        <span asp-validation-for="Ime" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Prezime">Prezime:</label>
-        <input class="form-control" asp-for="Prezime" placeholder="Prezime">
-        <span asp-validation-for="Prezime" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Email">Email:</label>
-        <input class="form-control" asp-for="Email" placeholder="Email">
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Adresa">Adresa:</label>
-        <input class="form-control" asp-for="Adresa" placeholder="Adresa">
-        <span asp-validation-for="Adresa" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Spol">Spol:</label>
-        M:   @Html.RadioButton("Spol", "M")
-        Z: @Html.RadioButton("Spol", "Z")
-        <span asp-validation-for="Spol" class="text-danger"></span><br />
-    </div>
-
-    <div class="form-group">
-        <label>Opština: </label>
-
-        <div>
-            <select asp-for="OpstinaID" asp-items="@{new SelectList(Model.Opstine,"Id","Naziv")}">
-                <option value=""></option>
-            </select>
-            <span asp-validation-for="OpstinaID" class="text-danger"></span>
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Ime">Ime:</label>
+                <input class="form-control" asp-for="Ime" placeholder="Ime">
+                <span asp-validation-for="Ime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Prezime">Prezime:</label>
+                <input class="form-control" asp-for="Prezime" placeholder="Prezime">
+                <span asp-validation-for="Prezime" class="text-danger"></span>
+            </div>
         </div>
     </div>
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input class="form-control" asp-for="Email" placeholder="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
 
-    <div>
-        <input type="submit" value="Registriraj se" class="btn btn-primary" />
-    </div>
+        <div class="form-group">
+            <label for="Adresa">Adresa:</label>
+            <input class="form-control" asp-for="Adresa" placeholder="Adresa">
+            <span asp-validation-for="Adresa" class="text-danger"></span>
+        </div>
 
-</form>
+        <div class="form-group">
+            <label for="Spol">Spol:</label>
+            M:   @Html.RadioButton("Spol", "M")
+            Z: @Html.RadioButton("Spol", "Z")
+            <span asp-validation-for="Spol" class="text-danger"></span><br />
+        </div>
+
+        <div class="form-group">
+            <label>Opština: </label>
+
+            <div>
+                <select asp-for="OpstinaID" asp-items="@{new SelectList(Model.Opstine,"Id","Naziv")}">
+                    <option value=""></option>
+                </select>
+                <span asp-validation-for="OpstinaID" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div>
+            <input type="submit" value="Registriraj se" class="btn btn-primary" />
+        </div>
+
+</form>*@
 
 

@@ -13,18 +13,18 @@
 <div id="page-wrapper">
     <div style="margin-left:40px; margin-right:30px">
 
-        <br /><br />
-        <h1 style="margin-left:20px;">Artikli</h1>
 
+        <h1 style="margin-left:20px;">Artikli</h1>
+        
         <form action="/ModulKupac/Proizvodi/Index">
-            <select style="margin-left:20px;" name="vrstaID">
+            <select class="custom-select" style="margin-left:20px; width:300px !important;" name="vrstaID" >
                 <option>(Odaberite vrstu namještaja)</option>
                 @foreach (var x in Model.Vrste)
                 {
                     <option value="@x.Value">@x.Text</option>
                 }
             </select>
-            <select style="margin-left:20px;" name="bojaID">
+            <select class="custom-select" style="margin-left:20px; width:300px !important;" name="bojaID">
                 <option>(Odaberite boju namještaja)</option>
                 @foreach (var x in Model.Boje)
                 {
@@ -46,12 +46,13 @@
                         <div style="height:450px;" class="thumbnail">
                             @if (x.Popust != null && x.Popust != 0)
                             {
-                                <p style="float:right">- @x.Popust %</p>
+                                <p ><b> @x.Naziv </b>  <span style="color:red; margin-left:10px; "> -@x.Popust % </span> </p>
                             }
-                            <p> <h3>@x.Naziv  </h3> </p>
-                            <img src=@x.Slika class="img-thumbnail" style="width:242px;height:200px" />
+                            else
+                            {<p><b> @x.Naziv </b> </p>}
+                            <img src=@x.Slika class="img-thumbnail" style="width:250px;height:230px" />
                             <div class="caption" align="left">
-                                @if (x.KonacnaCijena != null)
+                                @if (x.KonacnaCijena != x.Cijena )
                                 {<p><b>Cijena: </b><s>@x.Cijena KM  </s> @Math.Round(decimal.Parse(x.KonacnaCijena.ToString()), 2) KM</p>}
                             else
                             {<p><b>Cijena: </b>@x.Cijena KM </p>}
@@ -60,7 +61,7 @@
 
                                 <p>
 
-                                    <a href="/ModulKupac/Proizvodi/Detalji?ProizvodId=@x.Id&brojac=@x.BrojacBoja" class="btn btn-success btn-sm">
+                                    <a href="/ModulKupac/Proizvodi/Detalji?ProizvodId=@x.Id&brojac=@x.BrojacBoja&popust=@x.Popust" class="btn btn-success btn-sm">
                                         <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
                                         Detalji
                                     </a>

@@ -14,11 +14,11 @@ namespace eNamjestaj.Data
         //    optionsBuilder.UseSqlServer("Server=app.fit.ba,1433;Database=p1738_eNamjestaj;Trusted_Connection=false;MultipleActiveResultSets=true;User ID=p1738;Password=V_93xz8z");
         //}
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //    optionsBuilder.UseSqlServer("Server=localhost;Database=p1738_eNamjestaj;Trusted_Connection=true;MultipleActiveResultSets=true;User ID=Aa;Password=Aa");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer("Server=localhost;Database=p1738_eNamjestaj;Trusted_Connection=true;MultipleActiveResultSets=true;User ID=Aa;Password=Aa");
+        }
 
 
 

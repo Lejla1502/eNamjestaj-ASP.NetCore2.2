@@ -1,100 +1,106 @@
 ﻿@model eNamjestaj.Web.Areas.ModulAdministrator.ViewModels.ZaposleniciDodajVM
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="jquery.validate.js"></script>
-@*<script type="text/javascript" src="~/lib/jquery-validation/dist/additional-methods.js"></script>*@
+@*<script type="text/javascript" src="jquery.js"></script>
+     <script type="text/javascript" src="jquery.validate.js"></script>
+     <script type="text/javascript" src="~/lib/jquery-validation/dist/additional-methods.js"></script>*@
 
-<script type="text/javascript" src="jquery.metadata.js"></script>
+
 <br />
 <br />
 
 
 
 
-<h3>Dodaj novog zaposlenika</h3>
+<div class="container-fluid"><h3>Dodaj novog zaposlenika</h3></div>
 <br />
 <br />
 
-<form ajax-poziv="da" id="formaDodajZap" ajax-url="/ModulAdministrator/Zaposlenici/SpremiNovogZaposlenika" data-ajax="true" data-ajax-update="#formaDodajZap" data-ajax-mode="replace">
+<div class="container">
+    <div class="col-lg-5">
+        <form ajax-poziv="da" id="formaDodajZap" ajax-url="/ModulAdministrator/Zaposlenici/SpremiNovogZaposlenika" data-ajax="true" data-ajax-update="#formaDodajZap" data-ajax-mode="replace">
 
 
-    <div class="form-group">
-        <label for="KorisnickoIme">Korisnicko ime:</label>
-        <input class="form-control" asp-for="KorisnickoIme" placeholder="Korisnicko ime">
-        <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+            <div class="form-group">
+                <label for="KorisnickoIme">Korisnicko ime:</label>
+                <input class="form-control" asp-for="KorisnickoIme" placeholder="Korisnicko ime">
+                <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Lozinka">Lozinka:</label>
+                <input class="form-control" asp-for="Lozinka" placeholder="Lozinka">
+                <span asp-validation-for="Lozinka" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="PotvrdaLozinke">Potvrda lozinke:</label>
+                <input class="form-control" asp-for="PotvrdaLozinke" placeholder="Potvrda lozinke">
+                <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Ime">Ime:</label>
+                <input class="form-control" asp-for="Ime" placeholder="Ime">
+                <span asp-validation-for="Ime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Prezime">Prezime:</label>
+                <input class="form-control" asp-for="Prezime" placeholder="Prezime">
+                <span asp-validation-for="Prezime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input class="form-control" asp-for="Email" placeholder="Email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Adresa">Adresa:</label>
+                <input class="form-control" asp-for="Adresa" placeholder="Adresa">
+                <span asp-validation-for="Adresa" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Telefon">Telefon:</label>
+                <input class="form-control" asp-for="Telefon" placeholder="Telefon">
+                <span asp-validation-for="Telefon" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Opština: </label>
+
+                <div>
+                    <select class="custom-select" asp-for="OpstinaId" asp-items="@{new SelectList(Model.Opstine,"Id","Naziv")}">
+                        <option value=""></option>
+                    </select>
+                    <span asp-validation-for="OpstinaId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Uloga: </label>
+
+                <div>
+                    <select class="custom-select" asp-for="UlogaId" asp-items="@{new SelectList(Model.Uloge,"Id","TipUloge")}">
+                        <option value=""></option>
+                    </select>
+                    <span asp-validation-for="UlogaId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div>
+                <input type="submit" value="Snimi" class="btn btn-primary" />
+            </div>
+
+        </form>
     </div>
-
-    <div class="form-group">
-        <label for="Lozinka">Lozinka:</label>
-        <input class="form-control" asp-for="Lozinka" placeholder="Lozinka">
-        <span asp-validation-for="Lozinka" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="PotvrdaLozinke">Potvrda lozinke:</label>
-        <input class="form-control" asp-for="PotvrdaLozinke" placeholder="Potvrda lozinke">
-        <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Ime">Ime:</label>
-        <input class="form-control" asp-for="Ime" placeholder="Ime">
-        <span asp-validation-for="Ime" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Prezime">Prezime:</label>
-        <input class="form-control" asp-for="Prezime" placeholder="Prezime">
-        <span asp-validation-for="Prezime" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Email">Email:</label>
-        <input class="form-control" asp-for="Email" placeholder="Email">
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Adresa">Adresa:</label>
-        <input class="form-control" asp-for="Adresa" placeholder="Adresa">
-        <span asp-validation-for="Adresa" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Telefon">Telefon:</label>
-        <input class="form-control" asp-for="Telefon" placeholder="Telefon">
-        <span asp-validation-for="Telefon" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label>Opština: </label>
-
-        <div>
-            <select asp-for="OpstinaId" asp-items="@{new SelectList(Model.Opstine,"Id","Naziv")}">
-                <option value=""></option>
-            </select>
-            <span asp-validation-for="OpstinaId" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Uloga: </label>
-
-        <div>
-            <select asp-for="UlogaId" asp-items="@{new SelectList(Model.Uloge,"Id","TipUloge")}">
-                <option value=""></option>
-            </select>
-            <span asp-validation-for="UlogaId" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div>
-        <input type="submit" value="Snimi" class="btn btn-primary" />
-    </div>
-
-</form>
+</div>
 
 
 

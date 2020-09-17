@@ -1,80 +1,85 @@
 ﻿@model eNamjestaj.Web.Areas.ModulAdministrator.ViewModels.ZaposleniciUrediVM
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="jquery.validate.js"></script>
-<script type="text/javascript" src="jquery.metadata.js"></script>
+
+@*<script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.validate.js"></script>
+    <script type="text/javascript" src="jquery.metadata.js"></script>*@
 <br />
+<div class="container-fluid">
+    <div class="col-lg-7">
+        <form ajax-poziv="da" id="formaUrediZap" ajax-url="/ModulAdministrator/Zaposlenici/Snimi" data-ajax="true" data-ajax-update="formaUrediZap" data-ajax-mode="replace">
 
-<form ajax-poziv="da" id="formaUrediZap" ajax-url="/ModulAdministrator/Zaposlenici/Snimi" data-ajax="true" data-ajax-update="formaUrediZap" data-ajax-mode="replace">
-  
 
-    <div><b>@Model.Ime @Model.Prezime</b></div>
-    <input type="hidden" asp-for="ZaposlenikId" />
+            <div style="font-size:large;"><b>@Model.Ime @Model.Prezime</b></div>
+            <input type="hidden" asp-for="ZaposlenikId" />
 
-    <br />
-    <div class="form-group">
-        <label for="KorisnickoIme">Korisnicko ime:</label>
-        <input class="form-control" asp-for="KorisnickoIme" placeholder="Korisnicko ime">
-        <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+            <br />
+            <div class="form-group">
+                <label for="KorisnickoIme">Korisnicko ime:</label>
+                <input class="form-control" asp-for="KorisnickoIme" placeholder="Korisnicko ime">
+                <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label>Uloga: </label>
+
+                <div>
+                    <select class="custom-select" asp-for="UlogaID" asp-items="@{new SelectList(Model.Uloge,"Id","TipUloge")}">
+                        <option value=""></option>
+                    </select>
+                    <span class="text-danger">@Html.ValidationMessageFor(m => m.UlogaID)</span>
+                </div>
+            </div>
+
+            <div>
+                <input type="submit" value="Snimi" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
+</div>
+    <script>
+        //this code goes in your partial view
+        $(function () {
+            //allow the validation framework to re-prase the DOM
+            jQuery.validator.unobtrusive.parse();
 
-    
-
-    <div class="form-group">
-        <label>Uloga: </label>
-
-        <div>
-            <select asp-for="UlogaID" asp-items="@{new SelectList(Model.Uloge,"Id","TipUloge")}">
-                <option value=""></option>
-            </select>
-            <span class="text-danger">@Html.ValidationMessageFor(m => m.UlogaID)</span>
-        </div>
-    </div>
-
-    <div>
-        <input type="submit" value="Snimi" class="btn btn-primary" />
-    </div>
-</form>
-
-<script>
-    //this code goes in your partial view
-    $(function () {
-        //allow the validation framework to re-prase the DOM
-        jQuery.validator.unobtrusive.parse();
-
-        //or to give the parser some context, supply it with a selector
-        //jQuery validator will parse all child elements (deep) starting
-        //from the selector element supplied
-        jQuery.validator.unobtrusive.parse("#formaUrediZap");
-    });
-    $(document).ready(function () {
-        $("form[ajax-poziv='da']").submit(function (event) {
-            $('#formaUrediZap').validate();
-            $(this).attr("ajax-poziv", "dodan");
-            event.preventDefault();
-
-
-            if (!$("#formaUrediZap").valid()) {
-                return false;
-            }
-            else {
-                var urlZaPoziv1 = $(this).attr("ajax-url");
-
-                var form = $(this);
-
-                $.ajax({
-                    type: "POST",
-                    url: urlZaPoziv1,
-                    data: form.serialize(),
-                    success: function (data) {
-                       $("#divZaposlenici").html(data);
-
-                    }
-                });
-            }
-
+            //or to give the parser some context, supply it with a selector
+            //jQuery validator will parse all child elements (deep) starting
+            //from the selector element supplied
+            jQuery.validator.unobtrusive.parse("#formaUrediZap");
         });
-    });
-</script>
+        $(document).ready(function () {
+            $("form[ajax-poziv='da']").submit(function (event) {
+                $('#formaUrediZap').validate();
+                $(this).attr("ajax-poziv", "dodan");
+                event.preventDefault();
+
+
+                if (!$("#formaUrediZap").valid()) {
+                    return false;
+                }
+                else {
+                    var urlZaPoziv1 = $(this).attr("ajax-url");
+
+                    var form = $(this);
+
+                    $.ajax({
+                        type: "POST",
+                        url: urlZaPoziv1,
+                        data: form.serialize(),
+                        success: function (data) {
+                            $("#divZaposlenici").html(data);
+
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
 

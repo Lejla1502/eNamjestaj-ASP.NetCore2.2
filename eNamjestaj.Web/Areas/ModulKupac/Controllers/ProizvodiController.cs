@@ -61,10 +61,10 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                     Cijena = x.Cijena,
                     Sifra = x.Sifra,
                     Slika = x.Slika,
-                    Popust = (katalogID == 0) ? 0 : ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent,
+                    Popust = (katalogID == 0) ? 0 :( (ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).Count()==1)? (ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent):0),
                     BrojacBoja = ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count(),
                     Boja = (ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 1) ? (ctx.ProizvodBoja.Where(pb => pb.ProizvodId == x.Id)).First().Boja.Naziv : ((ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 0) ? "Boja nije određena" : "**Više boja"),
-                    KonacnaCijena = x.Cijena - (x.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == katalogID && s.ProizvodId == x.Id).FirstOrDefault().PopustProcent / 100)
+                    KonacnaCijena = x.Cijena - (x.Cijena * ((ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).Count() == 1) ? (ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent) : 0) / 100)
                 }).ToList();
             }
             else
@@ -81,8 +81,10 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                                         Slika = x.Slika,
                                         BrojacBoja = ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count(),
                                         Boja = (ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 1) ? (ctx.ProizvodBoja.Where(pb => pb.ProizvodId == x.Id)).First().Boja.Naziv : ((ctx.ProizvodBoja.Where(p => p.ProizvodId == x.Id).Count() == 0) ? "Boja nije određena" : "**Više boja"),
-                                        Popust = (katalogID == 0) ? 0 : ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent,
-                                        KonacnaCijena = x.Cijena - (x.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == katalogID && s.ProizvodId == x.Id).FirstOrDefault().PopustProcent / 100)
+                                        //Popust = (katalogID == 0) ? 0 : ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent,
+                                        Popust = (katalogID == 0) ? 0 : ((ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).Count() == 1) ? (ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent) : 0),
+                                        KonacnaCijena = x.Cijena - (x.Cijena * ((ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).Count() == 1) ? (ctx.KatalogStavka.Where(s => s.ProizvodId == x.Id && s.AkcijskiKatalogId == katalogID).FirstOrDefault().PopustProcent) : 0) / 100)
+                                        // KonacnaCijena = x.Cijena - (x.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == katalogID && s.ProizvodId == x.Id).FirstOrDefault().PopustProcent / 100)
                                     }).ToList();
             }
 
@@ -92,7 +94,7 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
         }
 
         [Autorizacija(false, true, false, true)]
-        public IActionResult Detalji(int proizvodId, int brojac)
+        public IActionResult Detalji(int proizvodId, int brojac,int? popust)
         {
             ProizvodiDetaljiVM model = ctx.Proizvod.Where(x => x.Id == proizvodId).Select(y => new ProizvodiDetaljiVM
             {
@@ -103,8 +105,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                 Sifra = y.Sifra,
                 Vrsta = y.VrstaProizvoda.Naziv,
                 Brojac = brojac,
-                Popust = ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == y.Id).FirstOrDefault().PopustProcent,
-                KonacnaCijena = y.Cijena - (y.Cijena * ctx.KatalogStavka.Where(s => s.AkcijskiKatalogId == 1 && s.ProizvodId == y.Id).FirstOrDefault().PopustProcent / 100)
+                Popust = popust,
+                KonacnaCijena = y.Cijena - (y.Cijena * ((popust==null)?0:popust) / 100)
             }).FirstOrDefault();
 
 
@@ -128,6 +130,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Popust == null)
+                    Popust = 0;
                 Proizvod p = ctx.Proizvod.Find(ProizvodId);
             ProizvodSkladiste ps = ctx.ProizvodSkladiste.Where(x => x.ProizvodId == p.Id).First();
 

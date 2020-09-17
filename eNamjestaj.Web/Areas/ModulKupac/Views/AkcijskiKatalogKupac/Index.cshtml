@@ -13,7 +13,6 @@
 <div id="page-wrapper">
     <div style="margin-left:40px; margin-right:30px">
 
-        <br /><br />
         <h1 style="margin-left:20px;">@Model.NazivKataloga</h1>
 
         <br />
@@ -25,15 +24,12 @@
                     <div class="col-sm-4 col-sm-4 col-sm-4">
                         <div style="height:450px;" class="thumbnail">
 
-                            <p style="float:right">- @x.Popust %</p>
+                            <p><b> @x.Naziv </b>  <span style="color:red; margin-left:10px; "> -@x.Popust % </span> </p>
 
-                            <p> <h3>@x.Naziv  </h3> </p>
-                            <img src=@x.Slika class="img-thumbnail" style="width:242px;height:200px" />
+                            <img src=@x.Slika class="img-thumbnail" style="width:250px;height:230px" />
                             <div class="caption" align="left">
-                                @if (x.KonacnaCijena != null)
-                                {<p><b>Cijena: </b><s>@x.Cijena KM  </s> @Math.Round(decimal.Parse(x.KonacnaCijena.ToString()), 2) KM</p>}
-                                else
-                                {<p><b>Cijena: </b>@x.Cijena KM </p>}
+                               <p><b>Cijena: </b><s>@x.Cijena KM  </s> @Math.Round(decimal.Parse(x.KonacnaCijena.ToString()), 2) KM</p>
+                                
                                 <p><b>Šifra: </b>@x.Sifra</p>
                                 <p><b>Vrsta: </b>@x.Vrsta</p>
                                 <p><b>Boja: </b>@x.Boja</p>

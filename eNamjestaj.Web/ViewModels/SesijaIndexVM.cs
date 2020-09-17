@@ -14,7 +14,6 @@ namespace eNamjestaj.Web.ViewModels
         {
             public DateTime VrijemeLogiranja { get; set; }
             public string token { get; set; }
-            public string IpAdresa { get; set; }
         }
     }
 }

@@ -2,47 +2,53 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-<h2>Proizvodi</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <td>Proizvod</td>
-            <td>Cijena(KM)</td>
-            <td>Popust(%)</td>
-            <td>Konačna cijena</td>
-            <td>Akcija</td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var x in Model.KatalogProizvodi)
-        {
-            <tr>
-                <td>@x.Proizvod</td>
-                <td>@x.Cijena</td>
-                <td>@x.Procenat</td>
-                <td>@x.KonacnaCijena</td>
-                <td><button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Obrisi?katalogId=@Model.KatalogId&stavkaId=@x.Id">Obriši</button></td>
-            </tr>
-        }
-    </tbody>
-</table>
-<button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Dodaj?katalogId=@Model.KatalogId">Dodaj</button>
+<div class="container-fluid"><h2>Proizvodi</h2></div>
+<br />
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <td><b>Proizvod</b></td>
+                    <td><b>Cijena(KM)</b></td>
+                    <td><b>Popust(%)</b></td>
+                    <td><b>Konačna cijena</b></td>
+                    <td><b>Akcija</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model.KatalogProizvodi)
+                {
+                    <tr>
+                        <td>@x.Proizvod</td>
+                        <td>@x.Cijena</td>
+                        <td>@x.Procenat</td>
+                        <td>@x.KonacnaCijena</td>
+                        <td><button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Obrisi?katalogId=@Model.KatalogId&stavkaId=@x.Id">Obriši</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+<div class="container-fluid">
+    <button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Dodaj?katalogId=@Model.KatalogId">Dodaj</button>
+</div>
+        @*<div id="divProizvodi"></div>*@
+        <script>
+            $("button[ajax-poziv='da']").click(function (event) {
 
-<div id="divProizvodi"></div>
-<script>
-    $("button[ajax-poziv='da']").click(function (event) {
+                var btn = $(this);
 
-        var btn = $(this);
+                var url = btn.attr("ajax-url");
+                var r = btn.attr("ajax-rezultat");
 
-        var url = btn.attr("ajax-url");
-        var r = btn.attr("ajax-rezultat");
+                $.get(url,
+                    function (rezultat, status) {
+                        $("#" + r).html(rezultat);
 
-        $.get(url,
-            function (rezultat, status) {
-                $("#" + r).html(rezultat);
-
+                    });
             });
-    });
-</script>
+        </script>
 
 

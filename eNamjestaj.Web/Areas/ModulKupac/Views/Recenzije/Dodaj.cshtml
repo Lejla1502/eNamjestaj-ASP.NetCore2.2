@@ -3,9 +3,13 @@
 <link href="~/lib/css/jquery.rateyo.min.css" rel="stylesheet" type="text/css" />
 <script src="~/lib/js/jquery.rateyo.js"></script>
 
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="jquery.validate.js"></script>
-<script type="text/javascript" src="jquery.metadata.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
+
+@*<script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>*@
+@*<script type="text/javascript" src="~/lib/jquery/metadata.js"></script>*@
 <script>
     $(function () {
 
@@ -13,7 +17,7 @@
             rating: 0,
             numStars: 5,
             maxValue: 5,
-            minValue:1,
+            minValue: 1,
             halfStar: true,
             onChange: function (Ocjena, rateYoInstance) {
                 $('#Ocjena').val(Ocjena);
@@ -32,11 +36,15 @@
         <label>Ocjena: </label>
         <div id="rateYo">
 
+
         </div>
-        <input type="hidden" id="Ocjena" name="Ocjena" />
+        <input type="hidden" id="Ocjena" name="Ocjena" value="0" />
+        <span id="ocjenaSpan" class="text-danger"></span>
     </div>
+
     @*<input type="hidden" id="rating" name="rating" />*@
     <br />
+    
     <div class="form-group">
         <label>Komentar: </label>
         <div>
@@ -64,30 +72,46 @@
         jQuery.validator.unobtrusive.parse("#formaDodajRec");
     });
     $(document).ready(function () {
-        $("form[ajax-poziv='da']").submit(function (event) {
+        $("form[ajax-poziv='da']").submit(function (event)
+        {
+            var x = $("#Ocjena").val();
             $('#formaDodajRec').validate();
             $(this).attr("ajax-poziv", "dodan");
             event.preventDefault();
+            if (x != 0) {//$("#ocjenaSpan").html("Ocjena je neophodna");
+
+               
+
+                
+                
 
 
-            if (!$("#formaDodajRec").valid()) {
-                return false;
+
+
+                if (!$("#formaDodajRec").valid()) {
+                    return false;
+                }
+                else {
+                    var urlZaPoziv1 = $(this).attr("ajax-url");
+
+                    var form = $(this);
+
+                    $.ajax({
+                        type: "POST",
+                        url: urlZaPoziv1,
+                        data: form.serialize(),
+                        success: function (data) {
+                            $("#komOcjeneID").html(data);
+                        }
+                    });
+                }
             }
-            else {
-                var urlZaPoziv1 = $(this).attr("ajax-url");
+            else
+            {
+                $("#ocjenaSpan").html("Ocjena je neophodna");
 
-                var form = $(this);
-
-                $.ajax({
-                    type: "POST",
-                    url: urlZaPoziv1,
-                    data: form.serialize(),
-                    success: function (data) {
-                        $("#komOcjeneID").html(data);
-                    }
-                });
+                $("#formaDodajRec").valid() == false;
             }
-
         });
     });
 </script>

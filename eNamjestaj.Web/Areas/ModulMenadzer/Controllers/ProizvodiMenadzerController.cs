@@ -108,7 +108,7 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
                 MemoryStream ms = new MemoryStream();
                 uploadedImage.OpenReadStream().CopyTo(ms);
 
-               // System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+               System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
 
                 //string pathDir = "C:/Users/Lejla/Desktop/Slike namjestaj/";
 
@@ -133,7 +133,6 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
                 x.Naziv = p.Naziv;
                 x.Sifra = p.Sifra;
 
-                Korisnik k = HttpContext.GetLogiraniKorisnik();
                 x.KorisnikId = HttpContext.GetLogiraniKorisnik().Id;
                 x.VrstaProizvodaId = p.VrstaID;
                 x.Slika = location + uploadedImage.FileName;
@@ -155,18 +154,10 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
 
                     ctx.ProizvodBoja.Add(pb);
                 }
-
-                //ProizvodBoja pb = new ProizvodBoja()
-                //{
-                //    ProizvodId = np.Id,
-                //    BojaId = p.BojaID
-                //};
-
-                //ctx.ProizvodBoja.Add(pb);
                 ctx.SaveChanges();
 
 
-                return RedirectToAction("Index", "Proizvodi");
+                return RedirectToAction("Index", "ProizvodiMenadzer");
             }
             else
             {
@@ -247,7 +238,7 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
                     MemoryStream ms = new MemoryStream();
                     uploadedImage.OpenReadStream().CopyTo(ms);
 
-                    //System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms);
 
                     var webRoot = hostingEnvironment.WebRootPath;
                     string location = "/images/Namjestaj/";
@@ -267,7 +258,7 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
                 x.Cijena = decimal.Parse(p.Cijena);
                 x.Naziv = p.Naziv;
                 x.Sifra = p.Sifra;
-                //x.KorisnikId = HttpContext.GetLogiraniKorisnik().KupacId;
+                x.KorisnikId = HttpContext.GetLogiraniKorisnik().Id;
                 x.VrstaProizvodaId = p.VrstaID;
 
 
@@ -289,7 +280,7 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
                 ctx.SaveChanges();
 
 
-                return RedirectToAction("Index", "Proizvodi");
+                return RedirectToAction("Index", "ProizvodiMenadzer");
             }
             else
                 return BadRequest(ModelState);

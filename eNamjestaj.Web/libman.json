@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "startbootstrap-sb-admin@5.1.1",
+      "destination": "wwwroot/lib/startbootstrap-sb-admin/",
+      "files": [
+        "css/sb-admin.min.css"
+      ]
+    }
+  ]
+}

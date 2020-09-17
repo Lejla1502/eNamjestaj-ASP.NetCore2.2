@@ -51,7 +51,7 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
         public IActionResult Dodaj()
         {
             AkcijskiKatalogDodajVM model = new AkcijskiKatalogDodajVM();
-            return PartialView(model);
+            return View(model);
         }
 
         public IActionResult Obrisi(int katalogId)

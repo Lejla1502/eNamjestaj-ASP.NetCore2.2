@@ -3,21 +3,12 @@
     //Layout = null;
 }
 
-<br />
-<br />
-<br />
 
-<!DOCTYPE html>
-<br />
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Proizvodi</title>
-</head>
 <body>
-
-    <form action="/Proizvodi/Index">
-        <select style="margin-left:20px;" name="vrstaID">
+    <h1>Pregled proizvoda</h1>
+    <br />
+    <form action="/ModulMenadzer/ProizvodiMenadzer/Index">
+        <select class="custom-select col-lg-4"  style="margin-left:20px;" name="vrstaID">
             <option>(Odaberite vrstu namještaja)</option>
             @foreach (var x in Model.Vrste)
             {
@@ -30,71 +21,74 @@
     <br />
 
 
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class=" table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Sifra</th>
+                        <th>Cijena</th>
+                        <th>Slika</th>
+                        <th>Akcija</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model.Proizvodi)
+                    {
+                        <tr>
+                            <td>@x.Naziv</td>
+                            <td>@x.Sifra</td>
+                            <td>@x.Cijena KM</td>
+                            <td><img src=@x.Slika class="img-thumbnail" style="width:80px;height:50px" /></td>
+                            <td>
 
-    <table class=" table table-bordered">
-        <thead>
-            <tr>
-                <th>Naziv</th>
-                <th>Sifra</th>
-                <th>Cijena</th>
-                <th>Slika</th>
-                <th>Akcija</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var x in Model.Proizvodi)
-            {
-                <tr>
-                    <td>@x.Naziv</td>
-                    <td>@x.Sifra</td>
-                    <td>@x.Cijena</td>
-                    <td><img src=@x.Slika class="img-thumbnail" style="width:80px;height:50px" /></td>
-                    <td>
+                                <a class="btn btn-danger" asp-action="Obrisi" asp-route-id="@x.Id" asp-area="ModulMenadzer">Obrisi</a>
+                                <a class="btn btn-warning" ajax-poziv="da" ajax-rezultat="divProizvodirezultat" asp-action="Uredi" asp-route-id="@x.Id" asp-route-vrstaID="@Model.vrstaID" asp-area="ModulMenadzer">Uredi</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+        </div>
+    <div class="container-fluid">
+        <a class="btn btn-danger" ajax-poziv="da" ajax-rezultat="divProizvodirezultat" asp-action="Dodaj" asp-area="ModulMenadzer">Dodaj</a>
+    </div>
+            <br />
+            <br />
+            <div id="divProizvodirezultat"></div>
+            <br />
 
-                        <a class="btn btn-danger" asp-action="Obrisi" asp-route-id="@x.Id" asp-area="ModulMenadzer">Obrisi</a>
-                        <a class="btn btn-warning" ajax-poziv="da" ajax-rezultat="divProizvodirezultat" asp-action="Uredi" asp-route-id="@x.Id" asp-route-vrstaID="@Model.vrstaID" asp-area="ModulMenadzer">Uredi</a>
-                      </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <a class="btn btn-danger" ajax-poziv="da" ajax-rezultat="divProizvodirezultat" asp-action="Dodaj" asp-area="ModulMenadzer">Dodaj</a>
-
-    <br />
-    <br />
-    <div id="divProizvodirezultat"></div>
-    <br />
-
-    <br />
+            <br />
 
 
 
 
 
-    <script>
+            <script>
 
-        $("a[ajax-poziv='da']").click(function (event) {
-            $(this).attr("ajax-poziv", "dodan");
-            event.preventDefault();
-            var urlZaPoziv1 = $(this).attr("ajax-url");
-            var urlZaPoziv2 = $(this).attr("href");
-            var divZaRezultat = $(this).attr("ajax-rezultat");
+                $("a[ajax-poziv='da']").click(function (event) {
+                    $(this).attr("ajax-poziv", "dodan");
+                    event.preventDefault();
+                    var urlZaPoziv1 = $(this).attr("ajax-url");
+                    var urlZaPoziv2 = $(this).attr("href");
+                    var divZaRezultat = $(this).attr("ajax-rezultat");
 
-            var urlZaPoziv;
+                    var urlZaPoziv;
 
-            if (urlZaPoziv1 instanceof String)
-                urlZaPoziv = urlZaPoziv1;
-            else
-                urlZaPoziv = urlZaPoziv2;
+                    if (urlZaPoziv1 instanceof String)
+                        urlZaPoziv = urlZaPoziv1;
+                    else
+                        urlZaPoziv = urlZaPoziv2;
 
-            $.get(urlZaPoziv, function (data, status) {
-                $("#" + divZaRezultat).html(data);
-            });
-        });
-    </script>
+                    $.get(urlZaPoziv, function (data, status) {
+                        $("#" + divZaRezultat).html(data);
+                    });
+                });
+            </script>
 </body>
-</html>
+
 
 
 

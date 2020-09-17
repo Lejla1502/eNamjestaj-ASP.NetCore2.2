@@ -30,13 +30,9 @@ namespace eNamjestaj.Web.Areas.ModulKupac.ViewModels
         public string PotvrdaLozinke { get; set; }
 
 
-        [Required(ErrorMessage = "Molimo unesite ime"), DataType(DataType.Text), MaxLength(50),
-            MinLength(3, ErrorMessage = "Polje ime mora imati minimalno 3 karaktera")]
         public string Ime { get; set; }
 
 
-        [Required(ErrorMessage = "Molimo unesite prezime"), DataType(DataType.Text), MaxLength(100),
-            MinLength(3, ErrorMessage = "Polje prezime mora sadrzavati najmanje 3 slova")]
         public string Prezime { get; set; }
 
         [Required(ErrorMessage = "Molimo unesite email"), DataType(DataType.Text), MaxLength(200),

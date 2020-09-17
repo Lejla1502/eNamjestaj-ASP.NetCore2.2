@@ -9,6 +9,10 @@ namespace eNamjestaj.Web.Areas.ModulKupac.ViewModels
     public class RecenzijeDodajVM
     {
         public int ProizvodId { get; set; }
+        [Required(ErrorMessage ="Obavezno je unijeti ocjenu")]
+        public int OcjenaId { get; set; }
+        [Required(ErrorMessage = "Obavezno je unijeti ocjenu")]
+        [Range(0.5,5.0)]
         public decimal Ocjena { get; set; }
         public DateTime Datum { get; set; }
         [Required(ErrorMessage = "Obavezno je unijeti komentar")]

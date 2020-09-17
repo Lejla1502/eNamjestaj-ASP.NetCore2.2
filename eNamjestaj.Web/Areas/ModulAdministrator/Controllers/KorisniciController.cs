@@ -39,7 +39,7 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
                 }).ToList()
             };
 
-            return View(model);
+            return PartialView(model);
         }
 
         public IActionResult IndexZaposlenici()
@@ -56,7 +56,7 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
                 }).ToList()
             };
 
-            return View(model);
+            return PartialView(model);
         }
     }
 }

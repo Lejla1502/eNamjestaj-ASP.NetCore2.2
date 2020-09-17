@@ -3,63 +3,64 @@
 
 }
 
-<br />
 <h3>Uredi profil(@Model.Ime  @Model.Prezime)</h3>
 <br />
 <br />
+<div class="container">
+    <div class="col-lg-5">
+        <form method="post" asp-controller="Profil" asp-action="Snimi" asp-area="ModulKupac">
+            @*<div asp-validation-summary = "ValidationSummary.ModelOnly"></div>*@
 
-<form method="post" asp-controller="Profil" asp-action="Snimi" asp-area="ModulKupac">
-    @*<div asp-validation-summary = "ValidationSummary.ModelOnly"></div>*@
+
+            <div class="form-group">
+                <label for="KorisnickoIme">Korisnicko ime:</label>
+                <input class="form-control" asp-for="KorisnickoIme" placeholder="Korisnicko ime">
+                <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Lozinka">Lozinka:</label>
+                <input class="form-control" asp-for="Lozinka" placeholder="Lozinka">
+                <span asp-validation-for="Lozinka" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="PotvrdaLozinke">Potvrda lozinke:</label>
+                <input class="form-control" asp-for="PotvrdaLozinke" placeholder="Potvrda lozinke">
+                <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
+            </div>
 
 
-    <div class="form-group">
-        <label for="KorisnickoIme">Korisnicko ime:</label>
-        <input class="form-control" asp-for="KorisnickoIme" placeholder="Korisnicko ime">
-        <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input class="form-control" asp-for="Email" placeholder="Email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Adresa">Adresa:</label>
+                <input class="form-control" asp-for="Adresa" placeholder="Adresa">
+                <span asp-validation-for="Adresa" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label>Opština: </label>
+
+                <div>
+                    <select class="custom-select" asp-for="OpstinaID" asp-items="@{new SelectList(Model.Opstine,"Id","Naziv")}">
+                        <option value=""></option>
+                    </select>
+                    <span class="text-danger">@Html.ValidationMessageFor(m => m.OpstinaID)</span>
+                </div>
+            </div>
+
+            <div>
+                <input type="submit" value="Snimi" class="btn btn-primary" />
+            </div>
+
+        </form>
     </div>
 
-    <div class="form-group">
-        <label for="Lozinka">Lozinka:</label>
-        <input class="form-control" asp-for="Lozinka" placeholder="Lozinka">
-        <span asp-validation-for="Lozinka" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="PotvrdaLozinke">Potvrda lozinke:</label>
-        <input class="form-control" asp-for="PotvrdaLozinke" placeholder="Potvrda lozinke">
-        <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
-    </div>
-
-
-    <div class="form-group">
-        <label for="Email">Email:</label>
-        <input class="form-control" asp-for="Email" placeholder="Email">
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Adresa">Adresa:</label>
-        <input class="form-control" asp-for="Adresa" placeholder="Adresa">
-        <span asp-validation-for="Adresa" class="text-danger"></span>
-    </div>
-
-
-
-    <div class="form-group">
-        <label>Opština: </label>
-
-        <div>
-            <select asp-for="OpstinaID" asp-items="@{new SelectList(Model.Opstine,"Id","Naziv")}">
-                <option value=""></option>
-            </select>
-            <span class="text-danger">@Html.ValidationMessageFor(m => m.OpstinaID)</span>
-        </div>
-    </div>
-
-    <div>
-        <input type="submit" value="Snimi" class="btn btn-primary" />
-    </div>
-
-</form>
-
-
+</div>

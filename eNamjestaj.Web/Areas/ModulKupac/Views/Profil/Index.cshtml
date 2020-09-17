@@ -2,28 +2,31 @@
 
 <head>
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+
 
 </head>
 <br />
-<div class="=row userProfile">
+<div class="container-fluid userProfile">
 
     <div class="col-md-8">
-        <span class="glyphicon glyphicon-user gi-5x " style="display:block !important; padding-left:45px !important;"></span>
-        <span id="imePrezimeLabel">@Model.Ime  @Model.Prezime</span>
-        <span id="userName">Korisničko ime: @Model.KorisnickoIme</span>
-        <span id="emailLabel">Email: @Model.Email</span>
-        <span id="adresaLabel">Adresa: @Model.Adresa</span>
-        <span id="opstinaLabel">Opstina: @Model.Opstina</span>
+        <div class="glyphicon glyphicon-user  " style=" font-size: 5em !important; display:block !important; padding-left:45px !important;"></div>
+        <div id="imePrezimeLabel" style="display:block; padding-bottom:20px; padding-left:20px;"><h1>@Model.Ime  @Model.Prezime</h1></div>
+        <div id="userName" style="display:block; padding-bottom:20px; padding-left:20px; font-size: 1.6em;"><b>Korisničko ime:</b> @Model.KorisnickoIme</div>
+        <div id="emailLabel" style="display:block; padding-bottom:20px; padding-left:20px; font-size: 1.6em;"><b>Email:</b> @Model.Email</div>
+        <div id="adresaLabel" style="display:block; padding-bottom:20px; padding-left:20px; font-size: 1.6em;"><b>Adresa:</b> @Model.Adresa</div>
+        <div id="opstinaLabel" style="display:block; padding-bottom:20px; padding-left:20px; font-size: 1.6em;"><b>Opstina:</b> @Model.Opstina</div>
     </div>
+    
 </div>
 
-<br />
+
 <br />
 <div class="row userProfile">
-    <div class="col-md-8" style="padding-left:32px !important;">
+    <div class="col-md-8" style="padding-left:60px !important;">
         <br />
-
         <a class="btn btn-primary" href="/ModulKupac/Profil/Uredi">Uredi profil</a>
+
     </div>
 </div>
 

@@ -61,7 +61,7 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
             ctx.KatalogStavka.Remove(ks);
             ctx.SaveChanges();
 
-            return RedirectToAction("Index", new { @katalogId = katalogId });
+            return RedirectToAction("Index", "AkcijskiKatalogStavke", new { @katalogId = katalogId });
         }
 
 
@@ -80,39 +80,26 @@ namespace eNamjestaj.Web.Areas.ModulMenadzer.Controllers
                 ctx.SaveChanges();
 
                 int katalogId = a.KatalogID;
-                AkcijskiKatalog ak = ctx.AkcijskiKatalog.Find(a.KatalogID);
-                AkcijskiKatalogStavkeIndexVM model = new AkcijskiKatalogStavkeIndexVM
-                {
-                    KatalogId = katalogId,
-                    KatalogProizvodi = ctx.KatalogStavka.Where(y => y.AkcijskiKatalogId == ak.Id).Select(x => new AkcijskiKatalogStavkeIndexVM.ProizvodiInfo
-                    {
-                        Id = x.Id,
-                        Proizvod = x.Proizvod.Naziv,
-                        Cijena = x.Proizvod.Cijena,
-                        Procenat = x.PopustProcent,
-                        KonacnaCijena = x.Proizvod.Cijena * x.PopustProcent / 100
-                    }).ToList()
-                };
-                return PartialView("Index", model);
+                //AkcijskiKatalog ak = ctx.AkcijskiKatalog.Find(a.KatalogID);
+                //AkcijskiKatalogStavkeIndexVM model = new AkcijskiKatalogStavkeIndexVM
+                //{
+                //    KatalogId = katalogId,
+                //    KatalogProizvodi = ctx.KatalogStavka.Where(y => y.AkcijskiKatalogId == ak.Id).Select(x => new AkcijskiKatalogStavkeIndexVM.ProizvodiInfo
+                //    {
+                //        Id = x.Id,
+                //        Proizvod = x.Proizvod.Naziv,
+                //        Cijena = x.Proizvod.Cijena,
+                //        Procenat = x.PopustProcent,
+                //        KonacnaCijena =x.Proizvod.Cijena-(x.Proizvod.Cijena * x.PopustProcent / 100)
+                //    }).ToList()
+                //};
+                return RedirectToAction("Index", "AkcijskiKatalogStavke", new { @katalogId = katalogId });
             }
             else
             {
-                int katalogId = a.KatalogID;
-                AkcijskiKatalog ak = ctx.AkcijskiKatalog.Find(a.KatalogID);
-                AkcijskiKatalogStavkeIndexVM model = new AkcijskiKatalogStavkeIndexVM
-                {
-                    KatalogId = katalogId,
-                    KatalogProizvodi = ctx.KatalogStavka.Where(y => y.AkcijskiKatalogId == ak.Id).Select(x => new AkcijskiKatalogStavkeIndexVM.ProizvodiInfo
-                    {
-                        Id = x.Id,
-                        Proizvod = x.Proizvod.Naziv,
-                        Cijena = x.Proizvod.Cijena,
-                        Procenat = x.PopustProcent,
-                        KonacnaCijena = x.Proizvod.Cijena - Convert.ToDecimal(x.Proizvod.Cijena / x.PopustProcent)
-                    }).ToList()
-                };
+                
 
-                return PartialView("Index", model);
+                return BadRequest(ModelState);
             }
         }
 

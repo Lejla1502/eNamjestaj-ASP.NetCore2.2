@@ -4,29 +4,30 @@
     //Layout = null;
 }
 
-<br />
-<br />
-<br />
-<table class="table table-bordered">
-    <thead>
-        <tr>
+<div class="container-fluid"><h1>Log zapisi</h1></div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>
+                <tr>
 
-            <th>Korisničko ime</th>
-            <th>IP adresa</th>
-            <th>Akcija poduzeta</th>
-            <th>Vrijeme</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var x in Model.Audits)
-        {
-            <tr>
-                <td>@x.Username</td>
-                <td>@x.IPAddress</td>
-                <td>@x.AreaAccessed</td>
-                <td>@x.Timestamp</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
+                    <th>Korisničko ime</th>
+                    <th>IP adresa</th>
+                    <th>Akcija poduzeta</th>
+                    <th>Vrijeme</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model.Audits)
+                {
+                    <tr>
+                        <td>@x.Username</td>
+                        <td>@x.IPAddress</td>
+                        <td>@x.AreaAccessed</td>
+                        <td>@x.Timestamp</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+</div>

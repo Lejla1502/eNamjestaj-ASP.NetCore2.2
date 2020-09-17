@@ -5,10 +5,7 @@
 }
 
  
-<br />
-<br />
-<!DOCTYPE html>
-<br />
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -19,63 +16,71 @@
     <br />
     <br />
     <br />
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <td>Opis</td>
-                <td>Datum početka</td>
-                <td>Datum završetka</td>
-                <td>Status</td>
-                <td>Akcija</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var x in Model.Katalozi)
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td><b>Opis</b></td>
+                        <td><b>Datum početka</b></td>
+                        <td><b>Datum završetka</b></td>
+                        <td><b>Status</b></td>
+                        <td><b>Akcija</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model.Katalozi)
+                    {
+                        <tr>
+                            <td>@x.Opis</td>
+                            <td>@x.DatumPocetka</td>
+                            <td>@x.DatumZavrsetka</td>
+                            <td>@(x.Aktivan?"Aktivan":"Neaktivan")</td>
+                            <td>
+                                <button ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Index?katalogId=@x.Id" class="btn btn-success">Proizvodi</button>
+
+                                <a class="btn btn-danger" asp-action="Obrisi" asp-route-katalogId="@x.Id" asp-area="ModulMenadzer">Obrisi</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+            @if (Model.daLiJeIjedanKatalogAktivan)
             {
-                <tr>
-                    <td>@x.Opis</td>
-                    <td>@x.DatumPocetka</td>
-                    <td>@x.DatumZavrsetka</td>
-                    <td>@x.Aktivan</td>
-                    <td>
-                        <button ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Index?katalogId=@x.Id" class="btn btn-success">Proizvodi</button>
-
-                        <a class="btn btn-danger" asp-action="Obrisi" asp-route-katalogId="@x.Id" asp-area="ModulMenadzer">Obrisi</a>
-                    </td>
-                </tr>
+                <div class="container-fluid">Ne možete dodavati novi katalog, jer već postoji aktivni katalog</div>
             }
-        </tbody>
-    </table>
+            else
+            {
+                <div class="container-fluid">
+                    <button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalog/Dodaj">Dodaj</button>
+                </div> 
+            }
+    
+    <br/>
+            <div id="divProizvodi"></div>
 
-    @if (Model.daLiJeIjedanKatalogAktivan)
-    {
-        <div>Ne možete dodavati novi katalog,jer već postoji aktivni katalog</div>
-    }
-    else
-    {
-        <button class="btn btn-primary" ajax-poziv="da" ajax-rezultat="divProizvodi" ajax-url="/ModulMenadzer/AkcijskiKatalog/Dodaj">Dodaj</button>
-    }
-    <div id="divProizvodi"></div>
+            @section Scripts {
+                <partial name="_ValidationScriptsPartial" />
+            }
 
-    @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-    }
+            <script>
+                $("button[ajax-poziv='da']").click(function (event) {
 
-    <script>
-        $("button[ajax-poziv='da']").click(function (event) {
+                    var btn = $(this);
 
-            var btn = $(this);
+                    var url = btn.attr("ajax-url");
+                    var r = btn.attr("ajax-rezultat");
 
-            var url = btn.attr("ajax-url");
-            var r = btn.attr("ajax-rezultat");
+                    $.get(url,
+                        function (rezultat, status) {
+                            $("#" + r).html(rezultat);
 
-            $.get(url,
-                function (rezultat, status) {
-                    $("#" + r).html(rezultat);
-
+                        });
                 });
-        });
-    </script>
+            </script>
 
 </body>
 </html>

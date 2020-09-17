@@ -6,66 +6,71 @@
 <br />
 <br />
 
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="jquery.validate.js"></script>
-<script type="text/javascript" src="jquery.metadata.js"></script>
-<h2>Novi proizvod</h2>
-<form ajax-poziv="da" id="formaDodajPr" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Snimi" data-ajax="true" data-ajax-update="#formaDodajPr" data-ajax-mode="replace">
+@*<script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.validate.js"></script>
+    <script type="text/javascript" src="jquery.metadata.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 
-    <input type="hidden" asp-for=" KatalogID" />
-    <div class="form-group">
-        <label>Proizvod: </label>
+<div class="container-fluid"><h2>Novi proizvod</h2></div>
+<div class="col-lg-8">
+    <form ajax-poziv="da" id="formaDodajPr" ajax-url="/ModulMenadzer/AkcijskiKatalogStavke/Snimi" data-ajax="true" data-ajax-update="#formaDodajPr" data-ajax-mode="replace">
 
-        <div>
-            @Html.DropDownListFor(x => x.ProizvodID, Model.Proizvodi, "Odaberite proizvod", new { @class = "form-control" })
-            <span class="text-danger">@Html.ValidationMessageFor(m => m.ProizvodID)</span>
+        <input type="hidden" asp-for=" KatalogID" />
+        <div class="form-group">
+            <label>Proizvod: </label>
+
+            <div>
+                @Html.DropDownListFor(x => x.ProizvodID, Model.Proizvodi, "Odaberite proizvod", new { @class = "form-control" })
+                <span class="text-danger">@Html.ValidationMessageFor(m => m.ProizvodID)</span>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Procenat: </label>
-        <div>
-            <input asp-for="Procenat" class="form-control" />
-            <span asp-validation-for="Procenat" class="text-danger"></span>
+        <div class="form-group">
+            <label>Procenat: </label>
+            <div>
+                <input asp-for="Procenat" class="form-control" />
+                <span asp-validation-for="Procenat" class="text-danger"></span>
+            </div>
         </div>
+        <input id="submitButton" type="submit" value="Snimi" class="btn btn-primary" />
+    </form>
     </div>
-    <input id="submitButton" type="submit" value="Snimi" class="btn btn-primary" />
-</form>
-<script>
-    //this code goes in your partial view
-    $(function () {
-        //allow the validation framework to re-prase the DOM
-        jQuery.validator.unobtrusive.parse();
+    <script>
+        //this code goes in your partial view
+        $(function () {
+            //allow the validation framework to re-prase the DOM
+            jQuery.validator.unobtrusive.parse();
 
-        //or to give the parser some context, supply it with a selector
-        //jQuery validator will parse all child elements (deep) starting
-        //from the selector element supplied
-        jQuery.validator.unobtrusive.parse("#formaDodajPr");
-    });
-    $(document).ready(function () {
-        $("form[ajax-poziv='da']").submit(function (event) {
-            $('#formaDodajPr').validate();
-            $(this).attr("ajax-poziv", "dodan");
-            event.preventDefault();
-
-
-            if (!$("#formaDodajPr").valid()) {
-                return false;
-            }
-            else {
-                var urlZaPoziv1 = $(this).attr("ajax-url");
-
-                var form = $(this);
-
-                $.ajax({
-                    type: "POST",
-                    url: urlZaPoziv1,
-                    data: form.serialize(),
-                    success: function (data) {
-                        $("#divProizvodi").html(data);
-                    }
-                });
-            }
-
+            //or to give the parser some context, supply it with a selector
+            //jQuery validator will parse all child elements (deep) starting
+            //from the selector element supplied
+            jQuery.validator.unobtrusive.parse("#formaDodajPr");
         });
-    });
-</script>
+        $(document).ready(function () {
+            $("form[ajax-poziv='da']").submit(function (event) {
+                $('#formaDodajPr').validate();
+                $(this).attr("ajax-poziv", "dodan");
+                event.preventDefault();
+
+
+                if (!$("#formaDodajPr").valid()) {
+                    return false;
+                }
+                else {
+                    var urlZaPoziv1 = $(this).attr("ajax-url");
+
+                    var form = $(this);
+
+                    $.ajax({
+                        type: "POST",
+                        url: urlZaPoziv1,
+                        data: form.serialize(),
+                        success: function (data) {
+                            $("#divProizvodi").html(data);
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>

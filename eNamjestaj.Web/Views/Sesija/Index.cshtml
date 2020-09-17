@@ -5,8 +5,8 @@
 @model eNamjestaj.Web.ViewModels.SesijaIndexVM
 @{
     ViewData["Title"] = "Index";
-    if (Context.GetLogiraniKorisnik() == null)
-    { Layout = "_LayoutAnonim"; }
+    Layout = "/ModulKupac/Shared/_Layout";
+
 }
 
 @if (Context.GetLogiraniKorisnik() != null)
@@ -37,7 +37,6 @@ else
                         <strong>(trenutna sesija)</strong>
                     }
                 </td>
-                <td>@x.IpAdresa</td>
                 <td>
                     <a asp-action="Obrisi" asp-route-token="@x.token" class="btn btn-danger">Obrisi</a>
                 </td>

@@ -33,6 +33,11 @@ namespace eNamjestaj.Web.Controllers
                 return Redirect("/ModulKupac/Proizvodi/Index");
         }
 
+        public IActionResult Proba()
+        {
+            return View();
+        }
+
         
     }
 }
