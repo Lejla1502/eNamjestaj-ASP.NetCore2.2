@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Two-Factor autentifikacija";
+
+
+    var hasAuthenticator = ViewData["HasAuthenticator"] != null ? bool.Parse(ViewData["HasAuthenticator"].ToString()) : false;
+}
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    
+    <div class="col-md-9">
+        @if (!hasAuthenticator)
+        {
+            <a  class="btn btn-info" href="/ModulKupac/TwoFactorAuthentication/DozvoliAutentifikator">Dodaj autentifikator</a>
+        }
+        else
+        {
+            <a class="btn btn-info" href="/ModulKupac/TwoFactorAuthentication/DozvoliAutentifikator">Resetuj autentifikator</a>
+            <a class="btn btn-info" href="/ModulKupac/TwoFactorAuthentication/BrisiAutentifikator">Brisi autentifikator</a>
+        }
+    </div>
+</div>

@@ -1,13 +1,14 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "a1420743602c30a9709ae6faaa2d29e7315560e2"
+    "signature": "0f9240e587afdb8db0871988978c7747e5dcb0c2"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.2": {
       "eNamjestaj.UnitTest/1.0.0": {
         "dependencies": {
+          "GoogleAuthenticatorService.Core": "1.0.2",
           "MSTest.TestAdapter": "2.1.2",
           "MSTest.TestFramework": "2.1.2",
           "Microsoft.AspNetCore.CookiePolicy": "2.2.0",
@@ -43,6 +44,14 @@
           "lib/netstandard1.5/Castle.Core.dll": {
             "assemblyVersion": "4.0.0.0",
             "fileVersion": "4.4.0.0"
+          }
+        }
+      },
+      "GoogleAuthenticatorService.Core/1.0.2": {
+        "runtime": {
+          "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -3462,6 +3471,7 @@
       },
       "eNamjestaj.Web/1.0.0": {
         "dependencies": {
+          "GoogleAuthenticatorService.Core": "1.0.2",
           "Microsoft.AspNetCore": "2.2.0",
           "Microsoft.AspNetCore.Http.Extensions": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -3495,6 +3505,13 @@
       "sha512": "sha512-b5rRL5zeaau1y/5hIbI+6mGw3cwun16YjkHZnV9RRT5UyUIFsgLmNXJ0YnIN9p8Hw7K7AbG1q1UclQVU3DinAQ==",
       "path": "castle.core/4.4.0",
       "hashPath": "castle.core.4.4.0.nupkg.sha512"
+    },
+    "GoogleAuthenticatorService.Core/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-e4wdg9w91qy8pisV0JStAY0BUQ+sN3g5v3j2D3hCbAaiwKu/Vw3G+AznPWx5u1zSPe12H0U3ZhX1d6DcbQUZjw==",
+      "path": "googleauthenticatorservice.core/1.0.2",
+      "hashPath": "googleauthenticatorservice.core.1.0.2.nupkg.sha512"
     },
     "Microsoft.AspNetCore/2.2.0": {
       "type": "package",

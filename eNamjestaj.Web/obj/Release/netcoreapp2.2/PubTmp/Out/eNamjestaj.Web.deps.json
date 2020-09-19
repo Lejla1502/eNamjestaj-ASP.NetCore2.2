@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "591c4b2ac15c27eb8a5422a5fc1093c9eac35a5e"
+    "signature": "42f0cbb100e2988dda80f2d55ac0394e1c889cb3"
   },
   "compilationOptions": {
     "defines": [
@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v2.2": {
       "eNamjestaj.Web/1.0.0": {
         "dependencies": {
+          "GoogleAuthenticatorService.Core": "1.0.2",
           "Microsoft.AspNetCore": "2.2.0",
           "Microsoft.AspNetCore.Http.Extensions": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -45,6 +46,17 @@
         },
         "compile": {
           "eNamjestaj.Web.dll": {}
+        }
+      },
+      "GoogleAuthenticatorService.Core/1.0.2": {
+        "runtime": {
+          "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll": {}
         }
       },
       "Microsoft.AspNetCore/2.2.0": {
@@ -3261,6 +3273,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "GoogleAuthenticatorService.Core/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-e4wdg9w91qy8pisV0JStAY0BUQ+sN3g5v3j2D3hCbAaiwKu/Vw3G+AznPWx5u1zSPe12H0U3ZhX1d6DcbQUZjw==",
+      "path": "googleauthenticatorservice.core/1.0.2",
+      "hashPath": "googleauthenticatorservice.core.1.0.2.nupkg.sha512"
     },
     "Microsoft.AspNetCore/2.2.0": {
       "type": "package",

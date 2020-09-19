@@ -6,6 +6,7 @@ using eNamjestaj.Data;
 using eNamjestaj.Data.Helper;
 using eNamjestaj.Data.Models;
 using eNamjestaj.Web.ViewModels;
+using GoogleAuthenticatorService.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eNamjestaj.Web.Controllers
@@ -44,9 +45,61 @@ namespace eNamjestaj.Web.Controllers
                 return View("Index", input);
             }
 
-            HttpContext.SetLogiraniKorisnik(korisnik, snimiUCookie: input.ZapamtiPassword);
+            if (!String.IsNullOrEmpty(korisnik.TwoFactorUniqueKey))
+            {
+                var twoFactorModel = new LoginTwoFactorVM
+                {
+                    username = korisnik.KorisnickoIme,
+                    password = korisnik.Lozinka,
+                    ZapamtiLozinku = input.ZapamtiPassword
+                };
+
+                return View("LoginTwoFactor", twoFactorModel);
+            }
+            else
+            {
+                HttpContext.SetLogiraniKorisnik(korisnik, snimiUCookie: input.ZapamtiPassword);
+                return RedirectToAction("Index", "Home");
+            }
           
-            return RedirectToAction("Index", "Home");
+           
+        }
+
+        [HttpPost]
+        public IActionResult LoginTwoFactor(LoginTwoFactorVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Login" );
+            }
+
+            Korisnik korisnik = ctx.Korisnik
+                .SingleOrDefault(x => x.KorisnickoIme == model.username && x.Lozinka == model.password);
+
+            if (korisnik == null)
+            {
+                ViewData["poruka"] = "Pogrešan username ili password";
+                return View("Login");
+            }
+
+
+            TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
+            string current = TwoFacAuth.GetCurrentPIN(korisnik.TwoFactorUniqueKey);
+            bool isValid = current.Equals(model.TwoFactorPin);
+            //bool isValid = true;
+            if (isValid)
+            {
+                HttpContext.SetLogiraniKorisnik(korisnik, snimiUCookie: model.ZapamtiLozinku);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewData["poruka"] = "Pogrešan kod";
+                return View("LoginTwoFactor",model);
+            }
+            
+
+            
         }
 
         public IActionResult Logout()

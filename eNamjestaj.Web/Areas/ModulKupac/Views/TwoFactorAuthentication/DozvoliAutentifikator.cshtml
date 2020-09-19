@@ -1,0 +1,53 @@
+﻿@model eNamjestaj.Web.Areas.ModulKupac.ViewModels.KupacAutentifikatorVM
+@{
+    ViewData["Title"] = "Dozvoli autentifikator";
+    
+
+    var hasAuthenticator = ViewData["HasAuthenticator"] != null ? bool.Parse(ViewData["HasAuthenticator"].ToString()) : false;
+}
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+   
+    <div class="col-md-9">
+        <p>Za upotrebu aplikacije za provjeru autentičnosti prođite kroz sljedeće korake:</p>
+        <ol class="list">
+            <li>
+                <p>
+                    Preuzmite dvofaktornu aplikaciju za provjeru autentičnosti kao što je Microsoft Authenticator za <br />
+                    <a href="https://go.microsoft.com/fwlink/?Linkid=825071">Windows Phone</a>,
+                    <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> i
+                    <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a> ili
+                    Google Authenticator za
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a> i
+                    <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
+                </p>
+            </li>
+            <li>
+                <p>Skenirajte QR kôd ili unesite ovaj ključ <kbd>@Model.TwoFactorCode</kbd> u svoju aplikaciju za potvrđivanje dva faktora. Razmak i velika mala slova nisu važni..</p>
+                <div id="qrCode"><img src="@Model.TwoFactorBarcodeImage" style="max-width:300px; max-height:300px" /></div>
+            </li>
+            <li>
+                <p>
+                    Nakon što skenirate QR kôd ili unesete gornji ključ, Vaša dvofaktorna aplikacija će Vam izgenerisati unikatni kôd, molimo Vas unisite kôd u ponudjeno polje.
+                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form asp-action="SnimiAutentifikator" asp-controller="TwoFactorAuthentication" asp-area="ModulKupac">
+                            <input asp-for="TwoFactorUserUniqueKey" type="hidden" value="@Model.TwoFactorUserUniqueKey" />
+                            <div class="form-group">
+                                <label asp-for="TwoFactorPin" class="control-label"></label>
+                                <input asp-for="TwoFactorPin" class="form-control" autocomplete="off" />
+                                <span asp-validation-for="TwoFactorPin" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-info">Potvrdi</button>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

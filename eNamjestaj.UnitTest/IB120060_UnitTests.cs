@@ -38,6 +38,7 @@ using eNamjestaj.Web.Areas.ModulKupac.Controllers;
 using eNamjestaj.Web.Areas.ModulKupac.ViewModels;
 using eNamjestaj.Web.Areas.ModulAdministrator.Controllers;
 using eNamjestaj.Web.Areas.ModulAdministrator.ViewModels;
+using GoogleAuthenticatorService.Core;
 //using Xunit;
 
 namespace eNamjestaj.UnitTest
@@ -110,9 +111,10 @@ namespace eNamjestaj.UnitTest
             var korisnik = new Korisnik
             {
                 KorisnickoIme = "johndoe",
-                Lozinka = "...",
+                Lozinka = "johndoe",
                 Opstina = opstina,
-                UlogaId = 5
+                UlogaId = 5,
+                TwoFactorUniqueKey = null
             };
 
             var kupac = new Kupac
@@ -136,7 +138,8 @@ namespace eNamjestaj.UnitTest
                 KorisnickoIme = "zaposlenik",
                 Lozinka = "zaposlenik",
                 Opstina = opstina,
-                UlogaId = 2
+                UlogaId = 2,
+                TwoFactorUniqueKey = null
             });
 
             var zaposlenik = new Zaposlenik {
@@ -312,7 +315,8 @@ namespace eNamjestaj.UnitTest
                 KorisnickoIme = "admin",
                 Lozinka = "admin",
                 Opstina = opstina,
-                UlogaId = 1
+                UlogaId = 1,
+                TwoFactorUniqueKey = null
             });
 
             _context.SaveChanges();
@@ -351,9 +355,9 @@ namespace eNamjestaj.UnitTest
             _context.ProizvodBoja.Add(
                new ProizvodBoja
                {
-                   ProizvodId=2,
-                   BojaId=1
-            } );
+                   ProizvodId = 2,
+                   BojaId = 1
+               });
             _context.SaveChanges();
         }
 
@@ -509,7 +513,7 @@ namespace eNamjestaj.UnitTest
             var mockDataProtector = new Mock<IDataProtector>();
             Mock<IDataProtectionProvider> mockDataProtectionProvider = new Mock<IDataProtectionProvider>();
 
-            
+
 
             var request = new Mock<HttpRequest>();
             //           request.Setup(f => f.ReadFormAsync(CancellationToken.None)).Returns
@@ -657,30 +661,40 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        public void Test_Autentifikacija_Login_ModelStateValid_UserIspravan_redirectsToIndexProizvodi()
+        public void Test_Autentifikacija_Login_ModelStateValid_UsernotNull_AuthKeyNotNull_ReturnView_LoginTwoFactor()
         {
-            Mock<AutorizacijskiToken> _someDataRepositoryMock = new Mock<AutorizacijskiToken>();
-
-            var mockSet = new Mock<DbSet<AutorizacijskiToken>>();
-            var list = new List<AutorizacijskiToken>();
-            var queryable = list.AsQueryable();
-            mockSet.As<IQueryable<AutorizacijskiToken>>().Setup(m => m.Provider).Returns(queryable.Provider);
-            mockSet.As<IQueryable<AutorizacijskiToken>>().Setup(m => m.Expression).Returns(queryable.Expression);
-            mockSet.As<IQueryable<AutorizacijskiToken>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-            mockSet.As<IQueryable<AutorizacijskiToken>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
-
-            
             AutentifikacijaController ac = new AutentifikacijaController(_context);
 
-          ac.Url = GetUrlHelper();
+            ac.TempData = GetTempDataForRedirect();
+            ac.ControllerContext = new ControllerContext
+            {
+
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
+            };
+
+            _context.Korisnik.First().TwoFactorUniqueKey = "neki_key";
+
+            LoginVM novi = new LoginVM
+            {
+                username = "johndoe",
+                password = "..."
+            };
+            var result = (ViewResult)ac.Login(novi);
+            Assert.AreEqual("LoginTwoFactor", result.ViewName);
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_Login_ModelStateValid_UserIspravan_AuthKeyNull_redirectsToIndexHome()
+        {
+
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+
+            ac.Url = GetUrlHelper();
             ac.ControllerContext = new ControllerContext
             {
 
                 HttpContext = GetMockedHttpContext()
             };
-
-
-
             LoginVM novi = new LoginVM
             {
                 username = "johndoe",
@@ -688,9 +702,92 @@ namespace eNamjestaj.UnitTest
             };
             var result = (RedirectToActionResult)ac.Login(novi);
 
-            //Assert.AreEqual("johndoe", ac.ControllerContext.HttpContext.GetLogiraniKorisnik().KorisnickoIme);
             Assert.AreEqual("Index", result.ActionName);
             Assert.AreEqual("Home", result.ControllerName);
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_LoginTwoFactor_ModelstateNotValid_RedirectTologin()
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+
+            ac.Url = GetUrlHelper();
+            ac.ModelState.AddModelError("password", "Required");
+            ac.ModelState.AddModelError("username", "Required");
+
+            RedirectToActionResult result = ac.LoginTwoFactor(new LoginTwoFactorVM()) as RedirectToActionResult;
+
+            Assert.AreEqual("Login", result.ActionName);
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_LoginTwoFactor_ModelstateValid_UserNull_ReturnsMessageAndViewLogin()
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+            LoginTwoFactorVM novi = new LoginTwoFactorVM
+            {
+                username = "mmm",
+                password = "mmm"
+            };
+            var result = ac.LoginTwoFactor(novi) as ViewResult;
+            LoginTwoFactorVM model = result.Model as LoginTwoFactorVM;
+
+            Assert.AreEqual("Pogrešan username ili password", result.ViewData["poruka"]);
+            Assert.AreEqual("Login", result.ViewName);
+
+        }
+
+        [TestMethod]
+        public void Test_Autentifikacija_LoginTwoFactor_ModelstateValid_UserFirst_WRongCode_ReturnsMessageAndViewLoginTwoFactor()
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+            LoginTwoFactorVM novi = new LoginTwoFactorVM
+            {
+                username = "johndoe",
+                password = "johndoe",
+                TwoFactorPin = "neki"
+            };
+            _context.Korisnik.First().TwoFactorUniqueKey = "neki_key";
+            _context.SaveChanges();
+
+            var result = ac.LoginTwoFactor(novi) as ViewResult;
+            LoginTwoFactorVM model = result.Model as LoginTwoFactorVM;
+
+            Assert.AreEqual("Pogrešan kod", result.ViewData["poruka"]);
+            Assert.AreEqual("LoginTwoFactor", result.ViewName);
+
+        }
+
+        [TestMethod]
+        [DataRow("24e07affc6434408abd3a1f269122ed3")]
+        public void Test_Autentifikacija_LoginTwoFactor_ModelstateValid_UserFirst_CorrectCode_RedirectToIndexHome(string key)
+        {
+            AutentifikacijaController ac = new AutentifikacijaController(_context);
+            LoginTwoFactorVM novi = new LoginTwoFactorVM
+            {
+                username = "johndoe",
+                password = "johndoe",
+
+            };
+            ac.ControllerContext = new ControllerContext
+            {
+                HttpContext = GetMockedHttpContext()
+            };
+
+            ac.Url = GetUrlHelper();
+
+            _context.Korisnik.First().TwoFactorUniqueKey = key;
+            _context.SaveChanges();
+
+            TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
+            novi.TwoFactorPin = TwoFacAuth.GetCurrentPIN(key);
+
+
+            RedirectToActionResult result = ac.LoginTwoFactor(novi) as RedirectToActionResult;
+
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("Home", result.ControllerName);
+
         }
 
         [TestMethod]
@@ -725,27 +822,27 @@ namespace eNamjestaj.UnitTest
                                        (x.VrstaProizvodaId == vrstaID && x.ProizvodBojas.Any(pb => pb.BojaId == bojaID)))
                                      ).ToList();
 
-            
+
             ProizvodiController pc = new ProizvodiController(_context);
-            
+
 
             pc.TempData = GetTempDataForRedirect();
             ViewResult vr = pc.Index(vrstaID, bojaID) as ViewResult;
             ProizvodiIndexVM aktuelni = vr.Model as ProizvodiIndexVM;
-            
+
             Assert.AreEqual(ocekivani.Count, aktuelni.Proizvodi.Count);
             Assert.AreEqual(1, aktuelni.Boje.Count);
             Assert.AreEqual(2, aktuelni.Vrste.Count);
         }
 
         [TestMethod]
-        [DataRow(1, 1,null)]
-        
+        [DataRow(1, 1, null)]
+
         public void Test_Proizvodi_Detalji_SlanjeNullPopusta_VracaDetaljeProizvodaNaspramIDargumenta(int id, int brojac, int? popust)
         {
 
-           ProizvodiController pc = new ProizvodiController(_context);
-            
+            ProizvodiController pc = new ProizvodiController(_context);
+
             pc.TempData = GetTempDataForRedirect();
             ViewResult vr = pc.Detalji(id, brojac, popust) as ViewResult;
 
@@ -780,7 +877,7 @@ namespace eNamjestaj.UnitTest
             int proizvodId = _context.Proizvod.Select(p => p.Id).First(); //listaProizvodIDs[random.Next(listaProizvodIDs.Count-1)];
             int brojac = _context.ProizvodBoja.Where(p => p.ProizvodId == proizvodId).Count();
             int bojaID = _context.Boja.Select(b => b.Id).First();
-            
+
             ProizvodiController pc = new ProizvodiController(_context);
             pc.ControllerContext = new ControllerContext()
             {
@@ -801,10 +898,10 @@ namespace eNamjestaj.UnitTest
 
 
         [TestMethod]
-        [DataRow(1,1,1)]
+        [DataRow(1, 1, 1)]
         public void Test_ProizvodiController_ProvjeraKolicine_ModelStateValid_NemaNaStanju_CheckIfItRedirectsToActionDetalji(int proizvodId, int bojaID, int brojac)
         {
-          
+
             ProizvodiController pc = new ProizvodiController(_context);
             pc.ControllerContext = new ControllerContext()
             {
@@ -818,10 +915,10 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        [DataRow(1,1,1)]
+        [DataRow(1, 1, 1)]
         public void Test_ProizvodiController_ProvjeraKolicine_ModelStateValidKolicinaOdgovarajuca_RedirectsToNarudzbaStavke_IndexAction(int proizvodId, int bojaID, int brojac)
         {
-            
+
             ProizvodiController pc = new ProizvodiController(_context);
             pc.ControllerContext = new ControllerContext()
             {
@@ -838,17 +935,33 @@ namespace eNamjestaj.UnitTest
 
         }
 
+        [TestMethod]
+        [DataRow(1, 1, 1)]
+        public void Test_ProizvodiController_ProvjeraKolicine_ModelStateValid_UserNull_RedirectsToLogin(int proizvodId, int bojaID, int brojac)
+        {
+            ProizvodiController pc = new ProizvodiController(_context);
+            pc.ControllerContext = new ControllerContext()
+            {
 
+                HttpContext = GetMockedHttpContext()
+            };
+            pc.ControllerContext.HttpContext.SetLogiraniKorisnik(null);
+            pc.Url = GetUrlHelper();
+
+            var result = (RedirectToActionResult)pc.ProvjeraKolicine(proizvodId, 2, bojaID, brojac, null);
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("Autentifikacija", result.ControllerName);
+        }
 
         [TestMethod]
-        public void Test_ProizvodiMenadzer_AkicjaDodaj_ViewNotNull_VracaIspravanModel()
+        public void Test_ProizvodiMenadzer_AkcijaDodaj_ViewNotNull_VracaIspravanModel()
         {
             GetMockedHttpContext();
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
             pmc.ControllerContext = new ControllerContext()
             {
 
-                HttpContext = GetMockedHttpContext()
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
             };
 
             pmc.TempData = GetTempDataForRedirect();
@@ -858,6 +971,25 @@ namespace eNamjestaj.UnitTest
             Assert.IsNotNull(pmc.Dodaj());
             Assert.AreEqual(_context.VrstaProizvoda.ToList().Count, aktualni.Vrste.Count);
             Assert.AreEqual(_context.Boja.ToList().Count, aktualni.Boje.ToList().Count);
+
+        }
+
+        [TestMethod]
+        public void Test_ProizvodiMenadzer_AkcijaDodaj_UserNull_RedirectToLogin()
+        {
+            ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
+            pmc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+
+            pmc.ControllerContext.HttpContext.SetLogiraniKorisnik(null);
+            pmc.Url = GetUrlHelper();
+            RedirectToActionResult result = pmc.Dodaj() as RedirectToActionResult;
+
+            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("Autentifikacija", result.ControllerName);
 
         }
 
@@ -891,11 +1023,11 @@ namespace eNamjestaj.UnitTest
             mockEnvironment
                 .Setup(m => m.EnvironmentName)
                 .Returns("Hosting:UnitTestEnvironment");
-            
+
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(mockEnvironment.Object, _context);
             pmc.ControllerContext = new ControllerContext
             {
-                HttpContext=GetMockedHttpContext(_context.Korisnik.Find(2))
+                HttpContext = GetMockedHttpContext(_context.Korisnik.Find(2))
             };
             pmc.Url = GetUrlHelper();
 
@@ -1032,7 +1164,7 @@ namespace eNamjestaj.UnitTest
             mockEnvironment
                 .Setup(m => m.EnvironmentName)
                 .Returns("Hosting:UnitTestEnvironment");
-            
+
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(mockEnvironment.Object, _context);
             pmc.ControllerContext = new ControllerContext()
             {
@@ -1094,9 +1226,9 @@ namespace eNamjestaj.UnitTest
         public void Test_ProizvodiMenadzer_Index_VrstaNull_VracaSveProizvode()
         {
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
-            
+
             pmc.TempData = GetTempDataForRedirect();
-            
+
             var result = pmc.Index(null) as ViewResult;
             ProizvodiIndexMenadzerVM model = result.Model as ProizvodiIndexMenadzerVM;
 
@@ -1110,7 +1242,7 @@ namespace eNamjestaj.UnitTest
         public void Test_ProizvodiMenadzer_Index_Vrsta2_VracaProizvodteVrste(int id)
         {
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
-            
+
             pmc.TempData = GetTempDataForRedirect();
 
 
@@ -1129,7 +1261,7 @@ namespace eNamjestaj.UnitTest
         {
 
             ProizvodiMenadzerController pmc = new ProizvodiMenadzerController(hostingEnvironment, _context);
-            
+
             pmc.ModelState.AddModelError("Naziv", "Required");
             pmc.ModelState.AddModelError("Sifra", "Required");
             pmc.ModelState.AddModelError("Cijena", "Required");
@@ -1182,7 +1314,7 @@ namespace eNamjestaj.UnitTest
         [TestMethod]
         public void Test_NarudzbaStavke_IndexAkcija_ReturnsNullInView()
         {
-            
+
             NarudzbaStavkeController ns = new NarudzbaStavkeController(_context);
             ns.ControllerContext = new ControllerContext()
             {
@@ -1296,10 +1428,10 @@ namespace eNamjestaj.UnitTest
             PartialViewResult result = nc.Detalji(id) as PartialViewResult;
             NarudzbeDetaljiVM model = result.Model as NarudzbeDetaljiVM;
 
-            Assert.AreEqual(1,model.DetaljiNarudzbe.Count);
+            Assert.AreEqual(1, model.DetaljiNarudzbe.Count);
         }
 
-       
+
 
         [TestMethod]
         public void Test_Sesija_Index_VracaKorektanModel()
@@ -1364,7 +1496,7 @@ namespace eNamjestaj.UnitTest
         public void Test_Recenzije_Dodaj_VracaViewDodaj(int id)
         {
             RecenzijeController rc = new RecenzijeController(_context);
-            
+
             rc.TempData = GetTempDataForRedirect();
 
             PartialViewResult result = rc.Dodaj(id) as PartialViewResult;
@@ -1562,7 +1694,7 @@ namespace eNamjestaj.UnitTest
 
         [TestMethod]
         [DataRow(1)]
-        public void Test_akcijskiKatalogStavke_Dodaj_VracaPartialview(int id)
+        public void Test_AkcijskiKatalogStavke_Dodaj_VracaPartialview(int id)
         {
             AkcijskiKatalogStavkeController asc = new AkcijskiKatalogStavkeController(_context);
             asc.TempData = GetTempDataForRedirect();
@@ -1815,7 +1947,7 @@ namespace eNamjestaj.UnitTest
             PartialViewResult result = kc.IndexKupci() as PartialViewResult;
             KupciIndexVM model = result.Model as KupciIndexVM;
 
-            Assert.AreEqual(1,model.Kupci.Count);
+            Assert.AreEqual(1, model.Kupci.Count);
         }
 
         [TestMethod]
@@ -1850,13 +1982,13 @@ namespace eNamjestaj.UnitTest
         {
             ZaposleniciController zc = new ZaposleniciController(_context);
             zc.TempData = GetTempDataForRedirect();
-            
+
             PartialViewResult result = zc.Uredi(id) as PartialViewResult;
             ZaposleniciUrediVM aktualni = result.Model as ZaposleniciUrediVM;
 
-            Assert.AreEqual("menadzer",aktualni.Ime);
+            Assert.AreEqual("menadzer", aktualni.Ime);
             Assert.AreEqual(2, aktualni.UlogaID);
-            Assert.AreEqual("zaposlenik",aktualni.KorisnickoIme);
+            Assert.AreEqual("zaposlenik", aktualni.KorisnickoIme);
 
         }
 
@@ -1880,11 +2012,11 @@ namespace eNamjestaj.UnitTest
 
             ZaposleniciUrediVM model = new ZaposleniciUrediVM
             {
-                ZaposlenikId=1,
-                Ime="Zapo",
-                Prezime="zapo",
-                KorisnickoIme="zapo",
-                UlogaID=1
+                ZaposlenikId = 1,
+                Ime = "Zapo",
+                Prezime = "zapo",
+                KorisnickoIme = "zapo",
+                UlogaID = 1
             };
 
             var result = zc.Snimi(model) as RedirectToActionResult;
@@ -1941,12 +2073,12 @@ namespace eNamjestaj.UnitTest
                 Adresa = "neki",
                 UlogaId = 1,
                 OpstinaId = 1,
-                Telefon="..."
+                Telefon = "..."
             };
 
             var result = zc.SpremiNovogZaposlenika(model) as RedirectResult;
 
-            Assert.AreEqual("neki",_context.Zaposlenik.Last().Email);
+            Assert.AreEqual("neki", _context.Zaposlenik.Last().Email);
             Assert.AreEqual("neki", _context.Korisnik.Last().KorisnickoIme);
             Assert.AreEqual("/ModulAdministrator/Korisnici/IndexZaposlenici", result.Url);
 
@@ -1964,7 +2096,7 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual("johndoe", model.KorisnickoIme);
             Assert.AreEqual("kupac", model.Ime);
-             Assert.AreEqual(id, model.KupacId);
+            Assert.AreEqual(id, model.KupacId);
         }
 
         [TestMethod]
@@ -1989,10 +2121,10 @@ namespace eNamjestaj.UnitTest
 
             KupciUrediVM model = new KupciUrediVM
             {
-                KupacId=1,
-                KorisnickoIme="novi",
-                Ime="novi",
-                Prezime="novi"
+                KupacId = 1,
+                KorisnickoIme = "novi",
+                Ime = "novi",
+                Prezime = "novi"
             };
 
             RedirectToActionResult result = kc.Snimi(model) as RedirectToActionResult;
@@ -2025,6 +2157,157 @@ namespace eNamjestaj.UnitTest
 
             Assert.AreEqual(1, model.Audits.Count);
         }
+
+        [TestMethod]
+        public void Test_TwoFactorAuthentication_Index_KorisnikNull_redirectToAutentifikacijaIndex()
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            tc.ControllerContext.HttpContext.SetLogiraniKorisnik(null);
+            tc.Url = GetUrlHelper();
+
+            RedirectResult result = tc.Index() as RedirectResult;
+            Assert.AreEqual("/Autentifikacija/Index", result.Url);
+
+        }
+
+        [TestMethod]
+        public void Test_TwoFactorAuthentication_Index_KorisnikNotNull_ReturnsMessageAndview()
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            tc.TempData = GetTempDataForRedirect();
+
+            ViewResult result = tc.Index() as ViewResult;
+            Assert.AreEqual(false, result.ViewData["HasAuthenticator"]);
+
+        }
+
+        [TestMethod]
+        public void Test_TwoFactorAuthentication_DozvoliAutentifikator_UserNull_RedirectToLogin()
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            tc.ControllerContext.HttpContext.SetLogiraniKorisnik(null);
+            tc.Url = GetUrlHelper();
+
+            RedirectResult result = tc.DozvoliAutentifikator() as RedirectResult;
+            Assert.AreEqual("/Autentifikacija/Index", result.Url);
+        }
+
+        [TestMethod]
+        public void Test_TwoFactorAuthentication_DozvoliAutentifikator_IspravanKorisnik_ReturnsView_ModelNotNull()
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
+            };
+
+            tc.TempData = GetTempDataForRedirect();
+
+            ViewResult result = tc.DozvoliAutentifikator() as ViewResult;
+
+            Assert.IsNotNull(result.Model);
+        }
+
+        [TestMethod]
+        public void Test_TwoFactorAuthentication_SnimiAutentifikator_UserNull_RedirectToLogin()
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            tc.ControllerContext.HttpContext.SetLogiraniKorisnik(null);
+            tc.Url = GetUrlHelper();
+
+            RedirectResult result = tc.SnimiAutentifikator(new KupacAutentifikatorVM()) as RedirectResult;
+            Assert.AreEqual("/Autentifikacija/Index", result.Url);
+        }
+
+        [TestMethod]
+        [DataRow("24e07affc6434408abd3a1f269122ed3")]
+        public void Test_TwoFactorAuthentication_SnimiAutentifikator_UserIspravan_RedirectTOIndex(string key)
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
+            };
+            tc.Url = GetUrlHelper();
+
+            TwoFactorAuthenticator TwoFacAuth = new TwoFactorAuthenticator();
+
+
+            KupacAutentifikatorVM model = new KupacAutentifikatorVM
+            {
+                TwoFactorUserUniqueKey = key,
+                TwoFactorBarcodeImage = "",
+                TwoFactorCode = "",
+                TwoFactorPin = TwoFacAuth.GetCurrentPIN(key)
+            };
+
+            RedirectToActionResult result = tc.SnimiAutentifikator(model) as RedirectToActionResult;
+
+            Assert.AreEqual(key, _context.Korisnik.First().TwoFactorUniqueKey);
+            Assert.AreEqual("Index", result.ActionName);
+
+        }
+
+        [TestMethod]
+        public void Test_TwoFactorAuthentication_BrisiAutentifikator_KorisnikNull_RedirectToLogin()
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext()
+            };
+            tc.ControllerContext.HttpContext.SetLogiraniKorisnik(null);
+
+            tc.Url = GetUrlHelper();
+
+            RedirectResult result = tc.BrisiAutentifikator() as RedirectResult;
+
+            Assert.AreEqual("/Autentifikacija/Index", result.Url);
+        }
+
+        [TestMethod]
+        [DataRow("24e07affc6434408abd3a1f269122ed3")]
+        public void Test_TwoFactorAuthentication_BrisiAutentifikator_KorisnikIspravan_RedirectTOIndex(string key)
+        {
+            TwoFactorAuthenticationController tc = new TwoFactorAuthenticationController(_context);
+            tc.ControllerContext = new ControllerContext()
+            {
+
+                HttpContext = GetMockedHttpContext(_context.Korisnik.First())
+            };
+            _context.Korisnik.First().TwoFactorUniqueKey = key;
+            tc.Url = GetUrlHelper();
+
+            RedirectToActionResult result = tc.BrisiAutentifikator() as RedirectToActionResult;
+
+            Assert.IsNull(_context.Korisnik.First().TwoFactorUniqueKey);
+            Assert.AreEqual("Index",result.ActionName);
+
+        }
+
     }
 
 

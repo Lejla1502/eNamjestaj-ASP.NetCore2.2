@@ -67,39 +67,45 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">@if (kupac != null)
-                        {@kupac.Ime @kupac.Prezime}</div>
-                        <a class="nav-link" href="/ModulKupac/Proizvodi/Index">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Pregled proizvoda
-                        </a>
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
-                            Narudžbe
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="/ModulKupac/Narudzbe/Index">Historija narudžbi</a>
-                                <a class="nav-link" href="/ModulKupac/Narudzbe/NaCekanjuIndex">Narudžbe na čekanju</a>
-                            </nav>
-                        </div>
-                        <a class="nav-link" href="/ModulKupac/NarudzbaStavke/Index/">
-                            <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
-                            Korpa
-                        </a>
-                        <a class="nav-link" href="/ModulKupac/AkcijskiKatalogKupac/Index/">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Akcijski katalog
-                        </a>
-                        <a class="nav-link" href="/ModulKupac/Profil/Index/">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Moj profil
-                        </a>
-                        @*<a class="nav-link" href="/Sesija/Index/">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tablet"></i></div>
-                            Aktivne sesije
-                        </a>*@
+                        <div class="sb-sidenav-menu-heading">
+                            @if (kupac != null)
+                            {@kupac.Ime @kupac.Prezime}
+                    </div>
+                    <a class="nav-link" href="/ModulKupac/Proizvodi/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Pregled proizvoda
+                    </a>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                        Narudžbe
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/ModulKupac/Narudzbe/Index">Historija narudžbi</a>
+                            <a class="nav-link" href="/ModulKupac/Narudzbe/NaCekanjuIndex">Narudžbe na čekanju</a>
+                        </nav>
+                    </div>
+                    <a class="nav-link" href="/ModulKupac/NarudzbaStavke/Index/">
+                        <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+                        Korpa
+                    </a>
+                    <a class="nav-link" href="/ModulKupac/AkcijskiKatalogKupac/Index/">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Akcijski katalog
+                    </a>
+                    <a class="nav-link" href="/ModulKupac/Profil/Index/">
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Moj profil
+                    </a>
+                    <a class="nav-link" href="/ModulKupac/TwoFactorAuthentication/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-address-card"></i></div>
+                        Two-Factor autentifikacija
+                    </a>
+                    @*<a class="nav-link" href="/Sesija/Index/">
+        <div class="sb-nav-link-icon"><i class="fas fa-tablet"></i></div>
+        Aktivne sesije
+    </a>*@
 
                     </div>
                 </div>

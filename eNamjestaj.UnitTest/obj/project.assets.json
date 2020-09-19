@@ -23,6 +23,15 @@
           "lib/netstandard1.5/Castle.Core.dll": {}
         }
       },
+      "GoogleAuthenticatorService.Core/1.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll": {}
+        }
+      },
       "Microsoft.AspNetCore/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -4440,6 +4449,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.2",
         "dependencies": {
+          "GoogleAuthenticatorService.Core": "1.0.2",
           "Microsoft.AspNetCore": "2.2.0",
           "Microsoft.AspNetCore.Http.Extensions": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -4488,6 +4498,18 @@
         "lib/netstandard1.5/Castle.Core.dll",
         "lib/netstandard1.5/Castle.Core.xml",
         "readme.txt"
+      ]
+    },
+    "GoogleAuthenticatorService.Core/1.0.2": {
+      "sha512": "e4wdg9w91qy8pisV0JStAY0BUQ+sN3g5v3j2D3hCbAaiwKu/Vw3G+AznPWx5u1zSPe12H0U3ZhX1d6DcbQUZjw==",
+      "type": "package",
+      "path": "googleauthenticatorservice.core/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "googleauthenticatorservice.core.1.0.2.nupkg.sha512",
+        "googleauthenticatorservice.core.nuspec",
+        "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll"
       ]
     },
     "Microsoft.AspNetCore/2.2.0": {
@@ -12754,6 +12776,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
+      "GoogleAuthenticatorService.Core >= 1.0.2",
       "MSTest.TestAdapter >= 2.1.2",
       "MSTest.TestFramework >= 2.1.2",
       "Microsoft.AspNetCore.CookiePolicy >= 2.2.0",
@@ -12819,6 +12842,10 @@
     "frameworks": {
       "netcoreapp2.2": {
         "dependencies": {
+          "GoogleAuthenticatorService.Core": {
+            "target": "Package",
+            "version": "[1.0.2, )"
+          },
           "MSTest.TestAdapter": {
             "target": "Package",
             "version": "[2.1.2, )"

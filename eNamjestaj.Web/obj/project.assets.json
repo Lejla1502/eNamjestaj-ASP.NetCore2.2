@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.2": {
+      "GoogleAuthenticatorService.Core/1.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll": {}
+        }
+      },
       "Microsoft.AspNetCore/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -3480,6 +3489,18 @@
     }
   },
   "libraries": {
+    "GoogleAuthenticatorService.Core/1.0.2": {
+      "sha512": "e4wdg9w91qy8pisV0JStAY0BUQ+sN3g5v3j2D3hCbAaiwKu/Vw3G+AznPWx5u1zSPe12H0U3ZhX1d6DcbQUZjw==",
+      "type": "package",
+      "path": "googleauthenticatorservice.core/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "googleauthenticatorservice.core.1.0.2.nupkg.sha512",
+        "googleauthenticatorservice.core.nuspec",
+        "lib/netcoreapp2.0/GoogleAuthenticatorService.Core.dll"
+      ]
+    },
     "Microsoft.AspNetCore/2.2.0": {
       "sha512": "Bs75iht4lXS8uVWy/Cbsr9i0m2jRtnrfPEWU+6t0dQTZcJEfF9b7G2F7XvstLFWkAKSgYRzFkAwi/KypY0Qtew==",
       "type": "package",
@@ -10159,6 +10180,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
+      "GoogleAuthenticatorService.Core >= 1.0.2",
       "Microsoft.AspNetCore >= 2.2.0",
       "Microsoft.AspNetCore.Http.Extensions >= 2.2.0",
       "Microsoft.AspNetCore.Mvc >= 2.2.0",
@@ -10222,6 +10244,10 @@
     "frameworks": {
       "netcoreapp2.2": {
         "dependencies": {
+          "GoogleAuthenticatorService.Core": {
+            "target": "Package",
+            "version": "[1.0.2, )"
+          },
           "Microsoft.AspNetCore": {
             "target": "Package",
             "version": "[2.2.0, )"

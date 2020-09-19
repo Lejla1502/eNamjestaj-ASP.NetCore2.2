@@ -137,11 +137,10 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 
                 
                 Korisnik k = HttpContext.GetLogiraniKorisnik();
+                if (k==null)
+                    return RedirectToAction("Index", "Autentifikacija");
+
                 Kupac kupacLogiran = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
-
-                if (kupacLogiran == null)
-                return RedirectToAction("Index", "Login");
-
 
 
             Narudzba aktivna = null;

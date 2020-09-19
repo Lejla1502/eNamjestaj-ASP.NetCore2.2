@@ -12,6 +12,7 @@ namespace eNamjestaj.Data.Models
         public int Id { get; set; }
         public string KorisnickoIme { get; set; }
         public string Lozinka { get; set; }
+        public string TwoFactorUniqueKey { get; set; }
 
         public int OpstinaId { get; set; }
         public virtual Opstina Opstina { get; set; }

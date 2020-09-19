@@ -246,6 +246,8 @@ namespace eNamjestaj.Data.Migrations
 
                     b.Property<int>("OpstinaId");
 
+                    b.Property<string>("TwoFactorUniqueKey");
+
                     b.Property<int>("UlogaId");
 
                     b.HasKey("Id");
