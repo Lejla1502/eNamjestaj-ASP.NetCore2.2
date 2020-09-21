@@ -20,6 +20,7 @@ namespace eNamjestaj.Web.Areas.ModulKupac.ViewModels
             public string Boja { get; set; }
             public string Dostava { get; set; }
             public string Total { get; set; }
+            public string Popust { get; set; }
         }
     }
 }

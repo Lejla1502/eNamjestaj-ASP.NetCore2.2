@@ -116,7 +116,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                     Kolicina = x.Kolicina,
                     Boja = x.Boja.Naziv,
                     Dostava = ctx.Izlaz.Where(i => i.NarudzbaId == narudzbaId).FirstOrDefault().Dostava.Cijena.ToString("0.00"),
-                    Total = x.TotalStavke.ToString("0.00")
+                    Total = x.TotalStavke.ToString("0.00"),
+                    Popust=x.PopustNaCijenu.ToString("0.00")
                 }).ToList(),
                 SumTotal = ctx.Izlaz.Where(i => i.NarudzbaId == narudzbaId).FirstOrDefault().IznosSaPDV.ToString("0.00"),
                 NarudzbaID = narudzbaId

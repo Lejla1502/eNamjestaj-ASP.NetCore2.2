@@ -28,7 +28,7 @@ namespace eNamjestaj.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MojContext>(options =>
-             options.UseSqlServer(Configuration.GetConnectionString("lokalni")));
+             options.UseSqlServer(Configuration.GetConnectionString("fit-server")));
 
 
             //services.AddDbContext<MojContext>(options =>

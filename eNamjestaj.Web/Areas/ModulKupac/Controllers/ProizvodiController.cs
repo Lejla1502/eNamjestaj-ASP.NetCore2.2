@@ -181,7 +181,7 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                             NarudzbaId = n.Id,
                             BojaId = BojaID,
                             CijenaProizvoda = p.Cijena,
-                            PopustNaCijenu = Popust ?? 0,
+                            PopustNaCijenu = (int)Popust,
                             //TotalStavke=p.Cijena*kol
                             TotalStavke = (p.Cijena - (p.Cijena * (decimal)Popust / 100)) * kol
                         };
