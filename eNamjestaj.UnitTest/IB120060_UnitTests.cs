@@ -2038,7 +2038,7 @@ namespace eNamjestaj.UnitTest
             ZaposleniciDodajVM model = result.Model as ZaposleniciDodajVM;
 
             Assert.AreEqual(1, model.Opstine.Count);
-            Assert.AreEqual(5, model.Uloge.Count);
+            Assert.AreEqual(4, model.Uloge.Count);
         }
 
         [TestMethod]

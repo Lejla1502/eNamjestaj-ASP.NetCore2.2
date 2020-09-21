@@ -79,7 +79,7 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
             ZaposleniciDodajVM model = new ZaposleniciDodajVM
             {
                 Opstine = ctx.Opstina.ToList(),
-                Uloge = ctx.Uloga.ToList()
+                Uloge = ctx.Uloga.Where(u=>u.Id!=5).ToList()
             };
             return PartialView(model);
         }
