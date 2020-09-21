@@ -31,8 +31,8 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
                 Ime = kupac.Ime,
                 Prezime = kupac.Prezime,
                 KorisnickoIme = k.KorisnickoIme,
-                Lozinka = k.Lozinka,
-                PotvrdaLozinke = k.Lozinka
+               // Lozinka = k.Lozinka,
+               // PotvrdaLozinke = k.Lozinka
             };
 
             return PartialView(model);
@@ -59,7 +59,7 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
                 Kupac kupac = ctx.Kupac.Where(x => x.Id == model.KupacId).First();
                 Korisnik k = ctx.Korisnik.Where(x => x.Id == kupac.KorisnikId).First();
                 k.KorisnickoIme = model.KorisnickoIme;
-                k.Lozinka = model.Lozinka;
+                k.LozinkaHash = PasswordSettings.GetHash(model.Lozinka, Convert.FromBase64String(k.LozinkaSalt));
                 ctx.SaveChanges();
 
                 return RedirectToAction("IndexKupci", "Korisnici");

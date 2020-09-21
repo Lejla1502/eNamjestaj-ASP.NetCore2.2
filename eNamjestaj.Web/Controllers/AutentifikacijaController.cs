@@ -37,7 +37,7 @@ namespace eNamjestaj.Web.Controllers
                 return View("Index", input);
             }
             Korisnik korisnik = ctx.Korisnik
-                .SingleOrDefault(x => x.KorisnickoIme == input.username && x.Lozinka == input.password);
+                .SingleOrDefault(x => x.KorisnickoIme == input.username && x.LozinkaHash == PasswordSettings.GetHash(input.password, Convert.FromBase64String(x.LozinkaSalt)));
 
             if (korisnik == null)
             {
@@ -50,7 +50,7 @@ namespace eNamjestaj.Web.Controllers
                 var twoFactorModel = new LoginTwoFactorVM
                 {
                     username = korisnik.KorisnickoIme,
-                    password = korisnik.Lozinka,
+                    password = input.password,
                     ZapamtiLozinku = input.ZapamtiPassword
                 };
 
@@ -74,7 +74,7 @@ namespace eNamjestaj.Web.Controllers
             }
 
             Korisnik korisnik = ctx.Korisnik
-                .SingleOrDefault(x => x.KorisnickoIme == model.username && x.Lozinka == model.password);
+                .SingleOrDefault(x => x.KorisnickoIme == model.username && x.LozinkaHash == PasswordSettings.GetHash(model.password, Convert.FromBase64String(x.LozinkaSalt)));
 
             if (korisnik == null)
             {

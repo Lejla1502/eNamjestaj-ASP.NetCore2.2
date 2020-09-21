@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Http
+@using eNamjestaj.Data.Helper
+@using eNamjestaj.Data.Models
+@using eNamjestaj.Data
+
+@{
+    ViewData["Title"] = "NaslovnaStrana";
+    Korisnik k = Context.GetLogiraniKorisnik();
+
+}
+<head>
+    <style>
+        body {
+            background-size: 100% 100%;
+            background-image: url('/assets/img/cactus_radio_nightstand_120704_3840x2400.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        p, h3 {
+            text-align: center;
+        }
+
+        p {
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container-fluid">
+
+            <div class=" justify-content-center">
+                <div>
+
+                    <h3>Želimo vam dobrodošlicu na sistem ONLINE PRODAJA NAMJEŠTAJA. </h3>
+                    
+                        @if (k == null)
+                        {
+                        <p>
+                            <a href="/Autentifikacija/Index" style="color:blue;">Logirajte se</a> da biste imali pristup
+                            svim funkcionalnostima
+                        </p>
+                    }
+
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+
+

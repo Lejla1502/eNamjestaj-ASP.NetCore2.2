@@ -242,7 +242,13 @@ namespace eNamjestaj.Data.Migrations
 
                     b.Property<string>("KorisnickoIme");
 
-                    b.Property<string>("Lozinka");
+                    b.Property<string>("LozinkaHash")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(100)");
+
+                    b.Property<string>("LozinkaSalt")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(50)");
 
                     b.Property<int>("OpstinaId");
 

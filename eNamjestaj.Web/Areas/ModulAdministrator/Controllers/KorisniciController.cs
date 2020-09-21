@@ -58,5 +58,10 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
 
             return PartialView(model);
         }
+
+        public IActionResult NaslovnaStrana()
+        {
+            return View();
+        }
     }
 }

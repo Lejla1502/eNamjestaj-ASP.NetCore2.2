@@ -111,7 +111,9 @@ namespace eNamjestaj.UnitTest
             var korisnik = new Korisnik
             {
                 KorisnickoIme = "johndoe",
-                Lozinka = "johndoe",
+                //Lozinka = "johndoe",
+                LozinkaHash= "i8sswmRAmnZbpGPl4HAPa+2WVcgJIJZ5tsmb0oMDYIw=",
+                LozinkaSalt= "pRKjLYUp97f9lVEt+hsrDg==",
                 Opstina = opstina,
                 UlogaId = 5,
                 TwoFactorUniqueKey = null
@@ -136,7 +138,8 @@ namespace eNamjestaj.UnitTest
             _context.Korisnik.Add(new Korisnik
             {
                 KorisnickoIme = "zaposlenik",
-                Lozinka = "zaposlenik",
+                LozinkaHash = "BTdXljtPJDmsye5zy6BUw8+wrT01+F44X34mkJ2plUs=",
+                LozinkaSalt = "yT/VqmV2Fr1QeKHV2mjJug==",
                 Opstina = opstina,
                 UlogaId = 2,
                 TwoFactorUniqueKey = null
@@ -313,7 +316,8 @@ namespace eNamjestaj.UnitTest
             _context.Korisnik.Add(new Korisnik
             {
                 KorisnickoIme = "admin",
-                Lozinka = "admin",
+                LozinkaHash= "0Eh8tKfwu7cE3HjVAGRF3Ae6QEh8W0Br8Q2Tg5V3yzI=",
+                LozinkaSalt= "2LG4pfrmPPzNLeRYiUu/mw==",
                 Opstina = opstina,
                 UlogaId = 1,
                 TwoFactorUniqueKey = null
@@ -677,7 +681,7 @@ namespace eNamjestaj.UnitTest
             LoginVM novi = new LoginVM
             {
                 username = "johndoe",
-                password = "..."
+                password = "johndoe"
             };
             var result = (ViewResult)ac.Login(novi);
             Assert.AreEqual("LoginTwoFactor", result.ViewName);
@@ -698,7 +702,7 @@ namespace eNamjestaj.UnitTest
             LoginVM novi = new LoginVM
             {
                 username = "johndoe",
-                password = "..."
+                password = "johndoe"
             };
             var result = (RedirectToActionResult)ac.Login(novi);
 
@@ -2038,7 +2042,7 @@ namespace eNamjestaj.UnitTest
         }
 
         [TestMethod]
-        public void Test_Admin_Zaposlenici_SnimiNovogZaposlenika_ModelStateNotValid_REturnBadReq()
+        public void Test_Admin_Zaposlenici_SpremiNovogZaposlenika_ModelStateNotValid_REturnBadReq()
         {
             ZaposleniciController zc = new ZaposleniciController(_context);
             zc.ModelState.AddModelError("KorisnickoIme", "Required");
@@ -2124,7 +2128,9 @@ namespace eNamjestaj.UnitTest
                 KupacId = 1,
                 KorisnickoIme = "novi",
                 Ime = "novi",
-                Prezime = "novi"
+                Prezime = "novi",
+                Lozinka="novi",
+                PotvrdaLozinke="novi"
             };
 
             RedirectToActionResult result = kc.Snimi(model) as RedirectToActionResult;

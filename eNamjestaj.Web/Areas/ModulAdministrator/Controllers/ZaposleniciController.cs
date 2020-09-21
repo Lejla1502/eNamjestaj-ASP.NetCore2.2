@@ -89,10 +89,15 @@ namespace eNamjestaj.Web.Areas.ModulAdministrator.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                byte[] lozinkaSalt = PasswordSettings.GetSalt();
+                string lozinkaHash = PasswordSettings.GetHash(model.Lozinka, lozinkaSalt);
+
                 Korisnik k = new Korisnik
                 {
                     KorisnickoIme = model.KorisnickoIme,
-                    Lozinka = model.Lozinka,
+                    LozinkaHash = lozinkaHash,
+                    LozinkaSalt = Convert.ToBase64String(lozinkaSalt),
                     OpstinaId = model.OpstinaId,
                     UlogaId = model.UlogaId
                 };

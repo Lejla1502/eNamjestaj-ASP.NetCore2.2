@@ -76,7 +76,10 @@ C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\R
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Zaposlenici\Dodaj.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Kupci\Uredi.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Log\Index.g.cshtml.cs
-C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Views\Home\Proba.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\TwoFactorAuthentication\DozvoliAutentifikator.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\TwoFactorAuthentication\Index.g.cshtml.cs
 C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Views\Autentifikacija\LoginTwoFactor.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulAdministrator\Views\Korisnici\NaslovnaStrana.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulKupac\Views\NaslovnaStrana\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Areas\ModulMenadzer\Views\NaslovnaStrana\Index.g.cshtml.cs
+C:\Users\User\source\repos\eNamjestaj\eNamjestaj.Web\obj\Release\netcoreapp2.2\Razor\Views\Home\NaslovnaStrana.g.cshtml.cs

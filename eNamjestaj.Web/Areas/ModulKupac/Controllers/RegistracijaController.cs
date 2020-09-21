@@ -20,7 +20,7 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
         {
             ctx = _ctx;
         }
-
+        [Autorizacija(false, true, false, true)]
         public IActionResult Index()
         {
 
@@ -31,15 +31,19 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 
             return View(model);
         }
-
+        [Autorizacija(false, true, false, true)]
         public IActionResult Snimi(RegistracijaIndexVM model)
         {
             if (ModelState.IsValid)
             {
+                byte[] lozinkaSalt = PasswordSettings.GetSalt();
+                string lozinkaHash = PasswordSettings.GetHash(model.Lozinka, lozinkaSalt);
+
                 Korisnik k = new Korisnik
                 {
                     KorisnickoIme = model.KorisnickoIme,
-                    Lozinka = model.Lozinka,
+                    LozinkaSalt= Convert.ToBase64String(lozinkaSalt),
+                    LozinkaHash=lozinkaHash,
                     OpstinaId = model.OpstinaID,
                     UlogaId = 5
                 };
@@ -60,7 +64,7 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                 ctx.Kupac.Add(kupac);
                 ctx.SaveChanges();
 
-                HttpContext.SetLogiraniKorisnik(k);
+               
                 return RedirectToAction("PrikazPoruke");
             }
             else
@@ -68,7 +72,7 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
 
 
         }
-
+        [Autorizacija(false, true, false, true)]
         public IActionResult PrikazPoruke()
         {
 

@@ -70,7 +70,8 @@ namespace eNamjestaj.Web.Areas.ModulKupac.Controllers
                 Korisnik k = HttpContext.GetLogiraniKorisnik();
                 Kupac kupac = ctx.Kupac.Where(x => x.KorisnikId == k.Id).FirstOrDefault();
                 k.KorisnickoIme = model.KorisnickoIme;
-                k.Lozinka = model.Lozinka;
+                k.LozinkaHash = PasswordSettings.GetHash(model.Lozinka, Convert.FromBase64String(k.LozinkaSalt));
+                ;
                 k.OpstinaId = model.OpstinaID;
                 HttpContext.SetLogiraniKorisnik(k);
                 ctx.SaveChanges();
